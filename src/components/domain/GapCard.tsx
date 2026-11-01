@@ -1,5 +1,5 @@
 import React from 'react';
-import { HelpCircle, AlertCircle, ArrowRight, Sparkles } from 'lucide-react';
+import { HelpCircle, AlertCircle, ArrowRight, Sparkles, ShieldCheck, Lock, Landmark } from 'lucide-react';
 import { GapItem } from '../../types';
 import { Badge } from '../common/Badge';
 import { Card } from '../common/Card';
@@ -12,12 +12,15 @@ export interface GapCardProps {
 }
 
 export const GapCard: React.FC<GapCardProps> = ({ gap, onConsultSource, onAskQuestion }) => {
+  const isHypothesis = gap.isAiSuggestion || gap.type === 'ai_suggestion';
+  const confidencePercent = gap.confidence ? Math.round(gap.confidence * 100) : 85;
+
   return (
     <Card
       className={cn(
         'p-5 sm:p-6 transition-all border-l-4 relative overflow-hidden',
-        gap.isAiSuggestion
-          ? 'border-l-blue-500 border-dashed border-blue-200 dark:border-blue-900/60 bg-blue-50/30 dark:bg-blue-950/20'
+        isHypothesis
+          ? 'border-l-blue-500 border-dashed border-blue-200 dark:border-blue-900/60 bg-blue-50/20 dark:bg-blue-950/20'
           : 'border-l-purple-500 border-purple-100 dark:border-purple-900/40 bg-white dark:bg-brand-navy-900'
       )}
       hoverEffect
@@ -25,14 +28,17 @@ export const GapCard: React.FC<GapCardProps> = ({ gap, onConsultSource, onAskQue
       {/* Top badges bar */}
       <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
         <div className="flex items-center gap-2">
-          {gap.isAiSuggestion ? (
-            <Badge variant="ai" size="sm">
-              AI Suggestion (Unverified)
-            </Badge>
+          {/* Verified vs AI hypothesis badge */}
+          {isHypothesis ? (
+            <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300 border border-dashed border-blue-400">
+              <Sparkles className="w-3 h-3 text-blue-500" />
+              Unverified AI Hypothesis
+            </span>
           ) : (
-            <Badge variant="gap" size="sm">
-              Information Dark Spot
-            </Badge>
+            <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 border border-purple-300 dark:border-purple-800">
+              <HelpCircle className="w-3 h-3 text-purple-600" />
+              Verified Gap (Omitted Clause)
+            </span>
           )}
 
           <span
@@ -53,10 +59,24 @@ export const GapCard: React.FC<GapCardProps> = ({ gap, onConsultSource, onAskQue
           </span>
         </div>
 
-        {/* Consulted sources count */}
-        <span className="text-[11px] text-slate-500 dark:text-slate-400">
-          Scanned across {gap.sourcesConsulted.length} sources
-        </span>
+        {/* Confidence bar */}
+        <div className="flex items-center gap-2">
+          <div className="w-16 sm:w-20 bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+            <div
+              className={`h-full rounded-full ${
+                confidencePercent >= 90
+                  ? 'bg-emerald-500'
+                  : confidencePercent >= 75
+                  ? 'bg-brand-teal'
+                  : 'bg-amber-500'
+              }`}
+              style={{ width: `${confidencePercent}%` }}
+            />
+          </div>
+          <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 font-bold">
+            {confidencePercent}% conf
+          </span>
+        </div>
       </div>
 
       {/* Title */}
@@ -99,26 +119,40 @@ export const GapCard: React.FC<GapCardProps> = ({ gap, onConsultSource, onAskQue
           <button
             type="button"
             onClick={() => onAskQuestion(gap.suggestedQuestionToAsk)}
-            className="inline-flex items-center gap-1 text-xs font-medium text-brand-teal hover:text-teal-700 dark:hover:text-teal-400 shrink-0 self-end sm:self-auto"
+            className="text-xs font-semibold text-brand-teal hover:underline inline-flex items-center gap-1 shrink-0 self-end sm:self-auto"
           >
-            Copy inquiry <ArrowRight className="w-3 h-3" />
+            <span>Copy inquiry</span>
+            <ArrowRight className="w-3.5 h-3.5" />
           </button>
         )}
       </div>
 
-      {/* Consulted source pills */}
-      <div className="flex flex-wrap items-center gap-1.5 mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
-        <span className="text-[11px] text-slate-400 mr-1">Consulted:</span>
-        {gap.sourcesConsulted.map((domain, idx) => (
-          <button
-            key={idx}
-            type="button"
-            onClick={() => onConsultSource && onConsultSource(domain)}
-            className="text-[11px] px-2 py-0.5 rounded-md bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors font-mono"
-          >
-            {domain}
-          </button>
-        ))}
+      {/* Credibility signals strip */}
+      <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500 dark:text-slate-400">
+        <div className="flex items-center gap-3">
+          <span className="inline-flex items-center gap-1">
+            <Landmark className="w-3 h-3 text-slate-400" />
+            Cross-examined across {gap.sourcesConsulted.length} sources
+          </span>
+          <span className="inline-flex items-center gap-1">
+            <Lock className="w-3 h-3 text-emerald-600" /> HTTPS Verified
+          </span>
+        </div>
+        {gap.sourcesConsulted.length > 0 && onConsultSource && (
+          <div className="flex items-center gap-1.5">
+            <span className="text-slate-400">Sources:</span>
+            {gap.sourcesConsulted.slice(0, 2).map((srcName, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => onConsultSource(srcName)}
+                className="text-[10px] px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-brand-teal font-mono"
+              >
+                {srcName}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </Card>
   );

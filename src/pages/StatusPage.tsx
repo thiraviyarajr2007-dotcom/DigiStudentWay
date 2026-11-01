@@ -198,3 +198,4 @@ export const StatusPage: React.FC = () => {
     </div>
   );
 };
+

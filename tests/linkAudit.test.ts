@@ -23,8 +23,8 @@ const VALID_ROUTE_PATTERNS: RegExp[] = [
 ];
 
 function isValidDestination(url: string): boolean {
-  // Strip hash or query params if any
-  const cleanUrl = url.split('#')[0];
+  // Strip hash and query params if any
+  const cleanUrl = url.split('#')[0].split('?')[0];
   return VALID_ROUTE_PATTERNS.some(pattern => pattern.test(cleanUrl));
 }
 

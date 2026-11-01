@@ -145,14 +145,23 @@ export const LandingPage: React.FC = () => {
             >
               Try Sample Scholarship Demo
             </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="w-full sm:w-auto border-amber-300 dark:border-amber-700 bg-amber-50/60 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 font-bold"
+              onClick={() => navigate('/app/analysis/demo?tour=true', { state: { autoTour: true } })}
+              leftIcon={<Sparkles className="w-5 h-5 text-amber-500" />}
+            >
+              Watch 60-Second Demo (Judge Tour)
+            </Button>
             <Link to="/app/new" className="w-full sm:w-auto">
               <Button
-                variant="outline"
+                variant="ghost"
                 size="lg"
-                className="w-full sm:w-auto"
+                className="w-full sm:w-auto text-slate-700 dark:text-slate-300"
                 leftIcon={<ScanSearch className="w-5 h-5" />}
               >
-                Run Custom Gap Scan
+                Run Custom Scan
               </Button>
             </Link>
           </div>

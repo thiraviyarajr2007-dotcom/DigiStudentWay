@@ -75,3 +75,21 @@
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
+
+/* Print optimization for 1-page verification brief */
+@media print {
+  nav, footer, .sticky, button:not([role="checkbox"]), .no-print {
+    display: none !important;
+  }
+  body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 10pt !important;
+  }
+  .card, .p-6, .p-8 {
+    box-shadow: none !important;
+    border: 1px solid #cbd5e1 !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}

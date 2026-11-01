@@ -38,6 +38,8 @@ import { SourceDrawer } from '../components/domain/SourceDrawer';
 import { SemanticLegend } from '../components/domain/SemanticLegend';
 import { AIBanner } from '../components/domain/AIBanner';
 import { JudgeTour } from '../components/domain/JudgeTour';
+import { SourceAgreementMatrix } from '../components/domain/SourceAgreementMatrix';
+import { TrustPanel } from '../components/domain/TrustPanel';
 import { useToast } from '../components/common/Toast';
 import { formatDate } from '../lib/utils';
 import { downloadChecklistFile, printChecklistAsPdf, copyShareableSummary } from '../lib/exportUtils';
@@ -69,6 +71,14 @@ export const DashboardPage: React.FC = () => {
 
   // Judge Mode Tour state
   const [showJudgeTour, setShowJudgeTour] = useState<boolean>(false);
+  const [checklistLang, setChecklistLang] = useState<'en' | 'ta'>('en');
+
+  // Automatically start tour if ?tour=true in URL
+  useEffect(() => {
+    if (location.search.includes('tour=true') || location.state?.autoTour) {
+      setShowJudgeTour(true);
+    }
+  }, [location.search, location.state]);
 
   // Load report on mount or when id changes
   useEffect(() => {
@@ -561,6 +571,23 @@ export const DashboardPage: React.FC = () => {
             </Button>
           </div>
 
+          {/* Signature Multi-Source Agreement Matrix (Primary Feature) */}
+          <SourceAgreementMatrix
+            sources={report.sources}
+            expectedAttributes={report.expectedAttributes || []}
+            conflicts={report.conflicts || []}
+            outdated={report.outdated || []}
+            facts={report.facts || []}
+            onOpenSourceDrawer={(src, quote, chunkIdx) => handleOpenSourceDrawer(src, quote, chunkIdx)}
+          />
+
+          {/* Evidence Trail & Trust Panel */}
+          <TrustPanel
+            report={report}
+            onNavigateToSources={() => setActiveTab('sources')}
+            onOpenSourceDrawer={src => handleOpenSourceDrawer(src)}
+          />
+
           {/* Side-by-Side: Gaps & Verify Next Highlights */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Gaps Preview */}
@@ -676,13 +703,22 @@ export const DashboardPage: React.FC = () => {
 
       {/* TAB CONTENT 2: EXPECTED ATTRIBUTE MATRIX */}
       {activeTab === 'expected' && (
-        <div className="space-y-4">
+        <div className="space-y-6">
+          <SourceAgreementMatrix
+            sources={report.sources}
+            expectedAttributes={report.expectedAttributes || []}
+            conflicts={report.conflicts || []}
+            outdated={report.outdated || []}
+            facts={report.facts || []}
+            onOpenSourceDrawer={(src, quote, chunkIdx) => handleOpenSourceDrawer(src, quote, chunkIdx)}
+          />
+
           <div>
             <h2 className="font-heading font-extrabold text-xl text-slate-900 dark:text-white">
-              Expected Information Checklist Matrix
+              Attribute Breakdown Cards
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              Every student application must cover 8 core attributes. DigiStudentWay detects what is missing or ambiguous.
+              Specific status and findings across all evaluated checklist domains.
             </p>
           </div>
 
@@ -872,8 +908,36 @@ export const DashboardPage: React.FC = () => {
                 Exact verification steps to take before submitting your application documents.
               </p>
             </div>
-            <div className="text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 self-start sm:self-auto">
-              Progress: {completedChecklistCount} of {report.checklist.length} Completed
+            <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+              {/* English vs Tamil Toggle */}
+              <div className="flex items-center p-1 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold">
+                <button
+                  type="button"
+                  onClick={() => setChecklistLang('en')}
+                  className={`px-2.5 py-1 rounded-lg transition-all ${
+                    checklistLang === 'en'
+                      ? 'bg-white dark:bg-brand-navy-900 text-slate-900 dark:text-white shadow-soft-sm font-bold'
+                      : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                  }`}
+                >
+                  🇬🇧 English
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setChecklistLang('ta')}
+                  className={`px-2.5 py-1 rounded-lg transition-all ${
+                    checklistLang === 'ta'
+                      ? 'bg-brand-teal text-brand-navy-950 shadow-soft-sm font-bold'
+                      : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                  }`}
+                >
+                  🇮🇳 தமிழ்
+                </button>
+              </div>
+
+              <div className="text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700">
+                Progress: {completedChecklistCount} of {report.checklist.length} Completed
+              </div>
             </div>
           </div>
 
@@ -882,6 +946,7 @@ export const DashboardPage: React.FC = () => {
               <ChecklistItem
                 key={item.id}
                 item={item}
+                language={checklistLang}
                 onToggle={handleToggleChecklist}
                 onOpenSource={ref => handleOpenSourceByRef(ref, item.title)}
               />
@@ -892,7 +957,12 @@ export const DashboardPage: React.FC = () => {
 
       {/* TAB CONTENT 7: SOURCE EXPLORER */}
       {activeTab === 'sources' && (
-        <div className="space-y-4">
+        <div className="space-y-6">
+          <TrustPanel
+            report={report}
+            onOpenSourceDrawer={src => handleOpenSourceDrawer(src)}
+          />
+
           <div>
             <h2 className="font-heading font-extrabold text-xl text-slate-900 dark:text-white">
               Ingested Authority Sources

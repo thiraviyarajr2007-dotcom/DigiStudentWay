@@ -45,3 +45,4 @@ export function checkRateLimit(
   record.count += 1;
   return { allowed: true, remaining: limit - record.count };
 }
+

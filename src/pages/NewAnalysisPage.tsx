@@ -30,6 +30,7 @@ import { sampleDemoSources, SAMPLE_DEMO_QUERY, SAMPLE_DEMO_GOAL } from '../lib/s
 import { saveAnalysisToStorage } from '../lib/firebase';
 import { chunkDocumentText } from '../../api/_lib/chunking';
 import { evaluateSourceCredibility } from '../../api/_lib/credibility';
+import { TOPIC_TEMPLATES, getTemplateByCategory } from '../lib/templates';
 
 export const NewAnalysisPage: React.FC = () => {
   const navigate = useNavigate();
@@ -51,6 +52,13 @@ export const NewAnalysisPage: React.FC = () => {
   const [fetchingUrlIndex, setFetchingUrlIndex] = useState<number | null>(null);
   const [pastedText, setPastedText] = useState('');
   const [pastedTitle, setPastedTitle] = useState('');
+
+  // Resilience: Inline fallback state when URL fetch fails
+  const [fetchErrorState, setFetchErrorState] = useState<{
+    url: string;
+    message: string;
+    fallbackText: string;
+  } | null>(null);
 
   // Structured sources collection
   const [sources, setSources] = useState<Source[]>([]);
@@ -104,6 +112,14 @@ export const NewAnalysisPage: React.FC = () => {
     setCurrentStep(2);
   };
 
+  const handleSelectTemplate = (cat: DomainCategory) => {
+    setCategory(cat);
+    const tpl = getTemplateByCategory(cat);
+    setQuery(tpl.defaultQuery);
+    setSelectedGoal(tpl.defaultGoal);
+    toast(`Preloaded ${tpl.name} template with 8 expected audit checklist attributes!`, 'info');
+  };
+
   // URL ingestion handlers
   const handleFetchUrl = async (index: number) => {
     const url = urlInputs[index]?.trim();
@@ -113,15 +129,60 @@ export const NewAnalysisPage: React.FC = () => {
     }
 
     setFetchingUrlIndex(index);
+    setFetchErrorState(null);
     try {
       const fetched = await fetchSourceViaApi(url);
       setSources(prev => [...prev.filter(s => s.url !== url), fetched]);
       toast(`Fetched and parsed: ${fetched.title}`, 'success');
     } catch (err: any) {
-      toast(err.message || 'Failed to fetch source. You can paste the notice text instead.', 'error');
+      const msg = err.message || 'Remote portal blocked direct fetch or connection timed out.';
+      toast(msg, 'error');
+      setFetchErrorState({
+        url,
+        message: msg,
+        fallbackText: '',
+      });
     } finally {
       setFetchingUrlIndex(null);
     }
+  };
+
+  // Inline Fallback ingestion when URL fetch fails
+  const handleSaveFallbackText = () => {
+    if (!fetchErrorState || !fetchErrorState.fallbackText.trim()) {
+      toast('Please paste text content into the fallback box.', 'error');
+      return;
+    }
+
+    const domainName = (() => {
+      try {
+        return new URL(fetchErrorState.url).hostname;
+      } catch {
+        return 'Pasted Portal Document';
+      }
+    })();
+
+    const chunks = chunkDocumentText(fetchErrorState.fallbackText, { targetChunkSize: 750, overlap: 100 });
+    const credibility = evaluateSourceCredibility(fetchErrorState.url, undefined, false);
+
+    const newSource: Source = {
+      id: `src-fallback-${Date.now()}`,
+      title: `Manual Capture: ${domainName}`,
+      url: fetchErrorState.url,
+      domain: domainName,
+      crawledDate: new Date().toISOString().split('T')[0],
+      sourceType: 'pasted_text',
+      isOfficial: domainName.endsWith('.gov.in') || domainName.endsWith('.edu') || domainName.endsWith('.ac.in'),
+      reliabilityScore: 85,
+      excerpt: fetchErrorState.fallbackText.slice(0, 300) + (fetchErrorState.fallbackText.length > 300 ? '...' : ''),
+      fullText: fetchErrorState.fallbackText,
+      chunks,
+      credibilitySignals: credibility,
+    };
+
+    setSources(prev => [...prev.filter(s => s.url !== fetchErrorState.url), newSource]);
+    setFetchErrorState(null);
+    toast(`Saved manual capture for ${domainName} to analysis corpus!`, 'success');
   };
 
   // Pasted text ingestion
@@ -306,6 +367,72 @@ export const NewAnalysisPage: React.FC = () => {
       {/* STEP 1: Research Inquiry & Goal */}
       {currentStep === 1 && (
         <Card className="p-6 sm:p-8 space-y-6">
+          {/* Topic Template Selector Chips */}
+          <div>
+            <div className="flex items-center justify-between mb-2.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                Choose Topic Template (Preloads 8-Point Audit Checklist)
+              </label>
+              <span className="text-[11px] text-brand-teal font-semibold">
+                Signature Feature
+              </span>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+              {Object.values(TOPIC_TEMPLATES).map(tpl => (
+                <button
+                  key={tpl.id}
+                  type="button"
+                  onClick={() => handleSelectTemplate(tpl.id)}
+                  className={`p-3 rounded-2xl border text-left transition-all ${
+                    category === tpl.id
+                      ? 'bg-brand-navy text-white dark:bg-brand-teal dark:text-brand-navy-950 border-brand-navy dark:border-brand-teal shadow-soft'
+                      : 'bg-white dark:bg-brand-navy-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-700'
+                  }`}
+                >
+                  <span className="text-xs font-bold block truncate">{tpl.name}</span>
+                  <span className="text-[10px] opacity-80 block truncate mt-0.5">{tpl.badge}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Expected Attributes Audit Checklist Preview */}
+          <div className="p-4 rounded-2xl bg-slate-50/70 dark:bg-brand-navy-950 border border-slate-200 dark:border-slate-800">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                <ShieldCheck className="w-4 h-4 text-brand-teal" />
+                Template Audit Scope: 8 Expected Information Attributes
+              </span>
+              <span className="text-[10px] font-mono font-bold text-slate-500">
+                {getTemplateByCategory(category).expectedAttributes.length} Domains
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-3">
+              DigiStudentWay will cross-examine your sources against these 8 core requirements to discover Digital Dark Spots.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              {getTemplateByCategory(category).expectedAttributes.map((attr, idx) => (
+                <div
+                  key={attr.attributeId}
+                  className="p-2 rounded-xl bg-white dark:bg-brand-navy-900 border border-slate-200/80 dark:border-slate-800 flex items-start gap-2"
+                >
+                  <span className="w-5 h-5 rounded-full bg-teal-100 dark:bg-teal-950/70 text-teal-800 dark:text-teal-300 text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                    {idx + 1}
+                  </span>
+                  <div className="min-w-0">
+                    <span className="font-semibold text-slate-900 dark:text-white block truncate">
+                      {attr.label}
+                    </span>
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-1">
+                      {attr.description}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Inquiry Question */}
           <div>
             <label className="block font-heading font-bold text-sm text-slate-900 dark:text-white mb-2">
               What academic scheme, admission, or notification are you investigating?
@@ -317,35 +444,6 @@ export const NewAnalysisPage: React.FC = () => {
               placeholder="e.g. What should I verify before applying for the Post-Matric Merit Scholarship (PMS 2026) regarding income certificates and renewal rules?"
               className="w-full p-4 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-brand-navy-900 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-teal/50"
             />
-          </div>
-
-          {/* Category Chips */}
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2.5">
-              Select Scheme Category
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {[
-                { id: 'scholarship', label: 'Scholarship / Fellowship' },
-                { id: 'admission', label: 'College / Uni Admission' },
-                { id: 'govt_scheme', label: 'Govt Student Scheme' },
-                { id: 'exam', label: 'Entrance / Competitive Exam' },
-                { id: 'internship', label: 'Research Internship / Stipend' },
-              ].map(cat => (
-                <button
-                  key={cat.id}
-                  type="button"
-                  onClick={() => setCategory(cat.id as DomainCategory)}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${
-                    category === cat.id
-                      ? 'bg-brand-navy text-white dark:bg-brand-teal dark:text-brand-navy-950 shadow-soft-sm font-bold'
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200'
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </div>
           </div>
 
           {/* Goal Chips */}
@@ -489,6 +587,57 @@ export const NewAnalysisPage: React.FC = () => {
                   Suggest Authoritative Portals
                 </Button>
               </div>
+
+              {/* Inline URL Fetch Error & Paste Fallback Box */}
+              {fetchErrorState && (
+                <div className="p-4 sm:p-5 rounded-2xl bg-amber-50/90 dark:bg-amber-950/40 border-2 border-amber-300 dark:border-amber-800 space-y-3 animate-in fade-in">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-2">
+                      <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
+                      <div>
+                        <h4 className="font-heading font-bold text-xs sm:text-sm text-amber-950 dark:text-amber-200">
+                          Automated Fetch Unsuccessful for "{fetchErrorState.url}"
+                        </h4>
+                        <p className="text-[11px] text-amber-800 dark:text-amber-300">
+                          {fetchErrorState.message}. You can paste the page contents or PDF text directly below:
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setFetchErrorState(null)}
+                      className="text-xs text-amber-600 hover:text-amber-800 font-bold"
+                    >
+                      Dismiss
+                    </button>
+                  </div>
+
+                  <textarea
+                    rows={4}
+                    value={fetchErrorState.fallbackText}
+                    onChange={e =>
+                      setFetchErrorState({
+                        ...fetchErrorState,
+                        fallbackText: e.target.value,
+                      })
+                    }
+                    placeholder="Paste the circular or notice text from the target website here..."
+                    className="w-full p-3 rounded-xl border border-amber-300 dark:border-amber-700 bg-white dark:bg-brand-navy-900 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-teal/50 font-mono"
+                  />
+
+                  <div className="flex items-center justify-end gap-2">
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      onClick={handleSaveFallbackText}
+                      disabled={!fetchErrorState.fallbackText.trim()}
+                      leftIcon={<Check className="w-3.5 h-3.5" />}
+                    >
+                      Use Pasted Text as Source
+                    </Button>
+                  </div>
+                </div>
+              )}
 
               {/* AI Suggested Sources Shelf */}
               {suggestedSources.length > 0 && (

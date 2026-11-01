@@ -174,6 +174,9 @@ export interface AnalysisReport extends AnalysisSummary {
   expectedAttributes?: ExpectedAttributeCheck[];
   decisionReadiness?: DecisionReadiness;
   unansweredQuestions?: string[];
+  unfetchedSources?: string[];
+  rejectedQuotesCount?: number;
+  undatedSourcesCount?: number;
 }
 
 export type AnalysisStage =

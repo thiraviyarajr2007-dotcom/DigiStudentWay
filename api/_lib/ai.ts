@@ -257,13 +257,25 @@ function buildAnalysisPrompt(
     publishDate?: string;
     crawledDate: string;
     chunks: Array<{ chunkIndex: number; text: string }>;
-  }>
+  }>,
+  category = 'scholarship'
 ): string {
+  const categoryAttributeMap: Record<string, string[]> = {
+    scholarship: ['eligibility', 'income_ceiling', 'deadline', 'documents', 'renewal', 'portal_link', 'disbursement', 'helpdesk'],
+    admission: ['eligibility', 'cutoff_marks', 'tuition_fees', 'application_deadline', 'verification_documents', 'counselling_process', 'seat_matrix', 'refund_policy'],
+    govt_scheme: ['eligibility_criteria', 'income_threshold', 'application_mode', 'required_certificates', 'nodal_agency', 'disbursement_mode', 'grievance_redressal', 'renewal_terms'],
+    exam: ['educational_qualification', 'age_limit', 'exam_pattern', 'registration_deadline', 'admit_card_date', 'scribe_compensatory_time', 'reservation_documents', 'exam_centers'],
+    internship: ['candidate_eligibility', 'stipend_allowance', 'duration_timeline', 'intellectual_property_rights', 'university_noc_requirement', 'selection_interview', 'accommodation_support', 'offer_acceptance_deadline'],
+  };
+
+  const expectedAttrs = categoryAttributeMap[category] || categoryAttributeMap.scholarship;
+
   return `You are the DigiStudentWay Information Gap & Contradiction Detection Engine for the Shinchan Online Hackathon 2026.
 Problem: "Digital Dark Spot: AI-Assisted Information Gap Detection Platform".
 Goal: Identify what is MISSING, CONFLICTING, or OUTDATED across multiple academic / governmental notices.
 
 TODAY'S REFERENCE DATE: 2026-11-01. Current Active Academic Cycle: 2026-27.
+DOMAIN CATEGORY: ${category.toUpperCase()}
 
 USER INQUIRY: "${query}"
 
@@ -275,7 +287,7 @@ STRICT ANALYSIS RULES:
    - For every key fact, copy an EXACT, VERBATIM quote from a specific chunk text. Do not paraphrase quotes. The server runs string matching against raw chunks.
    - Include exact "chunkIndex".
 2. EXPECTED ATTRIBUTE CHECKLIST:
-   - Check all 8 core attributes: [eligibility, income_ceiling, deadline, documents, renewal, portal_link, disbursement, helpdesk]
+   - Check all 8 core attributes for ${category}: [${expectedAttrs.join(', ')}]
    - Mark each as "covered", "partially_covered", or "not_found" (a Digital Dark Spot!).
 3. DIRECT CONFLICT DETECTION:
    - Detect pairs of claims from different sources on the same attribute that disagree. Provide verbatim quotes from both Source A and Source B.
@@ -426,9 +438,10 @@ export async function runGapAnalysisWithFallback(
     publishDate?: string;
     crawledDate: string;
     chunks: Array<{ chunkIndex: number; text: string }>;
-  }>
+  }>,
+  category = 'scholarship'
 ): Promise<AIAnalysisResult> {
-  const prompt = buildAnalysisPrompt(query, sourcesPayload);
+  const prompt = buildAnalysisPrompt(query, sourcesPayload, category);
 
   // 1. Try Gemini
   const geminiKey = process.env.GEMINI_API_KEY;
@@ -631,3 +644,4 @@ Output STRICT JSON:
 
   return { suggestions: defaultSuggestions, providerName: 'Authoritative Official Registry' };
 }
+

@@ -47,7 +47,7 @@ export default async function handler(req: any, res: any) {
 
     let aiResult;
     try {
-      aiResult = await runGapAnalysisWithFallback(query, sourcesPayload);
+      aiResult = await runGapAnalysisWithFallback(query, sourcesPayload, category);
     } catch (aiErr: any) {
       console.warn('AI provider fallback chain error:', aiErr?.message);
       return res.status(503).json({
@@ -61,11 +61,16 @@ export default async function handler(req: any, res: any) {
     // =========================================================================
     // SERVER-SIDE ANTI-HALLUCINATION VERIFICATION OF QUOTES
     // =========================================================================
+    let rejectedQuotesCount = 0;
 
     // 1. Verify facts
     const verifiedFacts: FactItem[] = rawOutput.facts.map((fact, idx) => {
       const src = sourceMap.get(fact.sourceId) || sources[0];
       const verification = verifyQuoteInSource(fact.quote, src, fact.chunkIndex);
+
+      if (!verification.isVerified) {
+        rejectedQuotesCount++;
+      }
 
       return {
         id: `fact-${idx + 1}`,
@@ -91,6 +96,9 @@ export default async function handler(req: any, res: any) {
 
       const verifyA = verifyQuoteInSource(conf.sourceA.quote, srcA, conf.sourceA.chunkIndex);
       const verifyB = verifyQuoteInSource(conf.sourceB.quote, srcB, conf.sourceB.chunkIndex);
+
+      if (!verifyA.isVerified) rejectedQuotesCount++;
+      if (!verifyB.isVerified) rejectedQuotesCount++;
 
       return {
         id: `conf-${idx + 1}`,
@@ -206,6 +214,7 @@ export default async function handler(req: any, res: any) {
       checklist: verifiedChecklist,
       expectedAttributes: rawOutput.expectedChecklist,
       decisionReadiness,
+      rejectedQuotesCount,
       provider: providerName,
       providerTag,
     };
