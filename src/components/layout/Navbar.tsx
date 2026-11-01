@@ -79,7 +79,8 @@ export const Navbar: React.FC = () => {
   const displayEmail = profile?.email || user?.email || (isGuest ? 'guest@student.demo' : '');
   const initials = displayName
     .split(' ')
-    .map(n => n[0])
+    .filter(Boolean)
+    .map((n: string) => n[0])
     .join('')
     .slice(0, 2)
     .toUpperCase();

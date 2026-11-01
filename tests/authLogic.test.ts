@@ -1,8 +1,71 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { mapAuthError } from '../src/lib/authContext';
+import { localAuth } from '../src/lib/localAuth';
 import { buildSampleDemoReport, buildCareerSampleDemoReport } from '../src/lib/sampleDemo';
 import { SAMPLE_CAREER_OFFLINE_OUTPUT, SAMPLE_OFFLINE_OUTPUT } from '../api/_lib/ai';
 import { AnalysisResponseSchema } from '../api/_lib/gemini';
+
+describe('Local Authentication Resilience', () => {
+  beforeEach(() => {
+    localAuth.signOut();
+  });
+
+  it('signs in pre-seeded demo student successfully', () => {
+    const user = localAuth.signInWithEmail('demo@student.org', 'password123');
+    expect(user.email).toBe('demo@student.org');
+    expect(user.displayName).toBe('Alex Morgan');
+    expect(localAuth.getCurrentUser()?.uid).toBe(user.uid);
+  });
+
+  it('rejects incorrect password with auth/wrong-password code', () => {
+    expect(() => {
+      localAuth.signInWithEmail('demo@student.org', 'wrongpassword');
+    }).toThrowError();
+
+    try {
+      localAuth.signInWithEmail('demo@student.org', 'wrongpassword');
+    } catch (err: any) {
+      expect(err.code).toBe('auth/wrong-password');
+    }
+  });
+
+  it('rejects unregistered email with auth/user-not-found code', () => {
+    try {
+      localAuth.signInWithEmail('nobody@example.com', 'password123');
+    } catch (err: any) {
+      expect(err.code).toBe('auth/user-not-found');
+    }
+  });
+
+  it('registers new student account and prevents duplicate emails', () => {
+    const testEmail = `student_${Date.now()}@college.edu`;
+    const created = localAuth.signUpWithEmail(testEmail, 'mypassword123', 'Jane Student');
+    expect(created.email).toBe(testEmail);
+    expect(created.displayName).toBe('Jane Student');
+
+    // Attempt duplicate signup
+    try {
+      localAuth.signUpWithEmail(testEmail, 'differentpass', 'Jane Duplicate');
+      expect.fail('Should have thrown email-already-in-use');
+    } catch (err: any) {
+      expect(err.code).toBe('auth/email-already-in-use');
+    }
+  });
+
+  it('supports simulated Google sign-in with instant verified user', () => {
+    const googleUser = localAuth.signInWithGoogle();
+    expect(googleUser.email).toContain('gmail.com');
+    expect(googleUser.emailVerified).toBe(true);
+    expect(localAuth.getCurrentUser()?.uid).toBe(googleUser.uid);
+  });
+
+  it('clears active user on signOut', () => {
+    localAuth.signInWithEmail('demo@student.org', 'password123');
+    expect(localAuth.getCurrentUser()).not.toBeNull();
+    localAuth.signOut();
+    expect(localAuth.getCurrentUser()).toBeNull();
+  });
+});
 
 describe('Authentication Logic & Guest Access Rules', () => {
   it('maps wrong password and invalid credentials to friendly message', () => {

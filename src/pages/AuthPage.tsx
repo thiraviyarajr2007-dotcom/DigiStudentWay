@@ -10,7 +10,7 @@ export const AuthPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
-  const { user, signInWithGoogle, signInWithFacebook, signInWithEmail, signUpWithEmail, resetPassword, enterGuestMode } = useAuth();
+  const { user, isCloudConfigured, signInWithGoogle, signInWithFacebook, signInWithEmail, signUpWithEmail, resetPassword, enterGuestMode } = useAuth();
 
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -124,6 +124,15 @@ export const AuthPage: React.FC = () => {
     sessionStorage.setItem('digi_active_report', JSON.stringify(demo));
     toast('Launched in Guest Demo Mode with realistic scholarship data!', 'info');
     navigate('/app/analysis/demo');
+  };
+
+  // Instant Demo Account Credentials
+  const handleFillDemoCredentials = () => {
+    setIsSignUp(false);
+    setEmail('demo@student.org');
+    setPassword('password123');
+    setErrors({});
+    toast('Demo account pre-filled (demo@student.org / password123)', 'info');
   };
 
   return (
@@ -290,6 +299,22 @@ export const AuthPage: React.FC = () => {
 
           {/* Email / Password Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
+            {!isSignUp && (
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-accent/10 border border-accent/20">
+                <div className="text-[11px] text-slate-300">
+                  <span className="font-semibold text-white">Evaluation Account:</span> demo@student.org
+                </div>
+                <button
+                  type="button"
+                  onClick={handleFillDemoCredentials}
+                  className="text-[11px] font-bold text-accent hover:underline flex items-center gap-1 transition-all"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  Fill Credentials
+                </button>
+              </div>
+            )}
+
             {isSignUp && (
               <div>
                 <label className="block text-xs font-semibold text-slate-300 mb-1">
@@ -389,6 +414,15 @@ export const AuthPage: React.FC = () => {
               Privacy Policy & Zero-PII Policy
             </Link>
             .
+          </div>
+
+          <div className="pt-2 border-t border-white/10 flex items-center justify-center gap-1.5 text-[11px] text-slate-400">
+            <ShieldCheck className="w-3.5 h-3.5 text-accent" />
+            <span>
+              {isCloudConfigured
+                ? 'Cloud Authentication Active'
+                : 'Instant Session Active (Any student account works immediately)'}
+            </span>
           </div>
         </div>
       </div>

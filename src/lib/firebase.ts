@@ -31,20 +31,27 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID || '1:123456789:web:abcdef',
 };
 
-const isConfigured = Boolean(
-  import.meta.env.VITE_FIREBASE_API_KEY && import.meta.env.VITE_FIREBASE_PROJECT_ID
+export const isConfigured = Boolean(
+  import.meta.env.VITE_FIREBASE_API_KEY &&
+  import.meta.env.VITE_FIREBASE_API_KEY !== 'demo-api-key' &&
+  import.meta.env.VITE_FIREBASE_API_KEY !== 'your_firebase_api_key' &&
+  import.meta.env.VITE_FIREBASE_PROJECT_ID &&
+  import.meta.env.VITE_FIREBASE_PROJECT_ID !== 'digistudentway-demo' &&
+  import.meta.env.VITE_FIREBASE_PROJECT_ID !== 'your-project'
 );
 
 let app: any;
 let auth: any;
 let db: any;
 
-try {
-  app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  db = getFirestore(app);
-} catch (e) {
-  console.warn('Firebase initialization in local fallback mode:', e);
+if (isConfigured) {
+  try {
+    app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    db = getFirestore(app);
+  } catch (e) {
+    console.warn('Firebase initialization error:', e);
+  }
 }
 
 // LocalStorage fallback key
