@@ -28,16 +28,15 @@ export const GapCard: React.FC<GapCardProps> = ({ gap, onConsultSource, onAskQue
       {/* Top badges bar */}
       <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
         <div className="flex items-center gap-2">
-          {/* Verified vs AI hypothesis badge */}
           {isHypothesis ? (
             <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-primary/15 text-blue-300 border border-dashed border-primary/40 font-heading">
               <Sparkles className="w-3 h-3 text-primary" />
-              Unverified AI Hypothesis
+              AI Suggestion
             </span>
           ) : (
             <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30 font-heading">
               <HelpCircle className="w-3 h-3 text-purple-400" />
-              Verified Gap (Omitted Clause)
+              Potential Gap (Unstated Clause)
             </span>
           )}
 

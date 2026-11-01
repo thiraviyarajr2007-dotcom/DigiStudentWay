@@ -34,7 +34,7 @@ export const ConflictCard: React.FC<ConflictCardProps> = ({ conflict, onOpenSour
       <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
         <div className="flex items-center gap-2">
           <Badge variant="conflict" size="sm">
-            Direct Contradiction
+            Possible Conflict
           </Badge>
           <span
             className={cn(
@@ -51,12 +51,12 @@ export const ConflictCard: React.FC<ConflictCardProps> = ({ conflict, onOpenSour
           {isA_Verified && isB_Verified ? (
             <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-heading">
               <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-              Verified Quotes (Server Validated)
+              Sourced (Verified Quotes)
             </span>
           ) : (
             <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded bg-primary/15 text-blue-300 border border-dashed border-primary/40 font-heading">
               <Sparkles className="w-3 h-3 text-primary" />
-              Unverified AI Hypothesis
+              AI Suggestion
             </span>
           )}
         </div>

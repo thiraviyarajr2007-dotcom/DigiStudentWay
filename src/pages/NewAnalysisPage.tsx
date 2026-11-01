@@ -26,11 +26,18 @@ import { useToast } from '../components/common/Toast';
 import { DomainCategory, Source, AnalysisProgress } from '../types';
 import { fetchSourceViaApi, suggestSourcesViaApi, runGapAnalysisPipeline } from '../lib/api';
 import { extractTextFromFile } from '../lib/pdfExtractor';
-import { sampleDemoSources, SAMPLE_DEMO_QUERY, SAMPLE_DEMO_GOAL } from '../lib/sampleDemo';
+import {
+  sampleDemoSources,
+  SAMPLE_DEMO_QUERY,
+  SAMPLE_DEMO_GOAL,
+  sampleCareerSources,
+  SAMPLE_CAREER_QUERY,
+  SAMPLE_CAREER_GOAL,
+} from '../lib/sampleDemo';
 import { saveAnalysisToStorage } from '../lib/firebase';
 import { chunkDocumentText } from '../../api/_lib/chunking';
 import { evaluateSourceCredibility } from '../../api/_lib/credibility';
-import { TOPIC_TEMPLATES, getTemplateByCategory } from '../lib/templates';
+import { TOPIC_TEMPLATES, CORE_TOPIC_TEMPLATES, getTemplateByCategory } from '../lib/templates';
 
 export const NewAnalysisPage: React.FC = () => {
   const navigate = useNavigate();
@@ -108,7 +115,16 @@ export const NewAnalysisPage: React.FC = () => {
     setCategory('scholarship');
     setSelectedGoal(SAMPLE_DEMO_GOAL);
     setSources([...sampleDemoSources]);
-    toast('Preloaded 4 realistic scholarship sources (Central Portal, State Circular, 2023 Guide, Forum FAQ)!', 'success');
+    toast('Preloaded sample scholarship corpus with 4 sources.', 'success');
+    setCurrentStep(2);
+  };
+
+  const loadCareerDemo = () => {
+    setQuery(SAMPLE_CAREER_QUERY);
+    setCategory('career');
+    setSelectedGoal(SAMPLE_CAREER_GOAL);
+    setSources([...sampleCareerSources]);
+    toast('Preloaded sample career offer & employment policy corpus.', 'success');
     setCurrentStep(2);
   };
 
@@ -323,7 +339,7 @@ export const NewAnalysisPage: React.FC = () => {
       toast('Gap Detection & Anti-Hallucination verification complete!', 'success');
       // Pass the report to dashboard via route state and sessionStorage
       sessionStorage.setItem('digi_active_report', JSON.stringify(report));
-      navigate(`/app/analysis/${report.id}`, { state: { report } });
+      navigate(`/app/analysis/${report.id}`, { state: { report, autoOpenFirstConflict: true } });
     } catch (err: any) {
       toast(`Analysis error: ${err.message || 'Execution error'}`, 'error');
       setIsRunning(false);
@@ -347,16 +363,27 @@ export const NewAnalysisPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Demo Prefill Quick Button */}
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={loadScholarshipDemo}
-          leftIcon={<Sparkles className="w-4 h-4 text-amber-500" />}
-          className="border-amber-300 dark:border-amber-700/60 bg-amber-50/50 dark:bg-amber-950/30 text-amber-900 dark:text-amber-200 shrink-0"
-        >
-          Use Sample Scholarship Demo
-        </Button>
+        {/* Demo Prefill Quick Buttons */}
+        <div className="flex flex-wrap items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={loadScholarshipDemo}
+            leftIcon={<Sparkles className="w-4 h-4 text-accent" />}
+            className="border-primary/40 bg-primary/10 text-slate-200 hover:text-white shrink-0"
+          >
+            Sample: Scholarship
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={loadCareerDemo}
+            leftIcon={<Sparkles className="w-4 h-4 text-purple-400" />}
+            className="border-purple-500/40 bg-purple-500/10 text-slate-200 hover:text-white shrink-0"
+          >
+            Sample: Job Offer / Career
+          </Button>
+        </div>
       </div>
 
       {/* Stepper Progress Bar */}
@@ -371,14 +398,14 @@ export const NewAnalysisPage: React.FC = () => {
           <div>
             <div className="flex items-center justify-between mb-2.5">
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-400">
-                Choose Topic Template (Preloads 8-Point Audit Checklist)
+                Choose Topic Template (Pre-seeds Decision Checklist)
               </label>
               <span className="text-[11px] text-accent font-semibold">
-                Signature Feature
+                Any Topic Supported
               </span>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
-              {Object.values(TOPIC_TEMPLATES).map(tpl => {
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+              {CORE_TOPIC_TEMPLATES.map(tpl => {
                 const isSelected = category === tpl.id;
                 return (
                   <button

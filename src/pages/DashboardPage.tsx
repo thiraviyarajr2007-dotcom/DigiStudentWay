@@ -23,7 +23,7 @@ import {
   CheckSquare,
   Zap,
 } from 'lucide-react';
-import { buildSampleDemoReport } from '../lib/sampleDemo';
+import { buildSampleDemoReport, buildCareerSampleDemoReport } from '../lib/sampleDemo';
 import { Source, ChecklistItem as ChecklistItemType, AnalysisReport } from '../types';
 import { ConfidenceMeter } from '../components/common/ConfidenceMeter';
 import { SourceChip } from '../components/common/SourceChip';
@@ -85,17 +85,39 @@ export const DashboardPage: React.FC = () => {
     async function resolveReport() {
       setLoading(true);
 
+      const applyAutoConflict = (loaded: AnalysisReport) => {
+        if (location.state?.autoOpenFirstConflict && loaded.conflicts && loaded.conflicts.length > 0) {
+          const firstConf = loaded.conflicts[0];
+          const matchSrc = loaded.sources.find(s => s.id === firstConf.sourceA.sourceId) || loaded.sources[0];
+          setSelectedSource(matchSrc);
+          setActiveHighlightQuote(firstConf.sourceA.quote);
+          setActiveChunkIndex(firstConf.sourceA.chunkIndex);
+          setIsDrawerOpen(true);
+        }
+      };
+
       // 1. Direct location state
       if (location.state?.report) {
         setReport(location.state.report);
+        applyAutoConflict(location.state.report);
         setLoading(false);
         return;
       }
 
-      // 2. Sample Demo requested
+      // 2a. Career Sample Demo requested
+      if (id === 'career' || id?.includes('career')) {
+        const careerDemo = buildCareerSampleDemoReport();
+        setReport(careerDemo);
+        applyAutoConflict(careerDemo);
+        setLoading(false);
+        return;
+      }
+
+      // 2b. Sample Demo requested
       if (!id || id === 'demo' || id.includes('demo') || id.includes('scholarship')) {
         const demo = buildSampleDemoReport();
         setReport(demo);
+        applyAutoConflict(demo);
         setLoading(false);
         return;
       }
@@ -107,6 +129,7 @@ export const DashboardPage: React.FC = () => {
           const parsed = JSON.parse(sessionStored);
           if (parsed.id === id) {
             setReport(parsed);
+            applyAutoConflict(parsed);
             setLoading(false);
             return;
           }
@@ -121,6 +144,7 @@ export const DashboardPage: React.FC = () => {
         const match = allSaved.find(r => r.id === id);
         if (match) {
           setReport(match);
+          applyAutoConflict(match);
           setLoading(false);
           return;
         }
@@ -132,6 +156,7 @@ export const DashboardPage: React.FC = () => {
       const fallbackDemo = buildSampleDemoReport();
       fallbackDemo.id = id;
       setReport(fallbackDemo);
+      applyAutoConflict(fallbackDemo);
       setLoading(false);
     }
 
@@ -278,12 +303,10 @@ export const DashboardPage: React.FC = () => {
               <Badge variant="brand" size="sm">
                 Active Gap Detection Audit
               </Badge>
-              {report.provider && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-accent/10 text-accent border border-accent/20">
-                  <Zap className="w-3 h-3 text-accent" />
-                  <span>{report.provider}</span>
-                </span>
-              )}
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-accent/10 text-accent border border-accent/20">
+                <Sparkles className="w-3 h-3 text-accent" />
+                <span>AI-Assisted Cross-Examination</span>
+              </span>
               <span className="text-xs text-slate-400">
                 Audited {formatDate(report.createdAt)}
               </span>
