@@ -25,14 +25,14 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const baseStyles = 'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none active:scale-[0.98]';
+    const baseStyles = 'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-[#080D1B] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 select-none';
 
     const variantStyles = {
-      primary: 'bg-brand-teal hover:bg-teal-600 text-white shadow-soft-sm hover:shadow-soft focus:ring-brand-teal/50 dark:bg-brand-teal dark:hover:bg-teal-500',
-      secondary: 'bg-brand-navy hover:bg-brand-navy-700 text-white shadow-soft-sm hover:shadow-soft focus:ring-brand-navy/50 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-100',
-      ghost: 'bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 focus:ring-slate-400',
-      danger: 'bg-rose-600 hover:bg-rose-700 text-white shadow-soft-sm focus:ring-rose-500/50',
-      outline: 'border border-slate-300 dark:border-slate-700 bg-transparent hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-200 focus:ring-brand-teal/50',
+      primary: 'bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white shadow-glow-blue hover:shadow-glow-purple/60 focus:ring-accent',
+      secondary: 'bg-white/5 hover:bg-white/10 dark:bg-white/5 dark:hover:bg-white/10 text-white border border-[rgba(148,163,184,0.2)] hover:border-accent/40 backdrop-blur-md shadow-soft-sm focus:ring-accent',
+      ghost: 'bg-transparent hover:bg-white/5 text-slate-300 hover:text-white focus:ring-accent',
+      danger: 'bg-rose-600 hover:bg-rose-500 text-white shadow-soft-sm focus:ring-rose-500/50',
+      outline: 'border border-[rgba(148,163,184,0.2)] hover:border-accent/40 bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white backdrop-blur-md focus:ring-accent',
     };
 
     const sizeStyles = {

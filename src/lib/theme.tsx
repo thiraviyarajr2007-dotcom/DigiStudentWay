@@ -14,8 +14,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [theme, setThemeState] = useState<Theme>(() => {
     const saved = localStorage.getItem('digi_theme') as Theme;
     if (saved === 'light' || saved === 'dark') return saved;
-    // Default to dark or system preference if desired
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    // Default to dark mode as required by R1
+    return 'dark';
   });
 
   useEffect(() => {

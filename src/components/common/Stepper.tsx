@@ -27,11 +27,11 @@ export const Stepper: React.FC<StepperProps> = ({
         <ol className="flex items-center justify-between relative">
           {/* Connector line */}
           <div
-            className="absolute top-1/2 left-0 right-0 -translate-y-1/2 h-0.5 bg-slate-200 dark:bg-slate-800 -z-0"
+            className="absolute top-1/2 left-0 right-0 -translate-y-1/2 h-0.5 bg-slate-800 -z-0"
             aria-hidden="true"
           />
           <div
-            className="absolute top-1/2 left-0 -translate-y-1/2 h-0.5 bg-brand-teal transition-all duration-500 ease-in-out -z-0"
+            className="absolute top-1/2 left-0 -translate-y-1/2 h-0.5 bg-gradient-to-r from-primary to-secondary shadow-glow-blue transition-all duration-500 ease-in-out -z-0"
             style={{
               width: `${((currentStep - 1) / (steps.length - 1)) * 100}%`,
             }}
@@ -49,15 +49,15 @@ export const Stepper: React.FC<StepperProps> = ({
                   disabled={!onStepClick || step.id > currentStep + 1}
                   onClick={() => onStepClick && onStepClick(step.id)}
                   className={cn(
-                    'w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all duration-300 ring-4',
+                    'w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ring-4 font-heading',
                     isCompleted &&
-                      'bg-brand-teal text-white ring-teal-100 dark:ring-teal-950/60 shadow-soft-sm',
+                      'bg-gradient-to-r from-primary to-secondary text-white ring-primary/25 shadow-glow-blue',
                     isCurrent &&
-                      'bg-white dark:bg-brand-navy-900 border-2 border-brand-teal text-brand-teal ring-teal-200/80 dark:ring-teal-900/60 shadow-soft',
+                      'bg-[#101A2E] border-2 border-primary text-white ring-primary/30 shadow-glow-blue',
                     !isCompleted &&
                       !isCurrent &&
-                      'bg-slate-100 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 text-slate-400 ring-transparent',
-                    onStepClick && step.id <= currentStep + 1 ? 'cursor-pointer' : 'cursor-default'
+                      'bg-slate-900/80 border border-[rgba(148,163,184,0.2)] text-slate-500 ring-transparent',
+                    onStepClick && step.id <= currentStep + 1 ? 'cursor-pointer hover:border-accent/40' : 'cursor-default'
                   )}
                 >
                   {isCompleted ? (
@@ -71,10 +71,10 @@ export const Stepper: React.FC<StepperProps> = ({
                 <div className="text-center mt-2 absolute top-10 whitespace-nowrap">
                   <span
                     className={cn(
-                      'text-xs font-semibold block transition-colors',
-                      isCurrent && 'text-brand-teal dark:text-brand-teal font-bold',
-                      isCompleted && 'text-slate-800 dark:text-slate-200',
-                      !isCompleted && !isCurrent && 'text-slate-400 dark:text-slate-500'
+                      'text-xs font-semibold block transition-colors font-heading',
+                      isCurrent && 'text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent font-bold',
+                      isCompleted && 'text-slate-200 font-medium',
+                      !isCompleted && !isCurrent && 'text-slate-500'
                     )}
                   >
                     {step.title}

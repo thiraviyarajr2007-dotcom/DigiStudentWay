@@ -19,8 +19,8 @@ export const Card: React.FC<CardProps> = ({
         'rounded-2xl border transition-all duration-200',
         glass
           ? 'glassmorphism'
-          : 'bg-white dark:bg-brand-navy-900 border-slate-200/80 dark:border-slate-800 shadow-soft-sm',
-        hoverEffect && 'hover:shadow-soft hover:border-slate-300 dark:hover:border-slate-700 hover:-translate-y-0.5',
+          : 'bg-white/90 dark:bg-[rgba(16,26,46,0.7)] backdrop-blur-xl border-slate-200/80 dark:border-[rgba(148,163,184,0.15)] shadow-soft',
+        hoverEffect && 'hover:shadow-glow-blue/20 hover:border-primary/40 dark:hover:border-[rgba(148,163,184,0.3)] hover:-translate-y-0.5',
         className
       )}
       {...props}

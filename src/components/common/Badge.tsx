@@ -23,21 +23,21 @@ export const Badge: React.FC<BadgeProps> = ({
   };
 
   const variantStyles = {
-    // Green = Sourced fact
-    fact: 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800',
-    // Red = Conflict
-    conflict: 'bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800',
-    // Orange = Outdated / undated
-    outdated: 'bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800',
-    // Purple = Unanswered gap
-    gap: 'bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800',
-    // Blue dashed border + "AI suggestion" badge
-    ai: 'bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-dashed border-blue-400 dark:border-blue-500 shadow-sm',
-    // Gray = Uncertainty / low confidence
-    uncertainty: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700',
+    // Green = Sourced fact (#22C55E)
+    fact: 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30',
+    // Red = Conflict (#F43F5E)
+    conflict: 'bg-rose-500/15 text-rose-400 border border-rose-500/30',
+    // Orange = Outdated / undated (#F59E0B)
+    outdated: 'bg-amber-500/15 text-amber-400 border border-amber-500/30',
+    // Purple = Unanswered gap / dark spot (#A78BFA)
+    gap: 'bg-purple-500/15 text-purple-300 border border-purple-500/30',
+    // Blue dashed border + "AI suggestion" badge (#3B82F6)
+    ai: 'bg-blue-500/10 text-blue-300 border border-dashed border-blue-400/50 shadow-sm',
+    // Gray = Uncertainty / low confidence (#94A3B8)
+    uncertainty: 'bg-slate-500/15 text-slate-300 border border-slate-500/30',
     // General Brand & Neutral
-    neutral: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700/60',
-    brand: 'bg-teal-50 dark:bg-teal-950/60 text-teal-700 dark:text-teal-300 border border-teal-200 dark:border-teal-800',
+    neutral: 'bg-white/5 text-slate-300 border border-white/10',
+    brand: 'bg-primary/15 text-primary border border-primary/30',
   };
 
   const renderIcon = () => {

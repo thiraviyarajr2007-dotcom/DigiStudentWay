@@ -4,10 +4,42 @@
 
 @layer base {
   :root {
-    --color-navy: #0F1B3D;
-    --color-teal: #14B8A6;
+    --canvas-bg: #F8FAFC;
+    --surface-card: #FFFFFF;
+    --surface-elevated: #F1F5F9;
+    --border-subtle: rgba(148, 163, 184, 0.25);
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #64748B;
+    --primary-blue: #2563EB;
+    --secondary-purple: #7C3AED;
+    --accent-cyan: #06B6D4;
+    --color-navy: #080D1B;
+    --color-teal: #22D3EE;
     --color-amber: #F59E0B;
   }
+
+  .dark {
+    --canvas-bg: #080D1B;
+    --surface-card: #101A2E;
+    --surface-elevated: #16223B;
+    --border-subtle: rgba(148, 163, 184, 0.15);
+    --text-primary: #E6EDF7;
+    --text-secondary: #94A3B8;
+    --text-muted: #64748B;
+    --primary-blue: #3B82F6;
+    --secondary-purple: #8B5CF6;
+    --accent-cyan: #22D3EE;
+    --color-navy: #080D1B;
+    --color-teal: #22D3EE;
+    --color-amber: #F59E0B;
+  }
+}
+
+/* Custom selection */
+::selection {
+  background: rgba(59, 130, 246, 0.35);
+  color: #E6EDF7;
 }
 
 /* Custom scrollbars */
@@ -21,27 +53,45 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.4);
+  background: rgba(148, 163, 184, 0.25);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(100, 116, 139, 0.6);
+  background: rgba(59, 130, 246, 0.5);
 }
 
-/* Glassmorphism utility for hero */
+/* Glassmorphism utility */
 .glassmorphism {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(148, 163, 184, 0.2);
 }
 
 .dark .glassmorphism {
-  background: rgba(15, 27, 61, 0.65);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(16, 26, 46, 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+/* Subtle corner radial background glow utility */
+.bg-radial-glow {
+  background-color: #080D1B;
+  background-image:
+    radial-gradient(circle at 10% 10%, rgba(59, 130, 246, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 90% 90%, rgba(139, 92, 246, 0.10) 0%, transparent 45%);
+}
+
+/* Prefers-reduced-motion guard */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Shimmer animation for skeleton loaders */

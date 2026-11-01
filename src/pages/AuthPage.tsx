@@ -125,20 +125,20 @@ export const AuthPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex flex-col md:flex-row bg-slate-50 dark:bg-brand-navy-950">
+    <div className="min-h-[calc(100vh-4rem)] flex flex-col md:flex-row bg-[#080D1B]">
       {/* Left Panel: Branding & Value Props */}
-      <div className="md:w-5/12 bg-brand-navy-900 text-white p-8 sm:p-12 flex flex-col justify-between relative overflow-hidden border-r border-slate-800">
-        <div className="absolute -top-24 -left-24 w-96 h-96 bg-brand-teal/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="md:w-5/12 bg-[rgba(16,26,46,0.7)] backdrop-blur-xl text-white p-8 sm:p-12 flex flex-col justify-between relative overflow-hidden border-r border-white/10">
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-secondary/15 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 space-y-6">
           <Link to="/" className="inline-flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-brand-navy p-1 flex items-center justify-center border border-slate-700 shadow-soft">
+            <div className="w-10 h-10 rounded-xl overflow-hidden bg-slate-900/60 border border-white/10 backdrop-blur-md p-1 flex items-center justify-center">
               <img src="/logo.png" alt="DigiStudentWay Logo" className="w-full h-full object-contain" />
             </div>
             <div>
               <span className="font-heading font-extrabold text-xl text-white tracking-tight">
-                DigiStudent<span className="text-brand-teal">Way</span>
+                DigiStudent<span className="text-accent">Way</span>
               </span>
               <span className="text-[10px] text-slate-400 block font-mono">
                 Shinchan Hackathon 2026
@@ -147,10 +147,10 @@ export const AuthPage: React.FC = () => {
           </Link>
 
           <div className="pt-8">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-teal/20 text-brand-teal text-xs font-semibold mb-4">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 text-accent border border-accent/20 text-xs font-semibold mb-4">
               <Sparkles className="w-3.5 h-3.5" /> AI-Assisted Information Gap Platform
             </span>
-            <h2 className="font-heading font-extrabold text-2xl sm:text-3xl leading-snug">
+            <h2 className="font-heading font-extrabold text-2xl sm:text-3xl leading-snug text-white">
               Stop guessing what circulars left out.
             </h2>
             <p className="text-slate-300 text-sm mt-3 leading-relaxed">
@@ -158,40 +158,40 @@ export const AuthPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="space-y-3 pt-6 border-t border-slate-800 text-xs text-slate-300">
+          <div className="space-y-3 pt-6 border-t border-white/10 text-xs text-slate-300">
             <div className="flex items-center gap-2.5">
-              <CheckCircle2 className="w-4 h-4 text-brand-teal shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-accent shrink-0" />
               <span>Full Firestore Cloud Sync for your saved analyses</span>
             </div>
             <div className="flex items-center gap-2.5">
-              <CheckCircle2 className="w-4 h-4 text-brand-teal shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-accent shrink-0" />
               <span>Zero student PII harvested or shared</span>
             </div>
             <div className="flex items-center gap-2.5">
-              <CheckCircle2 className="w-4 h-4 text-brand-teal shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-accent shrink-0" />
               <span>Anti-Hallucination quote verification on all claims</span>
             </div>
           </div>
         </div>
 
         {/* Demo Fast Track for Judges */}
-        <div className="relative z-10 mt-8 pt-6 border-t border-slate-800 space-y-2">
+        <div className="relative z-10 mt-8 pt-6 border-t border-white/10 space-y-2">
           <button
             type="button"
             onClick={handleLaunchGuestDemo}
-            className="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700/80 text-brand-teal text-xs font-semibold border border-brand-teal/30 transition-all flex items-center justify-center gap-2"
+            className="w-full py-2.5 px-4 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-accent text-xs font-semibold border border-accent/30 transition-all flex items-center justify-center gap-2 hover:shadow-glow-blue/20"
           >
-            <Sparkles className="w-4 h-4" />
+            <Sparkles className="w-4 h-4 text-accent" />
             <span>Hackathon Judge? Instant 1-Click Guest Demo</span>
           </button>
         </div>
       </div>
 
       {/* Right Panel: Auth Form */}
-      <div className="md:w-7/12 flex items-center justify-center p-6 sm:p-12 lg:p-16">
-        <div className="w-full max-w-md space-y-6">
+      <div className="md:w-7/12 flex items-center justify-center p-6 sm:p-12 lg:p-16 relative">
+        <div className="w-full max-w-md space-y-6 bg-[rgba(16,26,46,0.6)] backdrop-blur-xl p-8 rounded-3xl border border-[rgba(148,163,184,0.15)] shadow-soft">
           {/* Tabs: Sign In / Sign Up */}
-          <div className="flex rounded-xl bg-slate-200/80 dark:bg-slate-800/80 p-1">
+          <div className="flex rounded-xl bg-white/5 border border-white/10 p-1">
             <button
               type="button"
               onClick={() => {
@@ -200,8 +200,8 @@ export const AuthPage: React.FC = () => {
               }}
               className={`flex-1 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
                 !isSignUp
-                  ? 'bg-white dark:bg-brand-navy-900 text-slate-900 dark:text-white shadow-soft-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                  ? 'bg-gradient-to-r from-primary to-secondary text-white font-bold shadow-glow-blue'
+                  : 'text-slate-400 hover:text-white'
               }`}
             >
               Sign In
@@ -214,8 +214,8 @@ export const AuthPage: React.FC = () => {
               }}
               className={`flex-1 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
                 isSignUp
-                  ? 'bg-white dark:bg-brand-navy-900 text-slate-900 dark:text-white shadow-soft-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                  ? 'bg-gradient-to-r from-primary to-secondary text-white font-bold shadow-glow-blue'
+                  : 'text-slate-400 hover:text-white'
               }`}
             >
               Create Account
@@ -223,10 +223,10 @@ export const AuthPage: React.FC = () => {
           </div>
 
           <div className="text-center">
-            <h3 className="font-heading font-extrabold text-2xl text-slate-900 dark:text-white">
+            <h3 className="font-heading font-extrabold text-2xl text-white">
               {isSignUp ? 'Create your student account' : 'Welcome back to DigiStudentWay'}
             </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            <p className="text-xs text-slate-400 mt-1">
               {isSignUp
                 ? 'Join thousands of students auditing their academic applications.'
                 : 'Enter your credentials to access your saved gap analyses.'}
@@ -240,7 +240,7 @@ export const AuthPage: React.FC = () => {
               type="button"
               disabled={isLoading}
               onClick={() => handleOAuthLogin('Google')}
-              className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-brand-navy-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold transition-all shadow-soft-sm disabled:opacity-50"
+              className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border border-white/15 bg-white/[0.03] hover:bg-white/[0.08] text-white text-xs font-semibold transition-all shadow-soft-sm hover:border-white/30 disabled:opacity-50"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24">
                 <path
@@ -268,7 +268,7 @@ export const AuthPage: React.FC = () => {
               type="button"
               disabled={isLoading}
               onClick={() => handleOAuthLogin('Facebook')}
-              className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-brand-navy-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold transition-all shadow-soft-sm disabled:opacity-50"
+              className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border border-white/15 bg-white/[0.03] hover:bg-white/[0.08] text-white text-xs font-semibold transition-all shadow-soft-sm hover:border-white/30 disabled:opacity-50"
             >
               <svg className="w-4 h-4" fill="#1877F2" viewBox="0 0 24 24">
                 <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
@@ -278,8 +278,8 @@ export const AuthPage: React.FC = () => {
           </div>
 
           <div className="relative flex items-center justify-center">
-            <div className="border-t border-slate-200 dark:border-slate-800 w-full" />
-            <span className="bg-slate-50 dark:bg-brand-navy-950 px-3 text-[11px] text-slate-400 uppercase tracking-wider font-semibold">
+            <div className="border-t border-white/10 w-full" />
+            <span className="bg-[#101A2E] px-3 text-[11px] text-slate-400 uppercase tracking-wider font-semibold">
               Or email address
             </span>
           </div>
@@ -288,7 +288,7 @@ export const AuthPage: React.FC = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             {isSignUp && (
               <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
                   Full Student Name
                 </label>
                 <div className="relative">
@@ -297,18 +297,18 @@ export const AuthPage: React.FC = () => {
                     value={name}
                     onChange={e => setName(e.target.value)}
                     placeholder="e.g. Shinchan Nohara"
-                    className={`w-full pl-9 pr-3.5 py-2.5 rounded-xl border text-sm bg-white dark:bg-brand-navy-900 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-teal/50 ${
-                      errors.name ? 'border-rose-500' : 'border-slate-300 dark:border-slate-700'
+                    className={`w-full pl-9 pr-3.5 py-2.5 rounded-xl border text-sm bg-white/[0.04] text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent ${
+                      errors.name ? 'border-rose-500' : 'border-white/15'
                     }`}
                   />
                   <User className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 </div>
-                {errors.name && <p className="text-xs text-rose-500 mt-1 font-medium">{errors.name}</p>}
+                {errors.name && <p className="text-xs text-rose-400 mt-1 font-medium">{errors.name}</p>}
               </div>
             )}
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-semibold text-slate-300 mb-1">
                 Student Email
               </label>
               <div className="relative">
@@ -317,18 +317,18 @@ export const AuthPage: React.FC = () => {
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="student@university.ac.in"
-                  className={`w-full pl-9 pr-3.5 py-2.5 rounded-xl border text-sm bg-white dark:bg-brand-navy-900 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-teal/50 ${
-                    errors.email ? 'border-rose-500' : 'border-slate-300 dark:border-slate-700'
+                  className={`w-full pl-9 pr-3.5 py-2.5 rounded-xl border text-sm bg-white/[0.04] text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent ${
+                    errors.email ? 'border-rose-500' : 'border-white/15'
                   }`}
                 />
                 <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               </div>
-              {errors.email && <p className="text-xs text-rose-500 mt-1 font-medium">{errors.email}</p>}
+              {errors.email && <p className="text-xs text-rose-400 mt-1 font-medium">{errors.email}</p>}
             </div>
 
             <div>
               <div className="flex items-center justify-between mb-1">
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+                <label className="block text-xs font-semibold text-slate-300">
                   Password
                 </label>
                 {!isSignUp && (
@@ -338,7 +338,7 @@ export const AuthPage: React.FC = () => {
                       setResetEmail(email);
                       setShowForgotModal(true);
                     }}
-                    className="text-xs text-brand-teal hover:underline font-medium"
+                    className="text-xs text-accent hover:underline font-medium"
                   >
                     Forgot password?
                   </button>
@@ -350,21 +350,21 @@ export const AuthPage: React.FC = () => {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className={`w-full pl-9 pr-10 py-2.5 rounded-xl border text-sm bg-white dark:bg-brand-navy-900 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-teal/50 ${
-                    errors.password ? 'border-rose-500' : 'border-slate-300 dark:border-slate-700'
+                  className={`w-full pl-9 pr-10 py-2.5 rounded-xl border text-sm bg-white/[0.04] text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent ${
+                    errors.password ? 'border-rose-500' : 'border-white/15'
                   }`}
                 />
                 <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
-              {errors.password && <p className="text-xs text-rose-500 mt-1 font-medium">{errors.password}</p>}
+              {errors.password && <p className="text-xs text-rose-400 mt-1 font-medium">{errors.password}</p>}
             </div>
 
             <Button
@@ -381,7 +381,7 @@ export const AuthPage: React.FC = () => {
 
           <div className="text-center text-xs text-slate-400">
             By signing in, you agree to our{' '}
-            <Link to="/privacy" className="text-brand-teal hover:underline">
+            <Link to="/privacy" className="text-accent hover:underline">
               Privacy Policy & Zero-PII Policy
             </Link>
             .
@@ -392,12 +392,12 @@ export const AuthPage: React.FC = () => {
       {/* Forgot Password Modal */}
       {showForgotModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs" onClick={() => setShowForgotModal(false)} />
-          <div className="relative w-full max-w-md bg-white dark:bg-brand-navy-900 rounded-3xl p-6 sm:p-7 border border-slate-200 dark:border-slate-800 shadow-soft-xl z-10 space-y-4">
-            <h3 className="font-heading font-bold text-lg text-slate-900 dark:text-white">
+          <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-md" onClick={() => setShowForgotModal(false)} />
+          <div className="relative w-full max-w-md bg-[#101A2E]/95 backdrop-blur-2xl rounded-3xl p-6 sm:p-7 border border-[rgba(148,163,184,0.2)] shadow-soft-xl z-10 space-y-4">
+            <h3 className="font-heading font-bold text-lg text-white">
               Reset Your Password
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-400">
               Enter your email address to receive an official password reset link.
             </p>
             <form onSubmit={handleForgotPassword} className="space-y-4">
@@ -407,7 +407,7 @@ export const AuthPage: React.FC = () => {
                 value={resetEmail}
                 onChange={e => setResetEmail(e.target.value)}
                 placeholder="student@university.ac.in"
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-brand-navy-900 text-sm text-slate-900 dark:text-white"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-white/15 bg-white/[0.04] text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent"
               />
               <div className="flex justify-end gap-2">
                 <Button variant="ghost" size="sm" type="button" onClick={() => setShowForgotModal(false)}>

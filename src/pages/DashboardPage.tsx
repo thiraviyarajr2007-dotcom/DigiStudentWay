@@ -268,33 +268,36 @@ export const DashboardPage: React.FC = () => {
       <AIBanner />
 
       {/* Top Hero Summary Bar */}
-      <div className="bg-white dark:bg-brand-navy-900 rounded-3xl p-6 sm:p-8 border border-slate-200/90 dark:border-slate-800 shadow-soft-sm space-y-6">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-slate-100 dark:border-slate-800">
+      <div className="bg-[rgba(16,26,46,0.7)] backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-[rgba(148,163,184,0.15)] shadow-soft space-y-6 relative overflow-hidden">
+        {/* Soft decorative glow orb */}
+        <div className="absolute -top-24 -right-24 w-80 h-80 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-white/10 relative z-10">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-2">
               <Badge variant="brand" size="sm">
                 Active Gap Detection Audit
               </Badge>
               {report.provider && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-teal-50 dark:bg-teal-950/70 text-brand-teal border border-brand-teal/30">
-                  <Zap className="w-3 h-3 text-brand-teal" />
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-accent/10 text-accent border border-accent/20">
+                  <Zap className="w-3 h-3 text-accent" />
                   <span>{report.provider}</span>
                 </span>
               )}
               <span className="text-xs text-slate-400">
                 Audited {formatDate(report.createdAt)}
               </span>
-              <span className="text-slate-300 dark:text-slate-700">•</span>
-              <span className="text-xs font-mono text-brand-teal">
+              <span className="text-slate-600">•</span>
+              <span className="text-xs font-mono text-accent">
                 ID: {report.id}
               </span>
             </div>
 
-            <h1 className="font-heading font-extrabold text-2xl sm:text-3xl text-slate-900 dark:text-white">
+            <h1 className="font-heading font-extrabold text-2xl sm:text-3xl text-white tracking-tight">
               {report.title}
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-300 mt-1 max-w-2xl">
-              Target Query: <span className="italic">"{report.query}"</span>
+            <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl">
+              Target Query: <span className="italic text-slate-200">"{report.query}"</span>
             </p>
           </div>
 
@@ -305,8 +308,8 @@ export const DashboardPage: React.FC = () => {
               variant="outline"
               size="sm"
               onClick={() => setShowJudgeTour(true)}
-              leftIcon={<Sparkles className="w-4 h-4 text-amber-500" />}
-              className="border-amber-300 dark:border-amber-800 bg-amber-50/60 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 font-bold"
+              leftIcon={<Sparkles className="w-4 h-4 text-amber-400" />}
+              className="border-amber-500/40 bg-amber-500/10 text-amber-200 hover:bg-amber-500/20 font-bold"
             >
               Judge Tour 🎓
             </Button>
@@ -315,7 +318,7 @@ export const DashboardPage: React.FC = () => {
               variant="outline"
               size="sm"
               onClick={handleShare}
-              leftIcon={<Share2 className="w-4 h-4" />}
+              leftIcon={<Share2 className="w-4 h-4 text-slate-300" />}
             >
               Share Summary
             </Button>
@@ -324,7 +327,7 @@ export const DashboardPage: React.FC = () => {
               variant="outline"
               size="sm"
               onClick={handleExportMarkdown}
-              leftIcon={<Download className="w-4 h-4" />}
+              leftIcon={<Download className="w-4 h-4 text-slate-300" />}
             >
               Markdown
             </Button>
@@ -333,7 +336,7 @@ export const DashboardPage: React.FC = () => {
               variant="outline"
               size="sm"
               onClick={handlePrintPdf}
-              leftIcon={<Printer className="w-4 h-4" />}
+              leftIcon={<Printer className="w-4 h-4 text-slate-300" />}
             >
               Print PDF
             </Button>
@@ -342,7 +345,7 @@ export const DashboardPage: React.FC = () => {
               variant="outline"
               size="sm"
               onClick={() => navigate('/app/new', { state: { prefillQuery: report.query, prefillSources: report.sources } })}
-              leftIcon={<PlusCircle className="w-4 h-4 text-brand-teal" />}
+              leftIcon={<PlusCircle className="w-4 h-4 text-accent" />}
             >
               Add More Sources
             </Button>
@@ -371,21 +374,21 @@ export const DashboardPage: React.FC = () => {
 
         {/* Readiness Breakdown Badge */}
         {readiness && (
-          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-brand-navy-950 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+          <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
             <div className="flex items-center gap-2">
-              <span className="font-bold text-slate-900 dark:text-white">
+              <span className="font-heading font-bold text-white">
                 Decision Readiness Formula:
               </span>
-              <span className="text-slate-600 dark:text-slate-300">{readiness.summary}</span>
+              <span className="text-slate-300">{readiness.summary}</span>
             </div>
             <div className="flex items-center gap-3 font-semibold shrink-0">
-              <span className="text-emerald-700 dark:text-emerald-400">
+              <span className="text-emerald-400">
                 {readiness.coveredCount} Covered
               </span>
-              <span className="text-amber-700 dark:text-amber-400">
+              <span className="text-amber-400">
                 {readiness.partialCount} Partial
               </span>
-              <span className="text-purple-700 dark:text-purple-400">
+              <span className="text-purple-400">
                 {readiness.missingCount} Omitted (Dark Spots)
               </span>
             </div>
@@ -398,16 +401,23 @@ export const DashboardPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setActiveTab('sources')}
-            className="p-3.5 rounded-2xl bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/60 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-700/60 text-left transition-all group"
+            className="p-4 rounded-2xl bg-white/[0.03] hover:bg-white/[0.07] border border-white/10 hover:border-accent/40 text-left transition-all duration-200 group flex flex-col justify-between hover:shadow-glow-blue/20 hover:-translate-y-0.5"
           >
-            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">
-              Cross-Examined
-            </span>
-            <div className="flex items-center justify-between mt-1">
-              <span className="text-xl sm:text-2xl font-extrabold font-mono text-slate-800 dark:text-slate-100">
+            <div className="flex items-center justify-between w-full mb-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">
+                Cross-Examined
+              </span>
+              <div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center shadow-glow-blue/20 group-hover:scale-110 transition-transform">
+                <FileSearch className="w-4 h-4" />
+              </div>
+            </div>
+            <div>
+              <span className="text-2xl font-extrabold font-heading text-white">
                 {report.sourcesCount}
               </span>
-              <FileSearch className="w-5 h-5 text-slate-400 group-hover:text-brand-teal transition-colors" />
+              <span className="text-[11px] text-slate-400 block mt-0.5">
+                Ingested sources
+              </span>
             </div>
           </button>
 
@@ -415,16 +425,23 @@ export const DashboardPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setActiveTab('gaps')}
-            className="p-3.5 rounded-2xl bg-purple-50/70 hover:bg-purple-100/70 dark:bg-purple-950/40 dark:hover:bg-purple-900/40 border border-purple-200 dark:border-purple-800 text-left transition-all group"
+            className="p-4 rounded-2xl bg-purple-500/[0.06] hover:bg-purple-500/[0.12] border border-purple-500/20 hover:border-purple-500/40 text-left transition-all duration-200 group flex flex-col justify-between hover:shadow-glow-purple/20 hover:-translate-y-0.5"
           >
-            <span className="text-[11px] font-bold uppercase tracking-wider text-purple-700 dark:text-purple-300 block">
-              Dark Spots
-            </span>
-            <div className="flex items-center justify-between mt-1">
-              <span className="text-xl sm:text-2xl font-extrabold font-mono text-purple-800 dark:text-purple-200">
+            <div className="flex items-center justify-between w-full mb-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-purple-300 block">
+                Dark Spots
+              </span>
+              <div className="w-9 h-9 rounded-xl bg-purple-500/20 border border-purple-500/30 text-purple-300 flex items-center justify-center shadow-glow-purple/20 group-hover:scale-110 transition-transform">
+                <HelpCircle className="w-4 h-4" />
+              </div>
+            </div>
+            <div>
+              <span className="text-2xl font-extrabold font-heading text-purple-200">
                 {report.gapsCount}
               </span>
-              <HelpCircle className="w-5 h-5 text-purple-600 group-hover:scale-110 transition-transform" />
+              <span className="text-[11px] text-purple-300/70 block mt-0.5">
+                Missing clauses
+              </span>
             </div>
           </button>
 
@@ -432,16 +449,23 @@ export const DashboardPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setActiveTab('conflicts')}
-            className="p-3.5 rounded-2xl bg-rose-50/70 hover:bg-rose-100/70 dark:bg-rose-950/40 dark:hover:bg-rose-900/40 border border-rose-200 dark:border-rose-800 text-left transition-all group"
+            className="p-4 rounded-2xl bg-rose-500/[0.06] hover:bg-rose-500/[0.12] border border-rose-500/20 hover:border-rose-500/40 text-left transition-all duration-200 group flex flex-col justify-between hover:shadow-glow-rose/20 hover:-translate-y-0.5"
           >
-            <span className="text-[11px] font-bold uppercase tracking-wider text-rose-700 dark:text-rose-300 block">
-              Contradictions
-            </span>
-            <div className="flex items-center justify-between mt-1">
-              <span className="text-xl sm:text-2xl font-extrabold font-mono text-rose-800 dark:text-rose-200">
+            <div className="flex items-center justify-between w-full mb-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-rose-300 block">
+                Contradictions
+              </span>
+              <div className="w-9 h-9 rounded-xl bg-rose-500/20 border border-rose-500/30 text-rose-300 flex items-center justify-center shadow-glow-rose/20 group-hover:scale-110 transition-transform">
+                <AlertTriangle className="w-4 h-4" />
+              </div>
+            </div>
+            <div>
+              <span className="text-2xl font-extrabold font-heading text-rose-200">
                 {report.conflictsCount}
               </span>
-              <AlertTriangle className="w-5 h-5 text-rose-600 group-hover:scale-110 transition-transform" />
+              <span className="text-[11px] text-rose-300/70 block mt-0.5">
+                Direct clashes
+              </span>
             </div>
           </button>
 
@@ -449,16 +473,23 @@ export const DashboardPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setActiveTab('outdated')}
-            className="p-3.5 rounded-2xl bg-amber-50/70 hover:bg-amber-100/70 dark:bg-amber-950/40 dark:hover:bg-amber-900/40 border border-amber-200 dark:border-amber-800 text-left transition-all group"
+            className="p-4 rounded-2xl bg-amber-500/[0.06] hover:bg-amber-500/[0.12] border border-amber-500/20 hover:border-amber-500/40 text-left transition-all duration-200 group flex flex-col justify-between hover:-translate-y-0.5"
           >
-            <span className="text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300 block">
-              Stale Warnings
-            </span>
-            <div className="flex items-center justify-between mt-1">
-              <span className="text-xl sm:text-2xl font-extrabold font-mono text-amber-800 dark:text-amber-200">
+            <div className="flex items-center justify-between w-full mb-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-amber-300 block">
+                Stale Warnings
+              </span>
+              <div className="w-9 h-9 rounded-xl bg-amber-500/20 border border-amber-500/30 text-amber-300 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Clock className="w-4 h-4" />
+              </div>
+            </div>
+            <div>
+              <span className="text-2xl font-extrabold font-heading text-amber-200">
                 {report.outdatedCount}
               </span>
-              <Clock className="w-5 h-5 text-amber-600 group-hover:scale-110 transition-transform" />
+              <span className="text-[11px] text-amber-300/70 block mt-0.5">
+                Cycle warnings
+              </span>
             </div>
           </button>
 
@@ -466,16 +497,23 @@ export const DashboardPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setActiveTab('checklist')}
-            className="p-3.5 rounded-2xl bg-rose-100/70 hover:bg-rose-200/70 dark:bg-rose-950/60 dark:hover:bg-rose-900/60 border border-rose-300 dark:border-rose-800 text-left transition-all group col-span-2 sm:col-span-1"
+            className="p-4 rounded-2xl bg-rose-500/[0.08] hover:bg-rose-500/[0.16] border border-rose-500/30 hover:border-rose-500/50 text-left transition-all duration-200 group flex flex-col justify-between hover:shadow-glow-rose/20 hover:-translate-y-0.5 col-span-2 sm:col-span-1"
           >
-            <span className="text-[11px] font-bold uppercase tracking-wider text-rose-800 dark:text-rose-200 block">
-              P1 Blockers
-            </span>
-            <div className="flex items-center justify-between mt-1">
-              <span className="text-xl sm:text-2xl font-extrabold font-mono text-rose-900 dark:text-rose-100">
+            <div className="flex items-center justify-between w-full mb-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-rose-200 block">
+                P1 Blockers
+              </span>
+              <div className="w-9 h-9 rounded-xl bg-rose-500/30 border border-rose-500/40 text-rose-200 flex items-center justify-center shadow-glow-rose/20 group-hover:scale-110 transition-transform">
+                <CheckSquare className="w-4 h-4" />
+              </div>
+            </div>
+            <div>
+              <span className="text-2xl font-extrabold font-heading text-rose-100">
                 {p1PendingCount} Pending
               </span>
-              <CheckSquare className="w-5 h-5 text-rose-700 dark:text-rose-300 group-hover:scale-110 transition-transform" />
+              <span className="text-[11px] text-rose-300/80 block mt-0.5">
+                Verify before applying
+              </span>
             </div>
           </button>
         </div>
@@ -484,8 +522,8 @@ export const DashboardPage: React.FC = () => {
       {/* Persistent Semantic Color System Legend */}
       <SemanticLegend />
 
-      {/* Sticky Navigation Tabs */}
-      <div className="sticky top-16 z-30 py-3 bg-slate-50/95 dark:bg-brand-navy-950/95 backdrop-blur-md flex items-center justify-between border-b border-slate-200 dark:border-slate-800 overflow-x-auto gap-2 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+      {/* Sticky Navigation Tabs (Pill Buttons) */}
+      <div className="sticky top-16 z-30 py-3 bg-[#080D1B]/90 backdrop-blur-xl flex items-center justify-between border-b border-white/10 overflow-x-auto gap-2 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
         <div className="flex items-center gap-1.5 sm:gap-2">
           {[
             { id: 'overview', label: 'Key Findings', count: undefined },
@@ -495,31 +533,34 @@ export const DashboardPage: React.FC = () => {
             { id: 'outdated', label: 'Outdated Warnings', count: report.outdatedCount },
             { id: 'checklist', label: 'Verify Next Checklist', count: `${completedChecklistCount}/${report.checklist.length}` },
             { id: 'sources', label: 'Source Explorer', count: report.sourcesCount },
-          ].map(tab => (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all ${
-                activeTab === tab.id
-                  ? 'bg-brand-navy text-white dark:bg-brand-teal dark:text-brand-navy-950 shadow-soft-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
-              }`}
-            >
-              <span>{tab.label}</span>
-              {tab.count !== undefined && (
-                <span
-                  className={`text-[10px] font-mono px-1.5 py-0.5 rounded-full ${
-                    activeTab === tab.id
-                      ? 'bg-white/20 text-white dark:bg-black/20 dark:text-black'
-                      : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
-                  }`}
-                >
-                  {tab.count}
-                </span>
-              )}
-            </button>
-          ))}
+          ].map(tab => {
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-200 ${
+                  isActive
+                    ? 'bg-gradient-to-r from-primary to-secondary text-white shadow-glow-blue font-bold -translate-y-0.5'
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <span>{tab.label}</span>
+                {tab.count !== undefined && (
+                  <span
+                    className={`text-[10px] font-mono px-1.5 py-0.5 rounded-full ${
+                      isActive
+                        ? 'bg-white/20 text-white'
+                        : 'bg-white/10 text-slate-300'
+                    }`}
+                  >
+                    {tab.count}
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </div>
 
         {/* AI Filter Toggle */}
@@ -529,11 +570,11 @@ export const DashboardPage: React.FC = () => {
             onClick={() => setFilterAiOnly(!filterAiOnly)}
             className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl border transition-all ${
               filterAiOnly
-                ? 'bg-blue-50 border-blue-400 text-blue-700 dark:bg-blue-950/70 dark:text-blue-300'
-                : 'bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400'
+                ? 'bg-primary/20 border-primary text-white shadow-glow-blue/20'
+                : 'bg-white/5 border-white/10 hover:border-white/20 text-slate-400 hover:text-white'
             }`}
           >
-            <Sparkles className="w-3.5 h-3.5 text-blue-500" />
+            <Sparkles className="w-3.5 h-3.5 text-accent" />
             <span>AI Suggestions Only</span>
           </button>
         </div>
@@ -543,19 +584,19 @@ export const DashboardPage: React.FC = () => {
       {activeTab === 'overview' && (
         <div className="space-y-6">
           {/* Top Priority Action Notice */}
-          <div className="p-5 rounded-2xl bg-rose-50/70 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="p-5 rounded-2xl bg-rose-500/10 border border-rose-500/30 backdrop-blur-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-xl bg-rose-100 dark:bg-rose-900/60 flex items-center justify-center text-rose-600 shrink-0">
+              <div className="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0 shadow-glow-rose/20">
                 <AlertTriangle className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-rose-700 dark:text-rose-400">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-rose-400">
                   Critical Contradiction Flag
                 </span>
-                <h3 className="font-heading font-bold text-slate-900 dark:text-white text-base">
+                <h3 className="font-heading font-bold text-white text-base">
                   Income Certificate Document Clash (ITR vs Tehsildar)
                 </h3>
-                <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 max-w-2xl">
+                <p className="text-xs text-slate-300 mt-1 max-w-2xl">
                   Central National Portal accepts Form 16 / ITR-V, but the State Higher Education Council explicitly states that only a Revenue Tehsildar Certificate will be approved.
                 </p>
               </div>
@@ -593,14 +634,14 @@ export const DashboardPage: React.FC = () => {
             {/* Gaps Preview */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="font-heading font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
-                  <HelpCircle className="w-4 h-4 text-purple-600" />
+                <h3 className="font-heading font-bold text-base text-white flex items-center gap-2">
+                  <HelpCircle className="w-4 h-4 text-purple-400" />
                   Top Dark Spots (Unstated Prerequisites)
                 </h3>
                 <button
                   type="button"
                   onClick={() => setActiveTab('gaps')}
-                  className="text-xs font-semibold text-brand-teal hover:underline"
+                  className="text-xs font-semibold text-accent hover:underline"
                 >
                   View all ({report.gaps.length})
                 </button>
@@ -625,14 +666,14 @@ export const DashboardPage: React.FC = () => {
             {/* Verify Next Checklist Preview */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="font-heading font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
-                  <ListTodo className="w-4 h-4 text-brand-teal" />
+                <h3 className="font-heading font-bold text-base text-white flex items-center gap-2">
+                  <ListTodo className="w-4 h-4 text-accent" />
                   Priority Verification Checklist
                 </h3>
                 <button
                   type="button"
                   onClick={() => setActiveTab('checklist')}
-                  className="text-xs font-semibold text-brand-teal hover:underline"
+                  className="text-xs font-semibold text-accent hover:underline"
                 >
                   View full list ({report.checklist.length})
                 </button>
@@ -652,13 +693,13 @@ export const DashboardPage: React.FC = () => {
           </div>
 
           {/* Sourced Facts Section with Anti-Hallucination Status */}
-          <Card className="p-6">
+          <Card className="p-6 bg-[rgba(16,26,46,0.7)] backdrop-blur-xl border border-[rgba(148,163,184,0.15)] shadow-soft">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">
                   Ground Truth
                 </span>
-                <h3 className="font-heading font-bold text-lg text-slate-900 dark:text-white">
+                <h3 className="font-heading font-bold text-lg text-white">
                   Verbatim Sourced Facts (Server-Verified Provenance)
                 </h3>
               </div>
@@ -669,19 +710,19 @@ export const DashboardPage: React.FC = () => {
               {report.facts.map(fact => (
                 <div
                   key={fact.id}
-                  className="p-4 rounded-xl border border-emerald-200 dark:border-emerald-800/80 bg-emerald-50/40 dark:bg-emerald-950/20 flex flex-col justify-between"
+                  className="p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5 flex flex-col justify-between"
                 >
                   <div className="space-y-2 mb-3">
-                    <p className="text-xs text-slate-800 dark:text-emerald-100 font-medium leading-relaxed">
+                    <p className="text-xs text-slate-200 font-medium leading-relaxed">
                       "{fact.statement}"
                     </p>
                     {fact.exactQuote && (
-                      <p className="text-[11px] text-slate-500 italic border-l-2 border-emerald-400 pl-2">
+                      <p className="text-[11px] text-slate-400 italic border-l-2 border-emerald-400 pl-2">
                         Verbatim Quote: "{fact.exactQuote}"
                       </p>
                     )}
                   </div>
-                  <div className="pt-2 border-t border-emerald-100 dark:border-emerald-900/60 flex items-center justify-between">
+                  <div className="pt-2 border-t border-emerald-500/20 flex items-center justify-between">
                     <SourceChip
                       domain={fact.sourceDomain}
                       date={fact.sourceDate}
@@ -689,7 +730,7 @@ export const DashboardPage: React.FC = () => {
                       onClick={() => handleOpenSourceByRef(fact.sourceDomain, fact.exactQuote)}
                     />
                     {fact.isVerifiedQuote && (
-                      <span className="text-[10px] font-mono text-emerald-700 dark:text-emerald-300 font-bold">
+                      <span className="text-[10px] font-mono text-emerald-300 font-bold">
                         Verified ✓
                       </span>
                     )}
@@ -714,10 +755,10 @@ export const DashboardPage: React.FC = () => {
           />
 
           <div>
-            <h2 className="font-heading font-extrabold text-xl text-slate-900 dark:text-white">
+            <h2 className="font-heading font-extrabold text-xl text-white">
               Attribute Breakdown Cards
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-400 mt-0.5">
               Specific status and findings across all evaluated checklist domains.
             </p>
           </div>
@@ -728,30 +769,30 @@ export const DashboardPage: React.FC = () => {
                 key={idx}
                 className={`p-4 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
                   attr.status === 'covered'
-                    ? 'border-emerald-200 dark:border-emerald-800 bg-emerald-50/40 dark:bg-emerald-950/20'
+                    ? 'border-emerald-500/30 bg-emerald-500/5'
                     : attr.status === 'partially_covered'
-                    ? 'border-amber-200 dark:border-amber-800 bg-amber-50/40 dark:bg-amber-950/20'
-                    : 'border-purple-200 dark:border-purple-800 bg-purple-50/40 dark:bg-purple-950/20'
+                    ? 'border-amber-500/30 bg-amber-500/5'
+                    : 'border-purple-500/30 bg-purple-500/5'
                 }`}
               >
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="font-heading font-bold text-sm text-slate-900 dark:text-white">
+                    <span className="font-heading font-bold text-sm text-white">
                       {attr.label}
                     </span>
                     <span
                       className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded font-mono ${
                         attr.status === 'covered'
-                          ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-200'
+                          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
                           : attr.status === 'partially_covered'
-                          ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-200'
-                          : 'bg-purple-100 text-purple-800 dark:bg-purple-900/60 dark:text-purple-200'
+                          ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                          : 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
                       }`}
                     >
                       {attr.status.replace('_', ' ')}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-600 dark:text-slate-300">{attr.notes}</p>
+                  <p className="text-xs text-slate-300">{attr.notes}</p>
                 </div>
 
                 {attr.sourceRefs && attr.sourceRefs.length > 0 && (
@@ -762,7 +803,7 @@ export const DashboardPage: React.FC = () => {
                         key={rIdx}
                         type="button"
                         onClick={() => handleOpenSourceByRef(ref)}
-                        className="text-[11px] px-2 py-0.5 rounded bg-white dark:bg-slate-800 text-brand-teal font-mono border border-slate-200 dark:border-slate-700"
+                        className="text-[11px] px-2 py-0.5 rounded bg-white/5 hover:bg-white/10 text-accent font-mono border border-white/10"
                       >
                         {ref}
                       </button>
@@ -780,14 +821,14 @@ export const DashboardPage: React.FC = () => {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="font-heading font-extrabold text-xl text-slate-900 dark:text-white">
+              <h2 className="font-heading font-extrabold text-xl text-white">
                 Information Gaps & Digital Dark Spots
               </h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-400 mt-0.5">
                 Critical details completely omitted by published guidelines that affect student approval.
               </p>
             </div>
-            <span className="text-xs font-mono bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 px-3 py-1 rounded-lg font-bold">
+            <span className="text-xs font-mono bg-purple-500/20 border border-purple-500/30 text-purple-300 px-3 py-1 rounded-lg font-bold shadow-glow-purple/20">
               {filteredGaps.length} Gaps Found
             </span>
           </div>
@@ -815,10 +856,10 @@ export const DashboardPage: React.FC = () => {
       {activeTab === 'conflicts' && (
         <div className="space-y-4">
           <div>
-            <h2 className="font-heading font-extrabold text-xl text-slate-900 dark:text-white">
+            <h2 className="font-heading font-extrabold text-xl text-white">
               Direct Source Contradictions
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-400 mt-0.5">
               Side-by-side comparison of conflicting requirements across state and central departments.
             </p>
           </div>
@@ -842,10 +883,10 @@ export const DashboardPage: React.FC = () => {
       {activeTab === 'outdated' && (
         <div className="space-y-4">
           <div>
-            <h2 className="font-heading font-extrabold text-xl text-slate-900 dark:text-white">
+            <h2 className="font-heading font-extrabold text-xl text-white">
               Outdated & Undated Advisory Warnings
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-400 mt-0.5">
               Notices quoting stale cycle criteria or missing timestamp metadata.
             </p>
           </div>
@@ -854,7 +895,7 @@ export const DashboardPage: React.FC = () => {
             {report.outdated.map(item => (
               <Card
                 key={item.id}
-                className="p-5 sm:p-6 border-l-4 border-l-amber-500 border-amber-200 dark:border-amber-800/60 bg-white dark:bg-brand-navy-900"
+                className="p-5 sm:p-6 border-l-4 border-l-amber-500 border-amber-500/30 bg-[rgba(16,26,46,0.7)] backdrop-blur-xl shadow-soft"
                 hoverEffect
               >
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
@@ -862,7 +903,7 @@ export const DashboardPage: React.FC = () => {
                     <Badge variant="outdated" size="sm">
                       Stale Cycle Notice
                     </Badge>
-                    <span className="text-xs font-mono font-semibold text-amber-700 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/70 px-2 py-0.5 rounded">
+                    <span className="text-xs font-mono font-semibold text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded border border-amber-500/30">
                       {item.stalenessMonths} Months Out of Date
                     </span>
                   </div>
@@ -871,21 +912,21 @@ export const DashboardPage: React.FC = () => {
                   </span>
                 </div>
 
-                <h3 className="font-heading font-bold text-slate-900 dark:text-white text-base mb-2">
+                <h3 className="font-heading font-bold text-white text-base mb-2">
                   {item.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
                   {item.warningText}
                 </p>
 
-                <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 flex items-center justify-between text-xs">
-                  <span className="text-amber-900 dark:text-amber-200">
+                <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-between text-xs">
+                  <span className="text-amber-200">
                     <strong>Current Active Rule: </strong> {item.currentCycle}
                   </span>
                   <button
                     type="button"
                     onClick={() => handleOpenSourceByRef(item.sourceTitle)}
-                    className="text-amber-700 dark:text-amber-400 underline font-semibold"
+                    className="text-amber-300 underline font-semibold hover:text-amber-100"
                   >
                     Inspect Outdated Excerpt
                   </button>
@@ -901,23 +942,23 @@ export const DashboardPage: React.FC = () => {
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
-              <h2 className="font-heading font-extrabold text-xl text-slate-900 dark:text-white">
+              <h2 className="font-heading font-extrabold text-xl text-white">
                 Prioritized "Verify Next" Action Plan
               </h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-400 mt-0.5">
                 Exact verification steps to take before submitting your application documents.
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
               {/* English vs Tamil Toggle */}
-              <div className="flex items-center p-1 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold">
+              <div className="flex items-center p-1 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold">
                 <button
                   type="button"
                   onClick={() => setChecklistLang('en')}
                   className={`px-2.5 py-1 rounded-lg transition-all ${
                     checklistLang === 'en'
-                      ? 'bg-white dark:bg-brand-navy-900 text-slate-900 dark:text-white shadow-soft-sm font-bold'
-                      : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                      ? 'bg-primary/20 text-white shadow-soft-sm font-bold border border-primary/30'
+                      : 'text-slate-400 hover:text-white'
                   }`}
                 >
                   🇬🇧 English
@@ -927,15 +968,15 @@ export const DashboardPage: React.FC = () => {
                   onClick={() => setChecklistLang('ta')}
                   className={`px-2.5 py-1 rounded-lg transition-all ${
                     checklistLang === 'ta'
-                      ? 'bg-brand-teal text-brand-navy-950 shadow-soft-sm font-bold'
-                      : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+                      ? 'bg-accent/20 text-accent shadow-soft-sm font-bold border border-accent/30'
+                      : 'text-slate-400 hover:text-white'
                   }`}
                 >
                   🇮🇳 தமிழ்
                 </button>
               </div>
 
-              <div className="text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700">
+              <div className="text-xs font-semibold text-slate-300 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
                 Progress: {completedChecklistCount} of {report.checklist.length} Completed
               </div>
             </div>
@@ -964,10 +1005,10 @@ export const DashboardPage: React.FC = () => {
           />
 
           <div>
-            <h2 className="font-heading font-extrabold text-xl text-slate-900 dark:text-white">
+            <h2 className="font-heading font-extrabold text-xl text-white">
               Ingested Authority Sources
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-400 mt-0.5">
               Click any source to open the side inspector drawer with quoted snippets and timestamps.
             </p>
           </div>
@@ -976,42 +1017,42 @@ export const DashboardPage: React.FC = () => {
             {report.sources.map(src => (
               <Card
                 key={src.id}
-                className="p-5 cursor-pointer hover:border-brand-teal transition-all"
+                className="p-5 cursor-pointer hover:border-accent/40 hover:shadow-glow-blue/20 transition-all bg-[rgba(16,26,46,0.7)] backdrop-blur-xl border border-[rgba(148,163,184,0.15)] shadow-soft"
                 hoverEffect
                 onClick={() => handleOpenSourceDrawer(src)}
               >
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
                     {src.isOfficial ? (
-                      <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/70 px-2 py-0.5 rounded flex items-center gap-1">
+                      <span className="text-[11px] font-bold text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded flex items-center gap-1">
                         <ShieldCheck className="w-3 h-3" /> Official Authority
                       </span>
                     ) : (
-                      <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
+                      <span className="text-[11px] font-bold text-slate-400 bg-white/5 border border-white/10 px-2 py-0.5 rounded">
                         Secondary Reference
                       </span>
                     )}
-                    <span className="text-xs font-mono font-bold text-brand-teal">
+                    <span className="text-xs font-mono font-bold text-accent">
                       {src.reliabilityScore}% Reliability
                     </span>
                   </div>
                   <ExternalLink className="w-4 h-4 text-slate-400" />
                 </div>
 
-                <h3 className="font-heading font-bold text-slate-900 dark:text-white text-sm mb-1 line-clamp-1">
+                <h3 className="font-heading font-bold text-white text-sm mb-1 line-clamp-1">
                   {src.title}
                 </h3>
-                <p className="text-xs text-slate-500 font-mono mb-3 truncate">
+                <p className="text-xs text-slate-400 font-mono mb-3 truncate">
                   {src.domain}
                 </p>
 
-                <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2 italic bg-slate-50 dark:bg-brand-navy-950 p-2.5 rounded-lg border border-slate-200/60 dark:border-slate-800">
+                <p className="text-xs text-slate-300 line-clamp-2 italic bg-white/[0.03] p-2.5 rounded-lg border border-white/10">
                   "{src.excerpt}"
                 </p>
 
-                <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
+                <div className="mt-3 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-slate-400">
                   <span>Crawled: {formatDate(src.crawledDate)}</span>
-                  <span className="text-brand-teal font-semibold">Inspect Quotes →</span>
+                  <span className="text-accent font-semibold hover:underline">Inspect Quotes →</span>
                 </div>
               </Card>
             ))}

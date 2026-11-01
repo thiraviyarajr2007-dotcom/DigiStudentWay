@@ -366,64 +366,67 @@ export const NewAnalysisPage: React.FC = () => {
 
       {/* STEP 1: Research Inquiry & Goal */}
       {currentStep === 1 && (
-        <Card className="p-6 sm:p-8 space-y-6">
+        <Card className="p-6 sm:p-8 space-y-6 bg-[rgba(16,26,46,0.7)] backdrop-blur-xl border border-[rgba(148,163,184,0.15)] shadow-soft">
           {/* Topic Template Selector Chips */}
           <div>
             <div className="flex items-center justify-between mb-2.5">
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-400">
                 Choose Topic Template (Preloads 8-Point Audit Checklist)
               </label>
-              <span className="text-[11px] text-brand-teal font-semibold">
+              <span className="text-[11px] text-accent font-semibold">
                 Signature Feature
               </span>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
-              {Object.values(TOPIC_TEMPLATES).map(tpl => (
-                <button
-                  key={tpl.id}
-                  type="button"
-                  onClick={() => handleSelectTemplate(tpl.id)}
-                  className={`p-3 rounded-2xl border text-left transition-all ${
-                    category === tpl.id
-                      ? 'bg-brand-navy text-white dark:bg-brand-teal dark:text-brand-navy-950 border-brand-navy dark:border-brand-teal shadow-soft'
-                      : 'bg-white dark:bg-brand-navy-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-700'
-                  }`}
-                >
-                  <span className="text-xs font-bold block truncate">{tpl.name}</span>
-                  <span className="text-[10px] opacity-80 block truncate mt-0.5">{tpl.badge}</span>
-                </button>
-              ))}
+              {Object.values(TOPIC_TEMPLATES).map(tpl => {
+                const isSelected = category === tpl.id;
+                return (
+                  <button
+                    key={tpl.id}
+                    type="button"
+                    onClick={() => handleSelectTemplate(tpl.id)}
+                    className={`p-3 rounded-2xl border text-left transition-all duration-200 ${
+                      isSelected
+                        ? 'bg-gradient-to-r from-primary to-secondary text-white border-transparent shadow-glow-blue font-bold -translate-y-0.5'
+                        : 'bg-white/[0.03] hover:bg-white/[0.07] border-white/10 text-slate-300 hover:border-white/20'
+                    }`}
+                  >
+                    <span className="text-xs font-bold block truncate">{tpl.name}</span>
+                    <span className="text-[10px] opacity-80 block truncate mt-0.5">{tpl.badge}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
           {/* Expected Attributes Audit Checklist Preview */}
-          <div className="p-4 rounded-2xl bg-slate-50/70 dark:bg-brand-navy-950 border border-slate-200 dark:border-slate-800">
+          <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-brand-teal" />
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+                <ShieldCheck className="w-4 h-4 text-accent" />
                 Template Audit Scope: 8 Expected Information Attributes
               </span>
-              <span className="text-[10px] font-mono font-bold text-slate-500">
+              <span className="text-[10px] font-mono font-bold text-accent">
                 {getTemplateByCategory(category).expectedAttributes.length} Domains
               </span>
             </div>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400 mb-3">
+            <p className="text-[11px] text-slate-400 mb-3">
               DigiStudentWay will cross-examine your sources against these 8 core requirements to discover Digital Dark Spots.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
               {getTemplateByCategory(category).expectedAttributes.map((attr, idx) => (
                 <div
                   key={attr.attributeId}
-                  className="p-2 rounded-xl bg-white dark:bg-brand-navy-900 border border-slate-200/80 dark:border-slate-800 flex items-start gap-2"
+                  className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10 flex items-start gap-2"
                 >
-                  <span className="w-5 h-5 rounded-full bg-teal-100 dark:bg-teal-950/70 text-teal-800 dark:text-teal-300 text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="w-5 h-5 rounded-full bg-primary/20 text-accent text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5 border border-primary/30">
                     {idx + 1}
                   </span>
                   <div className="min-w-0">
-                    <span className="font-semibold text-slate-900 dark:text-white block truncate">
+                    <span className="font-heading font-semibold text-white block truncate">
                       {attr.label}
                     </span>
-                    <span className="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-1">
+                    <span className="text-[10px] text-slate-400 line-clamp-1">
                       {attr.description}
                     </span>
                   </div>
@@ -434,7 +437,7 @@ export const NewAnalysisPage: React.FC = () => {
 
           {/* Inquiry Question */}
           <div>
-            <label className="block font-heading font-bold text-sm text-slate-900 dark:text-white mb-2">
+            <label className="block font-heading font-bold text-sm text-white mb-2">
               What academic scheme, admission, or notification are you investigating?
             </label>
             <textarea
@@ -442,30 +445,33 @@ export const NewAnalysisPage: React.FC = () => {
               value={query}
               onChange={e => setQuery(e.target.value)}
               placeholder="e.g. What should I verify before applying for the Post-Matric Merit Scholarship (PMS 2026) regarding income certificates and renewal rules?"
-              className="w-full p-4 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-brand-navy-900 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-teal/50"
+              className="w-full p-4 rounded-xl border border-white/15 bg-white/[0.04] text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent"
             />
           </div>
 
           {/* Goal Chips */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2.5">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2.5">
               What is your primary audit goal?
             </label>
             <div className="flex flex-wrap gap-2">
-              {goalChips.map(goal => (
-                <button
-                  key={goal}
-                  type="button"
-                  onClick={() => setSelectedGoal(goal)}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                    selectedGoal === goal
-                      ? 'bg-teal-100 dark:bg-teal-900/60 text-teal-900 dark:text-teal-200 border border-teal-300 dark:border-teal-700'
-                      : 'bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700'
-                  }`}
-                >
-                  {goal}
-                </button>
-              ))}
+              {goalChips.map(goal => {
+                const isSelected = selectedGoal === goal;
+                return (
+                  <button
+                    key={goal}
+                    type="button"
+                    onClick={() => setSelectedGoal(goal)}
+                    className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                      isSelected
+                        ? 'bg-primary/20 text-accent border border-primary/40 font-semibold shadow-glow-blue/20'
+                        : 'bg-white/5 text-slate-400 hover:text-white border border-white/10'
+                    }`}
+                  >
+                    {goal}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -484,16 +490,16 @@ export const NewAnalysisPage: React.FC = () => {
 
       {/* STEP 2: Ingest Sources */}
       {currentStep === 2 && (
-        <Card className="p-6 sm:p-8 space-y-6">
+        <Card className="p-6 sm:p-8 space-y-6 bg-[rgba(16,26,46,0.7)] backdrop-blur-xl border border-[rgba(148,163,184,0.15)] shadow-soft">
           {/* Ingestion Tabs */}
-          <div className="flex border-b border-slate-200 dark:border-slate-800 gap-6">
+          <div className="flex border-b border-white/10 gap-4 sm:gap-6 overflow-x-auto pb-1">
             <button
               type="button"
               onClick={() => setSourceTab('url')}
               className={`pb-3 text-xs sm:text-sm font-semibold flex items-center gap-2 border-b-2 transition-all ${
                 sourceTab === 'url'
-                  ? 'border-brand-teal text-brand-teal'
-                  : 'border-transparent text-slate-500 hover:text-slate-800'
+                  ? 'border-accent text-accent font-bold'
+                  : 'border-transparent text-slate-400 hover:text-white'
               }`}
             >
               <LinkIcon className="w-4 h-4" />
@@ -504,8 +510,8 @@ export const NewAnalysisPage: React.FC = () => {
               onClick={() => setSourceTab('text')}
               className={`pb-3 text-xs sm:text-sm font-semibold flex items-center gap-2 border-b-2 transition-all ${
                 sourceTab === 'text'
-                  ? 'border-brand-teal text-brand-teal'
-                  : 'border-transparent text-slate-500 hover:text-slate-800'
+                  ? 'border-accent text-accent font-bold'
+                  : 'border-transparent text-slate-400 hover:text-white'
               }`}
             >
               <FileText className="w-4 h-4" />
@@ -516,8 +522,8 @@ export const NewAnalysisPage: React.FC = () => {
               onClick={() => setSourceTab('upload')}
               className={`pb-3 text-xs sm:text-sm font-semibold flex items-center gap-2 border-b-2 transition-all ${
                 sourceTab === 'upload'
-                  ? 'border-brand-teal text-brand-teal'
-                  : 'border-transparent text-slate-500 hover:text-slate-800'
+                  ? 'border-accent text-accent font-bold'
+                  : 'border-transparent text-slate-400 hover:text-white'
               }`}
             >
               <UploadCloud className="w-4 h-4" />
@@ -528,7 +534,7 @@ export const NewAnalysisPage: React.FC = () => {
           {/* Mode 1: URL Fetch */}
           {sourceTab === 'url' && (
             <div className="space-y-4">
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-slate-400">
                 Input public URL to fetch server-side with SSRF protection and Mozilla Readability parsing:
               </p>
 
@@ -544,14 +550,14 @@ export const NewAnalysisPage: React.FC = () => {
                         setUrlInputs(copy);
                       }}
                       placeholder="e.g. https://scholarships.gov.in/guidelines/pms-2026"
-                      className="w-full pl-9 pr-24 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-brand-navy-900 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-teal/50"
+                      className="w-full pl-9 pr-24 py-2.5 rounded-xl border border-white/15 bg-white/[0.04] text-xs sm:text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent"
                     />
                     <LinkIcon className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                     <button
                       type="button"
                       disabled={fetchingUrlIndex === idx || !u.trim()}
                       onClick={() => handleFetchUrl(idx)}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1 bg-brand-teal text-white rounded-lg text-xs font-semibold hover:bg-teal-600 disabled:opacity-50"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1 bg-accent text-slate-950 rounded-lg text-xs font-bold hover:bg-accent/80 disabled:opacity-50 transition-colors"
                     >
                       {fetchingUrlIndex === idx ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Fetch'}
                     </button>
@@ -560,7 +566,7 @@ export const NewAnalysisPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setUrlInputs(urlInputs.filter((_, i) => i !== idx))}
-                      className="p-2 text-slate-400 hover:text-rose-500"
+                      className="p-2 text-slate-400 hover:text-rose-400 transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -572,7 +578,7 @@ export const NewAnalysisPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setUrlInputs([...urlInputs, ''])}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-teal hover:underline"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent hover:underline"
                 >
                   <Plus className="w-4 h-4" /> Add another URL field
                 </button>
@@ -582,7 +588,7 @@ export const NewAnalysisPage: React.FC = () => {
                   size="sm"
                   onClick={handleRequestSuggestions}
                   isLoading={isSuggesting}
-                  leftIcon={<Sparkles className="w-3.5 h-3.5 text-blue-500" />}
+                  leftIcon={<Sparkles className="w-3.5 h-3.5 text-accent" />}
                 >
                   Suggest Authoritative Portals
                 </Button>
@@ -590,15 +596,15 @@ export const NewAnalysisPage: React.FC = () => {
 
               {/* Inline URL Fetch Error & Paste Fallback Box */}
               {fetchErrorState && (
-                <div className="p-4 sm:p-5 rounded-2xl bg-amber-50/90 dark:bg-amber-950/40 border-2 border-amber-300 dark:border-amber-800 space-y-3 animate-in fade-in">
+                <div className="p-4 sm:p-5 rounded-2xl bg-amber-500/10 border-2 border-amber-500/40 space-y-3 animate-in fade-in backdrop-blur-xl shadow-soft">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-2">
-                      <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
+                      <AlertCircle className="w-5 h-5 text-amber-400 shrink-0" />
                       <div>
-                        <h4 className="font-heading font-bold text-xs sm:text-sm text-amber-950 dark:text-amber-200">
+                        <h4 className="font-heading font-bold text-xs sm:text-sm text-amber-200">
                           Automated Fetch Unsuccessful for "{fetchErrorState.url}"
                         </h4>
-                        <p className="text-[11px] text-amber-800 dark:text-amber-300">
+                        <p className="text-[11px] text-amber-300/80">
                           {fetchErrorState.message}. You can paste the page contents or PDF text directly below:
                         </p>
                       </div>
@@ -606,7 +612,7 @@ export const NewAnalysisPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setFetchErrorState(null)}
-                      className="text-xs text-amber-600 hover:text-amber-800 font-bold"
+                      className="text-xs text-amber-400 hover:text-amber-300 font-bold"
                     >
                       Dismiss
                     </button>
@@ -622,7 +628,7 @@ export const NewAnalysisPage: React.FC = () => {
                       })
                     }
                     placeholder="Paste the circular or notice text from the target website here..."
-                    className="w-full p-3 rounded-xl border border-amber-300 dark:border-amber-700 bg-white dark:bg-brand-navy-900 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-teal/50 font-mono"
+                    className="w-full p-3 rounded-xl border border-amber-500/40 bg-slate-950/80 text-xs text-amber-100 placeholder-amber-400/50 focus:outline-none focus:ring-2 focus:ring-amber-400/50 font-mono"
                   />
 
                   <div className="flex items-center justify-end gap-2">
@@ -641,32 +647,32 @@ export const NewAnalysisPage: React.FC = () => {
 
               {/* AI Suggested Sources Shelf */}
               {suggestedSources.length > 0 && (
-                <div className="mt-4 p-4 rounded-2xl bg-blue-50/60 dark:bg-blue-950/30 border border-dashed border-blue-300 dark:border-blue-800 space-y-3">
+                <div className="mt-4 p-4 rounded-2xl bg-primary/10 border border-primary/20 space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-blue-900 dark:text-blue-200 flex items-center gap-1.5">
-                      <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+                    <span className="text-xs font-bold text-accent flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-accent" />
                       AI Suggested Sources (Requires Your Approval Before Ingestion)
                     </span>
-                    <span className="text-[10px] text-blue-600 font-mono">Not auto-ingested</span>
+                    <span className="text-[10px] text-slate-400 font-mono">Not auto-ingested</span>
                   </div>
 
                   <div className="space-y-2">
                     {suggestedSources.map((item, idx) => (
                       <div
                         key={idx}
-                        className="p-3 rounded-xl bg-white dark:bg-brand-navy-900 border border-slate-200 dark:border-slate-800 flex items-start justify-between gap-3 text-xs"
+                        className="p-3 rounded-xl bg-white/[0.04] border border-white/10 flex items-start justify-between gap-3 text-xs"
                       >
                         <div>
                           <div className="flex items-center gap-2 mb-0.5">
-                            <span className="font-bold text-slate-800 dark:text-slate-100">{item.title}</span>
+                            <span className="font-heading font-bold text-white">{item.title}</span>
                             {item.isOfficial && (
-                              <span className="text-[10px] bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 px-1.5 py-0.2 rounded font-semibold">
+                              <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-1.5 py-0.2 rounded font-semibold">
                                 Official .gov/.edu
                               </span>
                             )}
                           </div>
-                          <p className="text-slate-500 truncate max-w-lg font-mono text-[11px]">{item.url}</p>
-                          <p className="text-slate-600 dark:text-slate-400 text-[11px] mt-1">{item.reasonWhySuggested}</p>
+                          <p className="text-slate-400 truncate max-w-lg font-mono text-[11px]">{item.url}</p>
+                          <p className="text-slate-300 text-[11px] mt-1">{item.reasonWhySuggested}</p>
                         </div>
 
                         <button
@@ -675,8 +681,8 @@ export const NewAnalysisPage: React.FC = () => {
                           onClick={() => handleApproveSuggestion(item, idx)}
                           className={`px-3 py-1.5 rounded-lg text-xs font-semibold shrink-0 transition-colors ${
                             item.userApproved
-                              ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 font-bold'
-                              : 'bg-brand-navy dark:bg-slate-800 text-white hover:bg-slate-700'
+                              ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold'
+                              : 'bg-white/10 text-white hover:bg-white/20 border border-white/10'
                           }`}
                         >
                           {item.userApproved ? 'Approved ✓' : 'Approve & Add'}
@@ -697,14 +703,14 @@ export const NewAnalysisPage: React.FC = () => {
                 value={pastedTitle}
                 onChange={e => setPastedTitle(e.target.value)}
                 placeholder="Notice / Circular Title (e.g. State Higher Education Gazette Oct 2026)"
-                className="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-xs sm:text-sm bg-white dark:bg-brand-navy-900 text-slate-900 dark:text-white"
+                className="w-full px-3.5 py-2 rounded-xl border border-white/15 bg-white/[0.04] text-xs sm:text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent"
               />
               <textarea
                 rows={5}
                 value={pastedText}
                 onChange={e => setPastedText(e.target.value)}
                 placeholder="Paste the official circular excerpt or email notification here..."
-                className="w-full p-3.5 rounded-xl border border-slate-300 dark:border-slate-700 text-xs sm:text-sm bg-white dark:bg-brand-navy-900 text-slate-900 dark:text-white font-mono"
+                className="w-full p-3.5 rounded-xl border border-white/15 bg-white/[0.04] text-xs sm:text-sm text-white placeholder-slate-400 font-mono focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent"
               />
               <Button variant="secondary" size="sm" onClick={handleAddPastedText}>
                 Add Text Notice to Corpus
@@ -715,7 +721,7 @@ export const NewAnalysisPage: React.FC = () => {
           {/* Mode 3: PDF / Document Upload */}
           {sourceTab === 'upload' && (
             <div className="space-y-3">
-              <label className="p-8 border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-brand-teal rounded-2xl flex flex-col items-center justify-center text-center cursor-pointer transition-colors bg-slate-50/50 dark:bg-brand-navy-950/40">
+              <label className="p-8 border-2 border-dashed border-white/15 hover:border-accent/50 rounded-2xl flex flex-col items-center justify-center text-center cursor-pointer transition-colors bg-white/[0.02]">
                 <input
                   type="file"
                   accept=".pdf,.txt,.md"
@@ -723,8 +729,8 @@ export const NewAnalysisPage: React.FC = () => {
                   onChange={handleFileUpload}
                   className="hidden"
                 />
-                <UploadCloud className="w-10 h-10 text-brand-teal mb-3 animate-bounce" />
-                <span className="text-sm font-bold text-slate-800 dark:text-slate-200">
+                <UploadCloud className="w-10 h-10 text-accent mb-3 animate-bounce" />
+                <span className="text-sm font-bold text-white">
                   Select Official Gazette PDF or Circular (.pdf, .txt)
                 </span>
                 <span className="text-xs text-slate-400 mt-1">
@@ -735,16 +741,16 @@ export const NewAnalysisPage: React.FC = () => {
           )}
 
           {/* Active Ingested Sources Corpus */}
-          <div className="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-3">
+          <div className="pt-4 border-t border-white/10 space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
                 Active Source Corpus ({sources.length} Ingested)
               </span>
               {sources.length > 0 && (
                 <button
                   type="button"
                   onClick={() => setSources([])}
-                  className="text-xs text-rose-500 hover:underline"
+                  className="text-xs text-rose-400 hover:underline"
                 >
                   Clear all
                 </button>
@@ -752,7 +758,7 @@ export const NewAnalysisPage: React.FC = () => {
             </div>
 
             {sources.length === 0 ? (
-              <div className="p-4 rounded-xl border border-dashed border-slate-300 dark:border-slate-800 text-center text-xs text-slate-400">
+              <div className="p-4 rounded-xl border border-dashed border-white/15 text-center text-xs text-slate-400">
                 No sources ingested yet. Paste a URL, upload a PDF circular, or click "Use Sample Scholarship Demo" above.
               </div>
             ) : (
@@ -760,30 +766,30 @@ export const NewAnalysisPage: React.FC = () => {
                 {sources.map(src => (
                   <div
                     key={src.id}
-                    className="p-3 rounded-xl bg-slate-50 dark:bg-brand-navy-950 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 text-xs"
+                    className="p-3 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-between gap-3 text-xs"
                   >
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         {src.isOfficial ? (
-                          <span className="inline-flex items-center gap-1 text-[10px] bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 px-2 py-0.2 rounded font-semibold">
+                          <span className="inline-flex items-center gap-1 text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded font-semibold">
                             <ShieldCheck className="w-3 h-3" /> Official Authority
                           </span>
                         ) : (
-                          <span className="text-[10px] bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2 py-0.2 rounded">
+                          <span className="text-[10px] bg-white/10 text-slate-300 px-2 py-0.5 rounded">
                             Reference
                           </span>
                         )}
-                        <span className="font-semibold text-slate-800 dark:text-slate-200 truncate">
+                        <span className="font-heading font-semibold text-white truncate">
                           {src.title}
                         </span>
                       </div>
-                      <p className="text-[11px] text-slate-500 font-mono truncate">{src.domain} • {src.chunks?.length || 1} chunks</p>
+                      <p className="text-[11px] text-slate-400 font-mono truncate">{src.domain} • {src.chunks?.length || 1} chunks</p>
                     </div>
 
                     <button
                       type="button"
                       onClick={() => setSources(sources.filter(s => s.id !== src.id))}
-                      className="text-slate-400 hover:text-rose-500 p-1"
+                      className="text-slate-400 hover:text-rose-400 p-1 transition-colors"
                       title="Remove source"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -795,7 +801,7 @@ export const NewAnalysisPage: React.FC = () => {
           </div>
 
           {/* Navigation Actions */}
-          <div className="pt-4 flex items-center justify-between border-t border-slate-200 dark:border-slate-800">
+          <div className="pt-4 flex items-center justify-between border-t border-white/10">
             <Button
               variant="ghost"
               size="md"
@@ -818,47 +824,47 @@ export const NewAnalysisPage: React.FC = () => {
 
       {/* STEP 3: Review & Run */}
       {currentStep === 3 && (
-        <Card className="p-6 sm:p-8 space-y-6">
+        <Card className="p-6 sm:p-8 space-y-6 bg-[rgba(16,26,46,0.7)] backdrop-blur-xl border border-[rgba(148,163,184,0.15)] shadow-soft">
           <div className="flex items-center justify-between">
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-brand-teal">
+              <span className="text-xs font-bold uppercase tracking-wider text-accent">
                 Ready For Verification
               </span>
-              <h3 className="font-heading font-extrabold text-xl text-slate-900 dark:text-white">
+              <h3 className="font-heading font-extrabold text-xl text-white">
                 Review Audit Parameters
               </h3>
             </div>
             <Badge variant="brand">Anti-Hallucination Guard Active</Badge>
           </div>
 
-          <div className="space-y-4 bg-slate-50 dark:bg-brand-navy-950 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs sm:text-sm">
+          <div className="space-y-4 bg-white/[0.03] p-5 rounded-2xl border border-white/10 text-xs sm:text-sm">
             <div>
               <span className="text-xs font-semibold text-slate-400 block mb-1">Inquiry / Scheme:</span>
-              <p className="font-bold text-slate-900 dark:text-white">{query}</p>
+              <p className="font-heading font-bold text-white">{query}</p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-slate-200 dark:border-slate-800">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-white/10">
               <div>
                 <span className="text-xs font-semibold text-slate-400 block mb-1">Category:</span>
-                <span className="font-medium capitalize text-slate-800 dark:text-slate-200">
+                <span className="font-medium capitalize text-slate-200">
                   {category.replace('_', ' ')}
                 </span>
               </div>
               <div>
                 <span className="text-xs font-semibold text-slate-400 block mb-1">Audit Goal:</span>
-                <span className="font-medium text-slate-800 dark:text-slate-200">{selectedGoal}</span>
+                <span className="font-medium text-slate-200">{selectedGoal}</span>
               </div>
             </div>
 
-            <div className="pt-2 border-t border-slate-200 dark:border-slate-800">
+            <div className="pt-2 border-t border-white/10">
               <span className="text-xs font-semibold text-slate-400 block mb-2">
                 Ingested Sources for Cross-Correlation ({sources.length}):
               </span>
               <div className="space-y-1.5">
                 {sources.map(s => (
-                  <div key={s.id} className="flex items-center gap-2 text-xs font-mono text-slate-700 dark:text-slate-300">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                    <span className="font-bold">{s.domain}</span>
+                  <div key={s.id} className="flex items-center gap-2 text-xs font-mono text-slate-300">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <span className="font-bold text-white">{s.domain}</span>
                     <span className="text-slate-400 truncate">({s.title})</span>
                   </div>
                 ))}
@@ -868,19 +874,19 @@ export const NewAnalysisPage: React.FC = () => {
 
           {/* Staged Multi-Step Progress Feedback */}
           {isRunning && (
-            <div className="p-5 rounded-2xl bg-teal-50/70 dark:bg-brand-navy-900 border border-teal-200 dark:border-teal-800 space-y-4 animate-in fade-in">
+            <div className="p-5 rounded-2xl bg-primary/10 border border-primary/20 space-y-4 animate-in fade-in">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-bold text-teal-900 dark:text-teal-200 flex items-center gap-2">
-                  <Loader2 className="w-4 h-4 animate-spin text-brand-teal" />
+                <span className="font-bold text-white flex items-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin text-accent" />
                   {analysisProgress?.message || 'Processing information gap audit...'}
                 </span>
-                <span className="font-mono font-bold text-brand-teal">{analysisProgress?.progressPercent || 30}%</span>
+                <span className="font-mono font-bold text-accent">{analysisProgress?.progressPercent || 30}%</span>
               </div>
 
               {/* Progress bar */}
-              <div className="w-full h-2 bg-teal-200/60 dark:bg-teal-950 rounded-full overflow-hidden">
+              <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-brand-teal to-teal-400 transition-all duration-300"
+                  className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-300"
                   style={{ width: `${analysisProgress?.progressPercent || 30}%` }}
                 />
               </div>
@@ -901,18 +907,18 @@ export const NewAnalysisPage: React.FC = () => {
                       key={s.step}
                       className={`flex items-center gap-2 p-2 rounded-xl transition-all ${
                         isDone
-                          ? 'text-emerald-700 dark:text-emerald-300 font-semibold bg-emerald-50/50 dark:bg-emerald-950/30'
+                          ? 'text-emerald-300 font-semibold bg-emerald-500/10 border border-emerald-500/20'
                           : isCurrent
-                          ? 'text-brand-teal font-bold bg-teal-100/60 dark:bg-teal-950/50'
-                          : 'text-slate-400 dark:text-slate-600'
+                          ? 'text-accent font-bold bg-primary/20 border border-primary/30'
+                          : 'text-slate-500'
                       }`}
                     >
                       {isDone ? (
-                        <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                       ) : isCurrent ? (
-                        <Loader2 className="w-4 h-4 animate-spin text-brand-teal shrink-0" />
+                        <Loader2 className="w-4 h-4 animate-spin text-accent shrink-0" />
                       ) : (
-                        <span className="w-4 h-4 rounded-full border border-slate-300 dark:border-slate-700 flex items-center justify-center text-[10px] shrink-0 font-mono">
+                        <span className="w-4 h-4 rounded-full border border-slate-700 flex items-center justify-center text-[10px] shrink-0 font-mono">
                           {s.step}
                         </span>
                       )}
@@ -925,7 +931,7 @@ export const NewAnalysisPage: React.FC = () => {
           )}
 
           {/* Navigation Actions */}
-          <div className="pt-4 flex items-center justify-between border-t border-slate-200 dark:border-slate-800">
+          <div className="pt-4 flex items-center justify-between border-t border-white/10">
             <Button
               variant="ghost"
               size="md"

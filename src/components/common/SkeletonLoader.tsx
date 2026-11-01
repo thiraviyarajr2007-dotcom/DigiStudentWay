@@ -5,7 +5,7 @@ export const Skeleton: React.FC<{ className?: string }> = ({ className }) => {
   return (
     <div
       className={cn(
-        'rounded-xl animate-shimmer bg-slate-200/80 dark:bg-slate-800/80',
+        'rounded-xl animate-shimmer bg-slate-800/60 dark:bg-slate-800/60',
         className
       )}
     />
@@ -14,7 +14,7 @@ export const Skeleton: React.FC<{ className?: string }> = ({ className }) => {
 
 export const CardSkeleton: React.FC = () => {
   return (
-    <div className="p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-brand-navy-900 shadow-soft-sm space-y-4">
+    <div className="p-6 rounded-2xl border border-[rgba(148,163,184,0.15)] bg-[#101A2E]/70 backdrop-blur-xl shadow-soft space-y-4">
       <div className="flex items-center justify-between">
         <Skeleton className="h-6 w-1/4 rounded-lg" />
         <Skeleton className="h-5 w-20 rounded-md" />

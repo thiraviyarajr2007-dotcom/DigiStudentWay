@@ -34,39 +34,52 @@ export const ConfidenceMeter: React.FC<ConfidenceMeterProps> = ({
     score >= 80
       ? {
           title: 'Application Ready',
-          badge: 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800',
+          badge: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
           desc: 'High documentation integrity. Required clauses are verified with minimal omitted prerequisites.',
           icon: ShieldCheck,
-          strokeColor: '#10B981',
+          strokeStart: '#3B82F6',
+          strokeEnd: '#8B5CF6',
+          glowColor: 'rgba(59, 130, 246, 0.45)',
         }
       : score >= 50
       ? {
           title: 'Caution: Pre-Verification Required',
-          badge: 'bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-800',
+          badge: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
           desc: 'Dark spots detected! Contradictory document formats or unstated renewal benchmarks need desk review.',
           icon: AlertTriangle,
-          strokeColor: '#F59E0B',
+          strokeStart: '#F59E0B',
+          strokeEnd: '#F97316',
+          glowColor: 'rgba(245, 158, 11, 0.45)',
         }
       : {
           title: 'High Risk: Critical Blocker Clauses',
-          badge: 'bg-rose-100 dark:bg-rose-950/80 text-rose-800 dark:text-rose-300 border-rose-300 dark:border-rose-800',
+          badge: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
           desc: 'Severe document clashes and missing deadline prerequisites. Submitting now risks outright rejection.',
           icon: ShieldAlert,
-          strokeColor: '#EF4444',
+          strokeStart: '#EF4444',
+          strokeEnd: '#F43F5E',
+          glowColor: 'rgba(239, 68, 68, 0.45)',
         };
 
   const StatusIcon = statusConfig.icon;
+  const gradientId = `readiness-grad-${size}-${score}`;
 
   if (size === 'compact') {
     return (
-      <div className={cn('inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border', conf.bgColor, className)}>
+      <div className={cn('inline-flex items-center gap-2.5 px-3 py-1.5 rounded-xl border bg-[#101A2E]/80 backdrop-blur-md border-[rgba(148,163,184,0.15)] shadow-soft-sm', className)}>
         <div className="relative w-8 h-8 flex items-center justify-center shrink-0">
           <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+            <defs>
+              <linearGradient id={`${gradientId}-compact`} x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor={statusConfig.strokeStart} />
+                <stop offset="100%" stopColor={statusConfig.strokeEnd} />
+              </linearGradient>
+            </defs>
             <circle
               cx="50"
               cy="50"
               r={radius}
-              className="text-slate-200 dark:text-slate-700"
+              className="text-slate-800"
               strokeWidth="10"
               stroke="currentColor"
               fill="none"
@@ -79,17 +92,18 @@ export const ConfidenceMeter: React.FC<ConfidenceMeterProps> = ({
               strokeDashoffset={strokeDashoffset}
               strokeWidth="10"
               strokeLinecap="round"
-              stroke={statusConfig.strokeColor}
+              stroke={`url(#${gradientId}-compact)`}
               fill="none"
+              style={{ filter: `drop-shadow(0 0 3px ${statusConfig.glowColor})` }}
               className="transition-all duration-700 ease-out"
             />
           </svg>
-          <span className="absolute text-[11px] font-extrabold text-slate-800 dark:text-slate-100 font-mono">
+          <span className="absolute text-[11px] font-extrabold text-white font-heading">
             {score}%
           </span>
         </div>
         <div className="flex flex-col">
-          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider font-heading">
             Decision Readiness
           </span>
           <span className={cn('text-xs font-bold', conf.textColor)}>{statusConfig.title}</span>
@@ -101,8 +115,7 @@ export const ConfidenceMeter: React.FC<ConfidenceMeterProps> = ({
   return (
     <div
       className={cn(
-        'p-6 rounded-3xl border transition-all bg-white dark:bg-brand-navy-900 shadow-soft-sm',
-        conf.bgColor,
+        'p-6 rounded-3xl border transition-all bg-[rgba(16,26,46,0.7)] backdrop-blur-xl border-[rgba(148,163,184,0.15)] shadow-soft',
         className
       )}
     >
@@ -112,17 +125,23 @@ export const ConfidenceMeter: React.FC<ConfidenceMeterProps> = ({
           {/* Big Circular SVG Gauge */}
           <div className="relative w-28 h-28 flex items-center justify-center shrink-0">
             <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+              <defs>
+                <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor={statusConfig.strokeStart} />
+                  <stop offset="100%" stopColor={statusConfig.strokeEnd} />
+                </linearGradient>
+              </defs>
               {/* Background Track */}
               <circle
                 cx="50"
                 cy="50"
                 r={radius}
-                className="text-slate-200/80 dark:text-slate-800"
+                className="text-slate-800/80"
                 strokeWidth="8"
                 stroke="currentColor"
                 fill="none"
               />
-              {/* Animated Progress Arc */}
+              {/* Animated Progress Arc with Glow */}
               <circle
                 cx="50"
                 cy="50"
@@ -131,18 +150,19 @@ export const ConfidenceMeter: React.FC<ConfidenceMeterProps> = ({
                 strokeDashoffset={strokeDashoffset}
                 strokeWidth="9"
                 strokeLinecap="round"
-                stroke={statusConfig.strokeColor}
+                stroke={`url(#${gradientId})`}
                 fill="none"
-                className="transition-all duration-1000 ease-out drop-shadow-sm"
+                style={{ filter: `drop-shadow(0 0 6px ${statusConfig.glowColor})` }}
+                className="transition-all duration-1000 ease-out"
               />
             </svg>
 
-            {/* Score Center Label */}
+            {/* Score Center Label with Space Grotesk numerals */}
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <span className="text-2xl sm:text-3xl font-black font-mono text-slate-900 dark:text-white leading-none">
+              <span className="text-2xl sm:text-3xl font-extrabold font-heading text-white leading-none tracking-tight">
                 {score}%
               </span>
-              <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400 mt-0.5">
+              <span className="text-[9px] font-bold uppercase tracking-wider text-slate-400 mt-1 font-heading">
                 Readiness
               </span>
             </div>
@@ -153,19 +173,19 @@ export const ConfidenceMeter: React.FC<ConfidenceMeterProps> = ({
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
               <span
                 className={cn(
-                  'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border font-mono tracking-wide',
+                  'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border font-heading tracking-wide',
                   statusConfig.badge
                 )}
               >
                 <StatusIcon className="w-3.5 h-3.5" />
                 {statusConfig.title}
               </span>
-              <span className="text-xs text-slate-400 font-mono">
+              <span className="text-xs text-slate-400 font-heading">
                 Mathematical Model
               </span>
             </div>
 
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
               {statusConfig.desc}
             </p>
           </div>
@@ -174,47 +194,47 @@ export const ConfidenceMeter: React.FC<ConfidenceMeterProps> = ({
         {/* Right: Quick Stat Chips */}
         <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs shrink-0">
           {sourcesCount !== undefined && (
-            <div className="p-2.5 px-3 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700 text-center min-w-[70px]">
-              <span className="block font-black text-slate-900 dark:text-white text-base font-mono">
+            <div className="p-2.5 px-3 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-[rgba(148,163,184,0.15)] text-center min-w-[70px]">
+              <span className="block font-black text-white text-base font-heading">
                 {sourcesCount}
               </span>
-              <span className="text-[10px] text-slate-500 font-semibold block uppercase">Sources</span>
+              <span className="text-[10px] text-slate-400 font-semibold block uppercase">Sources</span>
             </div>
           )}
 
           {gapsCount !== undefined && (
-            <div className="p-2.5 px-3 rounded-2xl bg-purple-50 dark:bg-purple-950/60 border border-purple-200 dark:border-purple-800 text-center min-w-[70px]">
-              <span className="block font-black text-purple-700 dark:text-purple-300 text-base font-mono">
+            <div className="p-2.5 px-3 rounded-2xl bg-purple-500/10 backdrop-blur-md border border-purple-500/30 text-center min-w-[70px]">
+              <span className="block font-black text-purple-300 text-base font-heading">
                 {gapsCount}
               </span>
-              <span className="text-[10px] text-purple-700/80 dark:text-purple-400 font-semibold block uppercase">Dark Spots</span>
+              <span className="text-[10px] text-purple-400 font-semibold block uppercase">Dark Spots</span>
             </div>
           )}
 
           {conflictsCount !== undefined && (
-            <div className="p-2.5 px-3 rounded-2xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-center min-w-[70px]">
-              <span className="block font-black text-rose-700 dark:text-rose-300 text-base font-mono">
+            <div className="p-2.5 px-3 rounded-2xl bg-rose-500/10 backdrop-blur-md border border-rose-500/30 text-center min-w-[70px]">
+              <span className="block font-black text-rose-300 text-base font-heading">
                 {conflictsCount}
               </span>
-              <span className="text-[10px] text-rose-700/80 dark:text-rose-400 font-semibold block uppercase">Conflicts</span>
+              <span className="text-[10px] text-rose-400 font-semibold block uppercase">Conflicts</span>
             </div>
           )}
 
           {outdatedCount !== undefined && (
-            <div className="p-2.5 px-3 rounded-2xl bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 text-center min-w-[70px]">
-              <span className="block font-black text-amber-700 dark:text-amber-300 text-base font-mono">
+            <div className="p-2.5 px-3 rounded-2xl bg-amber-500/10 backdrop-blur-md border border-amber-500/30 text-center min-w-[70px]">
+              <span className="block font-black text-amber-300 text-base font-heading">
                 {outdatedCount}
               </span>
-              <span className="text-[10px] text-amber-700/80 dark:text-amber-400 font-semibold block uppercase">Stale</span>
+              <span className="text-[10px] text-amber-400 font-semibold block uppercase">Stale</span>
             </div>
           )}
 
           {p1Count !== undefined && (
-            <div className="p-2.5 px-3 rounded-2xl bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-200 border border-rose-300 dark:border-rose-800 text-center min-w-[70px]">
-              <span className="block font-black text-base font-mono">
+            <div className="p-2.5 px-3 rounded-2xl bg-rose-500/15 backdrop-blur-md text-rose-200 border border-rose-500/40 text-center min-w-[70px]">
+              <span className="block font-black text-base font-heading">
                 {p1Count}
               </span>
-              <span className="text-[10px] font-bold block uppercase">P1 Pending</span>
+              <span className="text-[10px] font-bold block uppercase text-rose-300">P1 Pending</span>
             </div>
           )}
         </div>
