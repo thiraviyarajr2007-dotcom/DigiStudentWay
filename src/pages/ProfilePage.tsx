@@ -22,11 +22,11 @@ export const ProfilePage: React.FC = () => {
   const { theme, setTheme } = useTheme();
   const { toast } = useToast();
 
-  const [name, setName] = useState('Shinchan Nohara');
-  const [email, setEmail] = useState('shinchan.student@rathinam.ac.in');
-  const [institution, setInstitution] = useState('Rathinam Group of Institutions');
-  const [academicYear, setAcademicYear] = useState('2nd Year B.Tech (Computer Science)');
-  const [homeState, setHomeState] = useState('Tamil Nadu (State Quota)');
+  const [name, setName] = useState('Alex Morgan');
+  const [email, setEmail] = useState('alex.student@university.edu');
+  const [institution, setInstitution] = useState('State University of Technology');
+  const [academicYear, setAcademicYear] = useState('2nd Year Undergraduate');
+  const [homeState, setHomeState] = useState('State Domicile Quota');
 
   // Preference toggles
   const [enableAiHypotheses, setEnableAiHypotheses] = useState(true);
@@ -58,7 +58,7 @@ export const ProfilePage: React.FC = () => {
         <Card className="p-6 sm:p-8 space-y-5 bg-[rgba(16,26,46,0.7)] backdrop-blur-xl border border-[rgba(148,163,184,0.15)] shadow-soft">
           <div className="flex items-center gap-3 pb-4 border-b border-white/10">
             <div className="w-12 h-12 rounded-2xl bg-primary/20 border border-primary/30 text-accent flex items-center justify-center font-bold text-lg shadow-glow-blue/20">
-              SN
+              AM
             </div>
             <div>
               <h3 className="font-heading font-bold text-base text-white">

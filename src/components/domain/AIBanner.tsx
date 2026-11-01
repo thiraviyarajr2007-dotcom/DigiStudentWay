@@ -22,7 +22,7 @@ export const AIBanner: React.FC<{ className?: string }> = ({ className }) => {
       </div>
       <div className="shrink-0 hidden md:block">
         <span className="text-[10px] font-mono px-2 py-1 rounded bg-blue-200/60 dark:bg-blue-900/60 text-blue-800 dark:text-blue-300 font-semibold uppercase tracking-wider">
-          Hackathon 2026 Guardrail
+          Anti-Hallucination Guardrail
         </span>
       </div>
     </div>

@@ -31,3 +31,6 @@ yarn-error.log*
 
 # Teamwork agents
 .agents/
+
+# Local audit
+AUDIT.md

@@ -1,9 +1,6 @@
-# DigiStudentWay - Authentication & Firebase Setup Guide
+# DigiStudentWay - Authentication & Service Setup Guide
 
-> **Shinchan Online Hackathon 2026**  
-> Problem: *Digital Dark Spot - AI-Assisted Information Gap Detection*
-
-This document provides step-by-step instructions for configuring Firebase Authentication, Google Sign-in, Facebook Login, Firestore, and deployment domains.
+This document provides step-by-step instructions for configuring authentication, identity providers, and local environments.
 
 ---
 
@@ -120,5 +117,5 @@ In Firebase Console under **Authentication > Settings > Authorized domains**, ad
 
 ## 5. Local Offline Fallback Mode
 
-If no Firebase credentials are configured in `.env`, **DigiStudentWay automatically boots into resilient Local-Storage Fallback Mode**. Judges can click **"Try Sample Demo"** or **"Hackathon Judge Quick Login"** to run full analysis, view dark spots, and test the platform with zero configuration blockers.
+If no Firebase credentials are configured in `.env`, **DigiStudentWay automatically boots into resilient Local-Storage Fallback Mode**. Users can click **"Sample Data"** or **"Instant Guest Mode"** to run full analysis, view dark spots, and test the platform with zero configuration blockers.
 

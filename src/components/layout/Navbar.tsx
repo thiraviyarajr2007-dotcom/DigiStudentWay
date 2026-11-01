@@ -114,10 +114,10 @@ export const Navbar: React.FC = () => {
               </div>
             </Link>
 
-            {/* Hackathon Pill */}
+            {/* Feature Pill */}
             <div className="hidden xl:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900/60 border border-white/10 text-[11px] font-medium text-slate-300">
-              <Sparkles className="w-3 h-3 text-amber-400" />
-              <span>Shinchan Hackathon 2026: Digital Dark Spot</span>
+              <Sparkles className="w-3 h-3 text-accent" />
+              <span>Cross-Source Verification Engine</span>
             </div>
           </div>
 

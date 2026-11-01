@@ -112,7 +112,7 @@ export const HistoryPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
         <div>
           <span className="text-xs font-bold uppercase tracking-wider text-accent">
-            Audit Archive (Firebase Firestore / LocalSync)
+            Audit Archive (Cloud & Local Sync)
           </span>
           <h1 className="font-heading font-extrabold text-2xl sm:text-3xl text-white mt-0.5">
             Past Gap Analyses & Dark Spot Audits

@@ -18,11 +18,7 @@ export const Footer: React.FC = () => {
               </span>
             </div>
             <p className="text-xs text-slate-400 max-w-md leading-relaxed">
-              Shinchan Online Hackathon 2026 entry for the problem{' '}
-              <strong className="text-slate-200">
-                "Digital Dark Spot: AI-Assisted Information Gap Detection Platform"
-              </strong>
-              . Helping students bridge the chasm between contradictory circulars, missing renewal clauses, and outdated criteria.
+              AI-assisted cross-source verification platform. Helping students and researchers identify missing prerequisites, contradictory statements, and outdated information before making critical decisions.
             </p>
             <div className="flex items-center gap-3 pt-2">
               <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/30">
@@ -76,20 +72,20 @@ export const Footer: React.FC = () => {
           {/* Problem Statement Details */}
           <div>
             <h4 className="font-heading font-bold text-xs uppercase tracking-wider text-white mb-3">
-              Hackathon Track
+              Core Capabilities
             </h4>
             <p className="text-xs text-slate-400 leading-relaxed mb-2">
-              Focus Domains: Post-Matric Scholarships, Central University Admissions, Govt Schemes, National Entrance Exams, and Research Internships.
+              Cross-source comparison across Education, Career & Job Offers, Public Services, Research, and Policy circulars.
             </p>
             <span className="text-[11px] font-mono text-slate-400 block">
-              Version: 1.0.0-hackathon2026
+              Version: 1.0.0
             </span>
           </div>
         </div>
 
         <div className="pt-8 border-t border-[rgba(148,163,184,0.15)] flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
           <p>
-            &copy; {new Date().getFullYear()} DigiStudentWay. Built for Shinchan Online Hackathon 2026.
+            &copy; {new Date().getFullYear()} DigiStudentWay. All rights reserved.
           </p>
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <Link to="/privacy" className="hover:text-white underline underline-offset-2">

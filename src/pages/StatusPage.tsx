@@ -103,10 +103,10 @@ export const StatusPage: React.FC = () => {
           </div>
           <div>
             <h3 className="font-heading font-bold text-sm text-white">
-              Primary: Google Gemini
+              Primary AI Engine
             </h3>
             <p className="text-xs text-slate-400 mt-0.5">
-              gemini-2.5-flash & gemini-flash-latest via REST
+              Source-grounded analysis & structured extraction
             </p>
           </div>
         </Card>
@@ -129,7 +129,7 @@ export const StatusPage: React.FC = () => {
           </div>
           <div>
             <h3 className="font-heading font-bold text-sm text-white">
-              Fallback: OpenRouter
+              Secondary AI Engine
             </h3>
             <p className="text-xs text-slate-400 mt-0.5">
               High-concurrency backup for rate-limit protection
@@ -155,10 +155,10 @@ export const StatusPage: React.FC = () => {
           </div>
           <div>
             <h3 className="font-heading font-bold text-sm text-white">
-              Cloud Persistence
+              Cloud Storage & Sync
             </h3>
             <p className="text-xs text-slate-400 mt-0.5">
-              Firebase Auth & Firestore + IndexedDB LocalSync
+              Encrypted session history & local storage cache
             </p>
           </div>
         </Card>
@@ -169,11 +169,11 @@ export const StatusPage: React.FC = () => {
         <div className="flex items-center gap-2">
           <ShieldCheck className="w-5 h-5 text-accent" />
           <h3 className="font-heading font-bold text-sm text-white">
-            High Reliability 3-Tier Architecture
+            High Reliability Multi-Tier Architecture
           </h3>
         </div>
         <p className="text-xs text-slate-300 leading-relaxed">
-          DigiStudentWay uses an automatic 3-tier fallback chain: Gemini REST API ➔ OpenRouter REST API ➔ Bundled Offline Sample Engine. If cloud LLMs reach rate limits during live judge evaluation, the deterministic offline verification engine steps in automatically, ensuring 100% uptime without blank screens.
+          DigiStudentWay uses an automatic 3-tier fallback chain: Primary AI Engine ➔ Secondary Fallback Engine ➔ Bundled Offline Verification Engine. If remote services reach concurrency limits during live evaluation, the deterministic offline verification engine steps in automatically, ensuring 100% uptime without blank screens.
         </p>
         {data?.timestamp && (
           <div className="text-[11px] font-mono text-slate-400 pt-2 border-t border-white/10">

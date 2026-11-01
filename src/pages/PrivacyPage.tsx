@@ -71,10 +71,10 @@ export const PrivacyPage: React.FC = () => {
             <strong>1. Public URLs & Notice Texts:</strong> When you provide a government portal URL or paste text from a scholarship circular, our backend fetches the page using SSRF-safe protocols to extract clauses, dates, and requirements.
           </p>
           <p>
-            <strong>2. Authentication Credentials:</strong> When signing in with Google or Facebook, authentication tokens are handled securely by Firebase Auth. We only store your email address and chosen display name to maintain your audit history.
+            <strong>2. Authentication Credentials:</strong> When signing in with Google or Facebook, authentication tokens are handled securely by standard OAuth protocols. We only store your email address and chosen display name to maintain your audit history.
           </p>
           <p>
-            <strong>3. AI Processing:</strong> Ingested public notice chunks are transmitted to Gemini 2.5 Flash strictly for clause comparison and gap identification. We do not use your audits to train public AI models.
+            <strong>3. AI Processing:</strong> Ingested notice chunks are transmitted to secure inference APIs strictly for clause comparison and gap identification. We do not use your audits to train public AI models.
           </p>
           <p>
             <strong>4. Data Deletion:</strong> You have full sovereignty over your history. Clicking the delete icon on the History page immediately wipes the audit from both local storage and Firestore.

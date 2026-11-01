@@ -15,12 +15,12 @@ export const JudgeTour: React.FC<JudgeTourProps> = ({ isOpen, onClose, onHighlig
 
   const tourSteps = [
     {
-      title: 'Welcome Hackathon Judges! 🏆',
+      title: 'Welcome to DigiStudentWay 🔍',
       badge: 'Step 1 of 5 • Core Innovation',
       icon: Sparkles,
       iconColor: 'text-amber-500 bg-amber-100 dark:bg-amber-950/80',
       description:
-        'Generic chatbots summarize or chat. DigiStudentWay solves the "Digital Dark Spot" problem: revealing what critical prerequisites circulars left out, conflicting deadlines, and outdated rules before students apply.',
+        'Generic search tools show what exists. DigiStudentWay solves information blind spots: revealing what critical prerequisites documents left out, conflicting deadlines, and outdated rules before key decisions are made.',
       actionHint: 'Click Next to see how we score Decision Readiness deterministically.',
     },
     {
