@@ -245,6 +245,165 @@ export const SAMPLE_OFFLINE_OUTPUT: RawAnalysisOutput = {
   ],
 };
 
+export const SAMPLE_CAREER_OFFLINE_OUTPUT: RawAnalysisOutput = {
+  facts: [
+    {
+      statement: 'Base salary is $165,000 per annum with a 15% annual target performance bonus.',
+      sourceId: 'src-career-offer',
+      quote: 'Compensation: Base salary of $165,000 per annum, paid semi-monthly, plus 15% annual target performance incentive.',
+      chunkIndex: 0,
+      confidence: 0.99,
+      type: 'sourced',
+    },
+    {
+      statement: 'Relocation allowance is $5,000 subject to a 24-month retention commitment.',
+      sourceId: 'src-career-offer',
+      quote: 'Relocation: A relocation allowance of $5,000 is provided subject to a 24-month retention commitment.',
+      chunkIndex: 0,
+      confidence: 0.98,
+      type: 'sourced',
+    },
+    {
+      statement: 'Departing personnel are subject to a 12-month post-employment client and talent non-solicitation restriction.',
+      sourceId: 'src-career-handbook',
+      quote: 'For a period of 12 months post-employment, departing employees may not solicit company personnel or enterprise clients.',
+      chunkIndex: 0,
+      confidence: 0.95,
+      type: 'sourced',
+    },
+  ],
+  expectedChecklist: [
+    {
+      attributeId: 'compensation_breakdown',
+      label: 'Base Salary, Bonus & Benefits Effective Date',
+      status: 'covered',
+      notes: '$165,000 base + 15% target bonus confirmed in offer letter.',
+      sourceRefs: ['Acme Offer Letter & Term Sheet'],
+    },
+    {
+      attributeId: 'notice_period',
+      label: 'Probationary & Permanent Notice Period',
+      status: 'partially_covered',
+      notes: 'Direct conflict between 30-day offer probationary term and 90-day company handbook mandate.',
+      sourceRefs: ['Acme Offer Letter & Term Sheet', 'Acme Global Employee Handbook'],
+    },
+    {
+      attributeId: 'ip_assignment',
+      label: 'Personal Inventions & Off-Hours Side Projects',
+      status: 'not_found',
+      notes: 'DIGITAL DARK SPOT: Neither document specifies carve-out procedures for personal open-source projects created off-hours.',
+      sourceRefs: [],
+    },
+    {
+      attributeId: 'clawback_terms',
+      label: 'Relocation & Signing Bonus Repayment Schedule',
+      status: 'partially_covered',
+      notes: 'Outdated 2022 internal wiki quotes $3,000 with zero clawback; active 2026 offer enforces 24-month retention.',
+      sourceRefs: ['Acme Offer Letter & Term Sheet', 'Acme Operations Wiki'],
+    },
+    {
+      attributeId: 'non_compete_clause',
+      label: 'Non-Compete & Non-Solicitation Restrictions',
+      status: 'covered',
+      notes: '12-month client & employee non-solicitation term documented.',
+      sourceRefs: ['Acme Global Employee Handbook'],
+    },
+    {
+      attributeId: 'workplace_policy',
+      label: 'Remote vs In-Office Attendance Mandate',
+      status: 'partially_covered',
+      notes: 'Full-time employment confirmed, but in-office physical requirements omitted.',
+      sourceRefs: ['Acme Offer Letter & Term Sheet'],
+    },
+  ],
+  conflicts: [
+    {
+      topic: 'Probationary Notice Period Contradiction',
+      summary: 'Offer letter specifies 30 days notice during probation; handbook mandates 90 days notice for all staff with forced garden leave.',
+      severity: 'high',
+      type: 'sourced',
+      confidence: 0.98,
+      sourceA: {
+        sourceId: 'src-career-offer',
+        sourceTitle: 'Acme Offer Letter & Term Sheet',
+        quote: 'Notice period during the initial 6-month probationary review period is 30 days written notice by either party.',
+        date: '2026-10-15',
+        chunkIndex: 0,
+      },
+      sourceB: {
+        sourceId: 'src-career-handbook',
+        sourceTitle: 'Acme Global Employee Handbook',
+        quote: 'All employees, regardless of tenure, must provide a minimum of 90 days written notice prior to departure, subject to mandatory garden leave.',
+        date: '2026-08-01',
+        chunkIndex: 0,
+      },
+      resolutionTip: 'Ensure the executed offer letter includes an integration clause superseding the general handbook.',
+    },
+  ],
+  outdatedWarnings: [
+    {
+      title: 'Stale Relocation Policy on Internal Operations Wiki',
+      warningText: 'An archived internal HR wiki page from April 2022 cites a $3,000 relocation stipend with no clawback, conflicting with active 2026 terms.',
+      observedDate: '2022-04-10',
+      currentCycle: '2026-27',
+      sourceId: 'src-career-wiki',
+      riskLevel: 'medium',
+      stalenessMonths: 54,
+      confidence: 0.94,
+    },
+  ],
+  unansweredGaps: [
+    {
+      title: 'Personal Open-Source & Off-Hours Side Projects Exemption Omitted',
+      description: 'Neither document provides a carve-out procedure for personal coding projects created outside working hours on personal devices.',
+      category: 'eligibility',
+      severity: 'high',
+      whyItMatters: 'Without a written Schedule A carve-out prior to signing, IP assignment agreements may grant the employer ownership claims over personal creations.',
+      suggestedQuestionToAsk: 'Does the company require formal registration of personal open-source projects on Schedule A, and is off-hours coding exempted?',
+      missingAttributeId: 'ip_assignment',
+      isAiSuggestion: false,
+      type: 'sourced',
+      confidence: 0.96,
+    },
+  ],
+  verifyNextChecklist: [
+    {
+      priority: 'P1',
+      title: 'Request Schedule A Carve-Out for Pre-Existing Personal Projects',
+      reason: 'Handbook Section 14 assigns all intellectual property to company unless explicitly excluded in writing before start date.',
+      actionType: 'request_document',
+      suggestedAction: 'Email recruiter: "Please provide Schedule A Prior Inventions list to formally carve out my personal open-source repositories."',
+      whereToVerify: 'Corporate Legal / HR Talent Operations',
+      sourceRef: 'Employee Handbook Section 14',
+      linkedGapOrConflictId: 'gap-c1',
+      deadline: 'Prior to signing',
+      type: 'sourced',
+    },
+    {
+      priority: 'P1',
+      title: 'Clarify 30 vs 90 Day Notice Period in Written Offer Addendum',
+      reason: 'Offer letter specifies 30 days while handbook specifies 90 days with mandatory garden leave.',
+      actionType: 'call_helpdesk',
+      suggestedAction: 'Ask HR: "Please confirm that the 30-day notice period in the offer letter supersedes Section 9 of the handbook."',
+      whereToVerify: 'HR Talent Lead',
+      sourceRef: 'Offer Letter Term Sheet & Handbook Sec 9',
+      linkedGapOrConflictId: 'conf-c1',
+      deadline: 'Prior to signing',
+      type: 'sourced',
+    },
+    {
+      priority: 'P2',
+      title: 'Confirm Pro-Rata Relocation Repayment Terms',
+      reason: 'Offer letter specifies 100% repayment even if departing at month 23; request standard monthly proration.',
+      actionType: 'cross_check_guideline',
+      suggestedAction: 'Request standard monthly pro-rata reduction for the relocation allowance.',
+      whereToVerify: 'HR Benefits Specialist',
+      sourceRef: 'Offer Letter Relocation Clause',
+      type: 'sourced',
+    },
+  ],
+};
+
 /**
  * Builds the analysis prompt for LLMs
  */
@@ -261,20 +420,24 @@ function buildAnalysisPrompt(
   category = 'scholarship'
 ): string {
   const categoryAttributeMap: Record<string, string[]> = {
+    education: ['eligibility', 'application_deadline', 'fee_structure', 'verification_docs', 'refund_policy', 'credit_transfer', 'official_portal', 'grievance_contact'],
+    career: ['compensation_breakdown', 'notice_period', 'ip_assignment', 'non_compete_clause', 'clawback_terms', 'workplace_policy', 'benefits_coverage', 'termination_severance'],
+    govt_service: ['domicile_eligibility', 'income_ceiling', 'application_channel', 'required_certificates', 'disbursement_method', 'redressal_channel', 'renewal_continuation', 'processing_timeline'],
+    research: ['sample_methodology', 'statistical_significance', 'funding_disclosure', 'replication_data', 'baseline_comparison', 'limitations_stated', 'ethical_approval', 'publication_date'],
+    business: ['pricing_schedule', 'sla_uptime', 'liability_cap', 'termination_convenience', 'data_ownership', 'audit_rights', 'governing_law', 'support_tiers'],
     scholarship: ['eligibility', 'income_ceiling', 'deadline', 'documents', 'renewal', 'portal_link', 'disbursement', 'helpdesk'],
-    admission: ['eligibility', 'cutoff_marks', 'tuition_fees', 'application_deadline', 'verification_documents', 'counselling_process', 'seat_matrix', 'refund_policy'],
-    govt_scheme: ['eligibility_criteria', 'income_threshold', 'application_mode', 'required_certificates', 'nodal_agency', 'disbursement_mode', 'grievance_redressal', 'renewal_terms'],
+    admission: ['eligibility', 'application_deadline', 'fee_structure', 'verification_docs', 'refund_policy', 'credit_transfer', 'official_portal', 'grievance_contact'],
+    govt_scheme: ['domicile_eligibility', 'income_ceiling', 'application_channel', 'required_certificates', 'disbursement_method', 'redressal_channel', 'renewal_continuation', 'processing_timeline'],
     exam: ['educational_qualification', 'age_limit', 'exam_pattern', 'registration_deadline', 'admit_card_date', 'scribe_compensatory_time', 'reservation_documents', 'exam_centers'],
     internship: ['candidate_eligibility', 'stipend_allowance', 'duration_timeline', 'intellectual_property_rights', 'university_noc_requirement', 'selection_interview', 'accommodation_support', 'offer_acceptance_deadline'],
   };
 
-  const expectedAttrs = categoryAttributeMap[category] || categoryAttributeMap.scholarship;
+  const expectedAttrs = categoryAttributeMap[category] || categoryAttributeMap.education;
 
-  return `You are the DigiStudentWay Information Gap & Contradiction Detection Engine for the Shinchan Online Hackathon 2026.
-Problem: "Digital Dark Spot: AI-Assisted Information Gap Detection Platform".
-Goal: Identify what is MISSING, CONFLICTING, or OUTDATED across multiple academic / governmental notices.
+  return `You are the DigiStudentWay Information Gap & Contradiction Detection Engine.
+Goal: Cross-examine multiple documents and sources about ANY topic (education, career, government services, research, business) to identify what is MISSING, CONFLICTING, or OUTDATED.
 
-TODAY'S REFERENCE DATE: 2026-11-01. Current Active Academic Cycle: 2026-27.
+TODAY'S REFERENCE DATE: 2026-11-01.
 DOMAIN CATEGORY: ${category.toUpperCase()}
 
 USER INQUIRY: "${query}"
@@ -287,18 +450,18 @@ STRICT ANALYSIS RULES:
    - For every key fact, copy an EXACT, VERBATIM quote from a specific chunk text. Do not paraphrase quotes. The server runs string matching against raw chunks.
    - Include exact "chunkIndex".
 2. EXPECTED ATTRIBUTE CHECKLIST:
-   - Check all 8 core attributes for ${category}: [${expectedAttrs.join(', ')}]
-   - Mark each as "covered", "partially_covered", or "not_found" (a Digital Dark Spot!).
+   - Check all core decision attributes for ${category}: [${expectedAttrs.join(', ')}]. If the user asks an open-ended question, dynamically infer 6 to 8 attributes a prudent decision-maker must verify.
+   - Mark each as "covered", "partially_covered", or "not_found" (an unstated Digital Dark Spot!).
 3. DIRECT CONFLICT DETECTION:
-   - Detect pairs of claims from different sources on the same attribute that disagree. Provide verbatim quotes from both Source A and Source B.
+   - Detect pairs of claims from different sources on the same topic that disagree. Provide verbatim quotes from both Source A and Source B.
 4. OUTDATED WARNINGS:
-   - Flag sources quoting expired cycles (e.g. 2023 or 2024 rules like old income ceiling ₹2.5L when 2026 is ₹3.5L), or undated pages.
+   - Flag sources quoting expired policies, deprecated numbers, or undated web pages.
 5. UNANSWERED QUESTIONS & GAPS:
-   - High-stakes questions the sources never address that the student must verify.
+   - Critical prerequisites or policies the sources completely leave out.
 6. PRIORITIZED VERIFY-NEXT CHECKLIST:
-   - Prioritized actions (P1: Critical deadline/blocking document, P2: Prerequisite, P3: Secondary). Specify concrete "whereToVerify".
+   - Prioritized actions (P1: Critical/blocking discrepancy, P2: Policy prerequisite, P3: Secondary detail). Specify concrete "whereToVerify".
 7. CAUTIONARY FORMULATION:
-   - Use phrasing such as "Potential gap detected", "Possible contradiction", "Reported requirement".
+   - Label all findings conservatively: "Potential gap detected", "Possible contradiction", "Reported requirement". Never state unverified inferences as guaranteed facts.
 
 OUTPUT FORMAT: Output STRICT valid JSON ONLY matching this schema without markdown fences:
 {
@@ -500,6 +663,22 @@ export async function runGapAnalysisWithFallback(
   }
 
   // 3. Deterministic Offline Fallback for sample demo or queries
+  const isCareerSample =
+    category === 'career' ||
+    query.toLowerCase().includes('job offer') ||
+    query.toLowerCase().includes('engineer') ||
+    query.toLowerCase().includes('salary') ||
+    query.toLowerCase().includes('employment') ||
+    sourcesPayload.some(s => s.domain.includes('acmecloud'));
+
+  if (isCareerSample) {
+    return {
+      rawOutput: SAMPLE_CAREER_OFFLINE_OUTPUT,
+      providerName: 'Offline Verified Engine (Career Corpus)',
+      providerTag: 'offline_sample',
+    };
+  }
+
   const isSample =
     query.toLowerCase().includes('scholarship') ||
     query.toLowerCase().includes('pms') ||
@@ -516,7 +695,7 @@ export async function runGapAnalysisWithFallback(
 
   // If not sample and no provider succeeded, return friendly error guidance
   throw new Error(
-    'AI gap analysis services are currently busy or keys are pending. Please try pasting circular text directly, or click "Use Sample Scholarship Demo" for an immediate offline audit.'
+    'AI gap analysis services are currently busy or keys are pending. Please try pasting circular text directly, or click "Sample Data" for an immediate offline audit.'
   );
 }
 

@@ -1,4 +1,15 @@
-export type DomainCategory = 'scholarship' | 'admission' | 'govt_scheme' | 'exam' | 'internship';
+export type DomainCategory =
+  | 'scholarship'
+  | 'education'
+  | 'career'
+  | 'govt_service'
+  | 'govt_scheme'
+  | 'research'
+  | 'business'
+  | 'admission'
+  | 'exam'
+  | 'internship'
+  | 'general';
 
 export type SemanticType = 'fact' | 'conflict' | 'outdated' | 'gap' | 'ai' | 'uncertainty';
 

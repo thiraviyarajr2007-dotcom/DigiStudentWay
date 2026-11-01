@@ -17,16 +17,276 @@ export interface TopicTemplate {
   expectedAttributes: TopicAttributeTemplate[];
 }
 
-export const TOPIC_TEMPLATES: Record<DomainCategory, TopicTemplate> = {
+export const TOPIC_TEMPLATES: Record<string, TopicTemplate> = {
+  education: {
+    id: 'education',
+    name: 'Education & Admissions',
+    badge: '🎓 Education',
+    iconName: 'GraduationCap',
+    description: 'Degree programs, admissions, prerequisites, tuition fees, and credit transfer policies',
+    defaultQuery:
+      'What are the unstated prerequisites, fee refund timelines, and document verification rules for University Admissions?',
+    defaultGoal: 'Prevent Admission Forfeiture & Fee Dispute Losses',
+    expectedAttributes: [
+      {
+        attributeId: 'eligibility',
+        label: 'Minimum Academic Eligibility & Subjects',
+        description: 'Qualifying coursework, minimum GPA/percentage, and recognized equivalence.',
+      },
+      {
+        attributeId: 'application_deadline',
+        label: 'Registration & Final Cutoff Deadlines',
+        description: 'Hard closing timestamps, choice filling deadlines, and document submission windows.',
+      },
+      {
+        attributeId: 'fee_structure',
+        label: 'Tuition Fees, Deposits & Additional Charges',
+        description: 'Semester tuition fees, caution deposit, laboratory costs, and non-refundable fees.',
+      },
+      {
+        attributeId: 'verification_docs',
+        label: 'Mandatory Verification Documents',
+        description: 'Required transcripts, conduct certificates, and physical verification mandates.',
+      },
+      {
+        attributeId: 'refund_policy',
+        label: 'Withdrawal & Fee Refund Schedule',
+        description: 'Statutory cancellation timeline and refundable percentage upon withdrawal.',
+      },
+      {
+        attributeId: 'credit_transfer',
+        label: 'Credit Transfer & Evaluation Benchmarks',
+        description: 'Prior learning recognition, lateral entry criteria, and minimum passing GPA.',
+      },
+      {
+        attributeId: 'official_portal',
+        label: 'Official Application Portal URL',
+        description: 'Authoritative direct application link without third-party intermediaries.',
+      },
+      {
+        attributeId: 'grievance_contact',
+        label: 'Admissions Office & Nodal Officer Contact',
+        description: 'Designated registrar email, phone numbers, and physical enquiry desk location.',
+      },
+    ],
+  },
+  career: {
+    id: 'career',
+    name: 'Career & Employment',
+    badge: '💼 Career',
+    iconName: 'Briefcase',
+    description: 'Job offers, employment contracts, equity terms, non-competes, and remote work rules',
+    defaultQuery:
+      'What should I verify before accepting this Job Offer regarding IP assignment, non-compete clause, relocation clawback, and notice period?',
+    defaultGoal: 'Protect Intellectual Property & Ensure Transparent Compensation Terms',
+    expectedAttributes: [
+      {
+        attributeId: 'compensation_breakdown',
+        label: 'Base Salary, Bonus & Vesting Schedule',
+        description: 'Fixed base pay, performance incentive milestones, and stock option vesting frequency.',
+      },
+      {
+        attributeId: 'notice_period',
+        label: 'Probationary & Permanent Notice Period',
+        description: 'Resignation notice duration during probation vs permanent employment and garden leave rules.',
+      },
+      {
+        attributeId: 'ip_assignment',
+        label: 'Inventions & Side-Project IP Rights',
+        description: 'Carve-out for personal off-hours creations and prior inventions disclosure requirements.',
+      },
+      {
+        attributeId: 'non_compete_clause',
+        label: 'Non-Compete & Non-Solicit Restrictions',
+        description: 'Geographic and temporal post-employment restrictions on competitive industry activities.',
+      },
+      {
+        attributeId: 'clawback_terms',
+        label: 'Relocation & Signing Bonus Clawback',
+        description: 'Repayment schedule and prorated terms if leaving company within 12-24 months.',
+      },
+      {
+        attributeId: 'workplace_policy',
+        label: 'Remote vs In-Office Attendance Mandate',
+        description: 'Mandatory physical office days, core collaboration hours, and relocation assistance.',
+      },
+      {
+        attributeId: 'benefits_coverage',
+        label: 'Healthcare, Insurance & Paid Time Off',
+        description: 'Medical coverage effective date, annual leave accrual, and parental leave entitlements.',
+      },
+      {
+        attributeId: 'termination_severance',
+        label: 'Termination Clauses & Severance Protocol',
+        description: 'Conditions for termination with/without cause and severance pay calculations.',
+      },
+    ],
+  },
+  govt_service: {
+    id: 'govt_service',
+    name: 'Government & Public Services',
+    badge: '🏛️ Public Services',
+    iconName: 'Landmark',
+    description: 'Civic schemes, welfare subsidies, citizen services, identity documents, and permits',
+    defaultQuery:
+      'What are the hidden exclusions, bank linkage requirements, and renewal terms for this Public Service Scheme?',
+    defaultGoal: 'Ensure Benefit Approval & Avoid Administrative Rejection',
+    expectedAttributes: [
+      {
+        attributeId: 'domicile_eligibility',
+        label: 'Domicile & Nativity Prerequisites',
+        description: 'Proof of continuous residence, state identity credentials, and age eligibility window.',
+      },
+      {
+        attributeId: 'income_ceiling',
+        label: 'Income & Socioeconomic Classification',
+        description: 'Income ceiling, tax filing status exemptions, and priority category mandates.',
+      },
+      {
+        attributeId: 'application_channel',
+        label: 'Online Portal vs Citizen Service Center',
+        description: 'Whether application must be physically submitted via regional centers or web portal.',
+      },
+      {
+        attributeId: 'required_certificates',
+        label: 'Prescribed Authority Certificate Formats',
+        description: 'Required issuing authority rank, digital signatures, and QR code verification.',
+      },
+      {
+        attributeId: 'disbursement_method',
+        label: 'Disbursement Method & Bank Account Linkage',
+        description: 'Direct Benefit Transfer (DBT) prerequisites, Aadhaar/identity mapping requirements.',
+      },
+      {
+        attributeId: 'redressal_channel',
+        label: 'Grievance Redressal & Helpdesk Details',
+        description: 'Official department escalation desk, toll-free helpline, and appeal timelines.',
+      },
+      {
+        attributeId: 'renewal_continuation',
+        label: 'Periodic Audit & Renewal Mandates',
+        description: 'Annual re-verification schedules, self-declaration forms, and continuation criteria.',
+      },
+      {
+        attributeId: 'processing_timeline',
+        label: 'Statutory Processing Timeline & SLA',
+        description: 'Public service guarantee turnaround time and inspection benchmarks.',
+      },
+    ],
+  },
+  research: {
+    id: 'research',
+    name: 'Research & Publications',
+    badge: '🔬 Research',
+    iconName: 'FileCheck2',
+    description: 'Grant proposals, scientific literature, clinical trials, methodology papers, and patents',
+    defaultQuery:
+      'What are the methodology discrepancies, funding disclosures, and reproducibility gaps across these research studies?',
+    defaultGoal: 'Identify Unreplicated Claims & Methodological Dark Spots',
+    expectedAttributes: [
+      {
+        attributeId: 'sample_methodology',
+        label: 'Sample Size, Demographics & Methodology',
+        description: 'Cohort size, selection bias controls, randomization, and experimental design.',
+      },
+      {
+        attributeId: 'statistical_significance',
+        label: 'Statistical Significance & Confidence Intervals',
+        description: 'P-value thresholds, effect sizes, power calculations, and error bounds.',
+      },
+      {
+        attributeId: 'funding_disclosure',
+        label: 'Funding Sources & Conflict of Interest Disclosures',
+        description: 'Commercial sponsor declarations, institutional grants, and investigator affiliations.',
+      },
+      {
+        attributeId: 'replication_data',
+        label: 'Open Data & Code Availability',
+        description: 'Public repository links, raw dataset availability, and software pipeline reproducibility.',
+      },
+      {
+        attributeId: 'baseline_comparison',
+        label: 'Baseline Benchmarks & Control Groups',
+        description: 'Validation against standard industry or academic control baselines.',
+      },
+      {
+        attributeId: 'limitations_stated',
+        label: 'Stated Assumptions & Limitations',
+        description: 'Scope boundaries, environmental constraints, and unaddressed edge cases.',
+      },
+      {
+        attributeId: 'ethical_approval',
+        label: 'Ethics Review & Institutional Approval (IRB)',
+        description: 'Human or animal subject review board compliance and consent protocols.',
+      },
+      {
+        attributeId: 'publication_date',
+        label: 'Peer-Reviewed Status & Citation Currency',
+        description: 'Publication date, preprint status, and subsequent corrigendum or retractions.',
+      },
+    ],
+  },
+  business: {
+    id: 'business',
+    name: 'Business & Vendor Contracts',
+    badge: '📊 Business',
+    iconName: 'Building',
+    description: 'Service agreements, vendor SLAs, procurement tenders, compliance policies, and pricing',
+    defaultQuery:
+      'What are the unstated renewal price hikes, SLA breach remedies, and liability caps in this Vendor Service Agreement?',
+    defaultGoal: 'Prevent Contractual Hidden Costs & Liability Exposure',
+    expectedAttributes: [
+      {
+        attributeId: 'pricing_schedule',
+        label: 'Pricing, Hidden Fees & Renewal Escalation',
+        description: 'Fixed fees vs variable usage tiers, setup costs, and annual price escalation caps.',
+      },
+      {
+        attributeId: 'sla_uptime',
+        label: 'Service Level Agreement (SLA) & Penalties',
+        description: 'Guaranteed uptime percentage, measurement intervals, and financial credit formulas.',
+      },
+      {
+        attributeId: 'liability_cap',
+        label: 'Limitation of Liability & Indemnification',
+        description: 'Aggregate liability ceiling (e.g. 12 months fees) and excluded damages categories.',
+      },
+      {
+        attributeId: 'termination_convenience',
+        label: 'Termination for Convenience & Exit Fees',
+        description: 'Required notice days, early termination penalties, and transition assistance obligations.',
+      },
+      {
+        attributeId: 'data_ownership',
+        label: 'Data Ownership, Privacy & Retrieval',
+        description: 'Customer data ownership rights, compliance with privacy regulations, and export formats.',
+      },
+      {
+        attributeId: 'audit_rights',
+        label: 'Security Certifications & Audit Rights',
+        description: 'SOC2/ISO certifications, penetration testing reports, and customer audit access.',
+      },
+      {
+        attributeId: 'governing_law',
+        label: 'Governing Law & Dispute Resolution',
+        description: 'Jurisdiction, applicable law, mandatory arbitration, and court venues.',
+      },
+      {
+        attributeId: 'support_tiers',
+        label: 'Support Tiers & Incident Response Times',
+        description: 'P1 incident response turnaround SLA, dedicated support contacts, and weekend coverage.',
+      },
+    ],
+  },
   scholarship: {
     id: 'scholarship',
-    name: 'Scholarship / Fellowship',
+    name: 'Scholarships & Fellowships',
     badge: '🎓 Financial Aid',
     iconName: 'GraduationCap',
-    description: 'Post-Matric, Merit-cum-Means, Central Sector & State Welfare Fellowships',
+    description: 'Merit-cum-means, post-matric, research fellowships, and institutional grants',
     defaultQuery:
-      'What should I verify before applying for the Post-Matric Merit Scholarship (PMS 2026-27) regarding income certificate authority, college e-verification cutoff, and Year 2 renewal CGPA rules?',
-    defaultGoal: 'Avoid Application Rejection & Renewal Cancellation',
+      'What should I verify before applying for this scholarship regarding income proof authority, portal deadlines, and renewal CGPA rules?',
+    defaultGoal: 'Avoid Application Rejection & Ensure Seamless Continuation',
     expectedAttributes: [
       {
         attributeId: 'eligibility',
@@ -36,7 +296,7 @@ export const TOPIC_TEMPLATES: Record<DomainCategory, TopicTemplate> = {
       {
         attributeId: 'income_ceiling',
         label: 'Gross Family Annual Income Limit',
-        description: 'Exact family income ceiling (e.g. ₹2.5L vs ₹3.5L per annum) and parental category.',
+        description: 'Exact family income ceiling and allowable parental income documents.',
       },
       {
         attributeId: 'deadline',
@@ -55,7 +315,7 @@ export const TOPIC_TEMPLATES: Record<DomainCategory, TopicTemplate> = {
       },
       {
         attributeId: 'portal_link',
-        label: 'Official Government Application Portal URL',
+        label: 'Official Application Portal URL',
         description: 'Direct verified URL to apply online without phishing or third-party intermediaries.',
       },
       {
@@ -70,221 +330,28 @@ export const TOPIC_TEMPLATES: Record<DomainCategory, TopicTemplate> = {
       },
     ],
   },
-  admission: {
-    id: 'admission',
-    name: 'College / University Admission',
-    badge: '🏛️ Admissions',
-    iconName: 'BookOpen',
-    description: 'B.Tech, Medical, Arts & Science, Central University Seat Allocation (CUET / TNEA / JoSAA)',
-    defaultQuery:
-      'What are the unstated prerequisites, fee refund timelines, and document verification rules for B.Tech / University Admissions 2026-27?',
-    defaultGoal: 'Prevent Seat Forfeiture & Fee Dispute Losses',
-    expectedAttributes: [
-      {
-        attributeId: 'eligibility',
-        label: 'Minimum Qualifying Marks & Subject Prerequisite',
-        description: 'Aggregate percentage in mandatory subjects (Maths, Physics, Chem) and board equivalence.',
-      },
-      {
-        attributeId: 'cutoff_marks',
-        label: 'Category-wise Cutoff Percentiles & Ranks',
-        description: 'Opening and closing ranks across General, OBC-NCL, SC/ST, and EWS quota seats.',
-      },
-      {
-        attributeId: 'tuition_fees',
-        label: 'Tuition, Caution Deposit & Hostel Fee Breakdown',
-        description: 'Complete fee structure per semester including non-refundable charges.',
-      },
-      {
-        attributeId: 'application_deadline',
-        label: 'Choice Locking & Counselling Round 1 Cut-off',
-        description: 'Strict registration cut-off, choice filling window, and seat allotment schedule.',
-      },
-      {
-        attributeId: 'verification_documents',
-        label: 'Original Transfer, Migration & Conduct Certificates',
-        description: 'Mandatory physical certificates required at the time of campus reporting.',
-      },
-      {
-        attributeId: 'counselling_process',
-        label: 'Online Document Verification vs Physical Reporting',
-        description: 'Hybrid verification stages, biometric registration, and freeze/float protocols.',
-      },
-      {
-        attributeId: 'seat_matrix',
-        label: 'Reserved vs Open Category Seat Matrix',
-        description: 'Departmental seat distribution across state quota, all-India quota, and management quota.',
-      },
-      {
-        attributeId: 'refund_policy',
-        label: 'UGC Mandatory 100% Fee Refund Window',
-        description: 'Clear cancellation cut-off date and percentage of tuition refund upon withdrawal.',
-      },
-    ],
-  },
-  govt_scheme: {
-    id: 'govt_scheme',
-    name: 'Government Student Scheme',
-    badge: '🇮🇳 Govt Schemes',
-    iconName: 'Landmark',
-    description: 'State Free Laptop, Monthly Stipend, Bus Pass, Hostel Subsidy & Youth Aid Schemes',
-    defaultQuery:
-      'What are the hidden exclusions, bank linkage requirements, and renewal terms for the State Higher Education Youth Allowance / Laptop Scheme 2026?',
-    defaultGoal: 'Ensure Timely Subsidy Credit Without Rejection',
-    expectedAttributes: [
-      {
-        attributeId: 'eligibility_criteria',
-        label: 'Domicile Certificate & Age Bracket Ceiling',
-        description: 'Proof of continuous residence, state nativity certificate, and age qualification window.',
-      },
-      {
-        attributeId: 'income_threshold',
-        label: 'Ration Card / BPL Classification Benchmark',
-        description: 'Antyodaya Anna Yojana (AAY) or priority household ration card requirements.',
-      },
-      {
-        attributeId: 'application_mode',
-        label: 'e-Seva Center Registration vs Online Form',
-        description: 'Whether application must be physically submitted via district Taluk / e-Seva or online.',
-      },
-      {
-        attributeId: 'required_certificates',
-        label: 'Community, Nativity & Income Proof Formats',
-        description: 'Mandatory certificates issued by competent revenue authorities with QR code verification.',
-      },
-      {
-        attributeId: 'nodal_agency',
-        label: 'Implementing Department & District Nodal Officer',
-        description: 'Administrative nodal directorate responsible for budget sanctions and physical audit.',
-      },
-      {
-        attributeId: 'disbursement_mode',
-        label: 'Aadhaar Enabled Payment System / DBT Credit',
-        description: 'Direct transfer to student bank account linked with Aadhaar NPCI mapper.',
-      },
-      {
-        attributeId: 'grievance_redressal',
-        label: 'CM Special Cell / Toll-Free Helpline Support',
-        description: 'Official phone number and portal ticket system for delayed or rejected subsidies.',
-      },
-      {
-        attributeId: 'renewal_terms',
-        label: 'Annual Verification & Continuation Mandate',
-        description: 'Requirement to submit annual collegiate attendance certificate to maintain subsidy.',
-      },
-    ],
-  },
-  exam: {
-    id: 'exam',
-    name: 'Entrance / Competitive Exam',
-    badge: '📝 Competitive Exams',
-    iconName: 'FileCheck2',
-    description: 'JEE, NEET, GATE, UPSC, State PSC & Banking Entrance Examinations',
-    defaultQuery:
-      'What are the strict eligibility conditions, negative marking rules, scribe guidelines, and admit card deadlines for the National Entrance Examination 2026?',
-    defaultGoal: 'Prevent Exam Hall Disqualification & Form Rejection',
-    expectedAttributes: [
-      {
-        attributeId: 'educational_qualification',
-        label: 'Passing Year & Board Recognition Criteria',
-        description: 'Permissible qualifying exam years, minimum aggregate marks, and recognized education boards.',
-      },
-      {
-        attributeId: 'age_limit',
-        label: 'Upper Age Limit & Category Relaxation Norms',
-        description: 'Cut-off reference date for age calculation and relaxations for reserved categories.',
-      },
-      {
-        attributeId: 'exam_pattern',
-        label: 'Sectional Blueprint, Negative Marking & Duration',
-        description: 'Number of questions, marks per correct answer, negative marking penalty, total duration.',
-      },
-      {
-        attributeId: 'registration_deadline',
-        label: 'Fee Submission Cut-off & Correction Window',
-        description: 'Final timestamp for online payment and available dates for correction of application details.',
-      },
-      {
-        attributeId: 'admit_card_date',
-        label: 'Hall Ticket Release & Photo Mismatch Protocol',
-        description: 'Admit card download date and instructions in case of barcode or signature discrepancies.',
-      },
-      {
-        attributeId: 'scribe_compensatory_time',
-        label: 'PwD Reservation & Scribe Permission Protocol',
-        description: 'Procedure to request a scribe, eligibility certificate format, and extra compensatory time.',
-      },
-      {
-        attributeId: 'reservation_documents',
-        label: 'OBC-NCL / EWS Certificate Issue Date Validity',
-        description: 'Financial year certificate validity window (certificates issued before April 1 voided).',
-      },
-      {
-        attributeId: 'exam_centers',
-        label: 'City Allotment Preference & Reporting Time Protocols',
-        description: 'Exam center selection order, gate closing time, and prohibited electronic items.',
-      },
-    ],
-  },
-  internship: {
-    id: 'internship',
-    name: 'Research Internship / Stipend',
-    badge: '💼 Internships',
-    iconName: 'Briefcase',
-    description: 'IIT/IISc Summer Fellowships, Corporate Tech Internships & Government Research Labs',
-    defaultQuery:
-      'What are the stipend terms, university NOC requirements, IP rights ownership, and attendance rules for the Research Summer Internship 2026?',
-    defaultGoal: 'Protect Academic Credit & Timely Stipend Release',
-    expectedAttributes: [
-      {
-        attributeId: 'candidate_eligibility',
-        label: 'Eligible Semesters, Minimum CGPA & Stream',
-        description: 'Target year of study (e.g. 3rd year B.Tech), minimum CGPA cut-off, and eligible engineering branches.',
-      },
-      {
-        attributeId: 'stipend_allowance',
-        label: 'Monthly Stipend, Travel Allowance & Tax Deductions',
-        description: 'Exact monthly stipend amount, round-trip train fare reimbursement, and TDS implications.',
-      },
-      {
-        attributeId: 'duration_timeline',
-        label: 'Minimum Duration, Weekly Hours & Joining Date',
-        description: 'Required internship duration (e.g. 8-10 weeks), mandatory working hours, and flexible start dates.',
-      },
-      {
-        attributeId: 'intellectual_property_rights',
-        label: 'Patent, Research Paper Authorship & NDA Terms',
-        description: 'Ownership of research outputs, student co-authorship rights, and non-disclosure obligations.',
-      },
-      {
-        attributeId: 'university_noc_requirement',
-        label: 'Mandatory College Head of Department Permission',
-        description: 'Required No Objection Certificate (NOC) format from parent university registrar.',
-      },
-      {
-        attributeId: 'selection_interview',
-        label: 'Technical Assessment & Interview Rounds',
-        description: 'Coding test platform, technical interview structure, and project proposal evaluation.',
-      },
-      {
-        attributeId: 'accommodation_support',
-        label: 'Campus Hostel Provision vs Self-Arranged PG',
-        description: 'Subsidized hostel accommodation availability on host institute campus vs out-of-pocket expenses.',
-      },
-      {
-        attributeId: 'offer_acceptance_deadline',
-        label: 'Offer Response Window & Security Deposit',
-        description: 'Days permitted to accept the offer letter and confirmation paperwork guidelines.',
-      },
-    ],
-  },
 };
 
-export function getTemplateByCategory(category: DomainCategory): TopicTemplate {
-  return TOPIC_TEMPLATES[category] || TOPIC_TEMPLATES.scholarship;
+// Aliases for backwards compatibility
+TOPIC_TEMPLATES.admission = TOPIC_TEMPLATES.education;
+TOPIC_TEMPLATES.govt_scheme = TOPIC_TEMPLATES.govt_service;
+TOPIC_TEMPLATES.exam = TOPIC_TEMPLATES.education;
+TOPIC_TEMPLATES.internship = TOPIC_TEMPLATES.career;
+
+export const CORE_TOPIC_TEMPLATES: TopicTemplate[] = [
+  TOPIC_TEMPLATES.education,
+  TOPIC_TEMPLATES.career,
+  TOPIC_TEMPLATES.govt_service,
+  TOPIC_TEMPLATES.research,
+  TOPIC_TEMPLATES.business,
+  TOPIC_TEMPLATES.scholarship,
+];
+
+export function getTemplateByCategory(category: string): TopicTemplate {
+  return TOPIC_TEMPLATES[category] || TOPIC_TEMPLATES.education;
 }
 
-export function buildExpectedAttributeChecks(category: DomainCategory): ExpectedAttributeCheck[] {
+export function buildExpectedAttributeChecks(category: string): ExpectedAttributeCheck[] {
   const template = getTemplateByCategory(category);
   return template.expectedAttributes.map(attr => ({
     attributeId: attr.attributeId,
