@@ -1,0 +1,17 @@
+{
+  "name": "DigiStudentWay",
+  "short_name": "DigiStudentWay",
+  "description": "AI-Assisted Information Gap Detection Platform for Students",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0F1B3D",
+  "theme_color": "#0F1B3D",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
