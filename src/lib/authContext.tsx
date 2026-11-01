@@ -12,6 +12,7 @@ import {
   sendEmailVerification,
   updateProfile,
   onAuthStateChanged,
+  getRedirectResult,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from './firebase';
@@ -133,6 +134,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(false);
       return;
     }
+
+    // Check for pending redirect auth results from mobile fallback
+    getRedirectResult(auth)
+      .then(async result => {
+        if (result?.user) {
+          setUser(result.user);
+          setIsGuest(false);
+          sessionStorage.removeItem('digi_is_guest');
+          await syncUserDoc(result.user);
+        }
+      })
+      .catch(err => {
+        console.warn('Redirect sign-in resolution:', err?.message);
+      });
 
     const unsubscribe = onAuthStateChanged(auth, async currentUser => {
       setUser(currentUser);

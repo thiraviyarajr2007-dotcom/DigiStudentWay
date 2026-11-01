@@ -37,6 +37,8 @@ export const AuthPage: React.FC = () => {
     }
   }, [user, navigate, redirectTarget]);
 
+  const enableFacebook = import.meta.env.VITE_ENABLE_FACEBOOK === 'true';
+
   const validate = () => {
     const newErrors: { email?: string; password?: string; name?: string } = {};
 
@@ -141,7 +143,7 @@ export const AuthPage: React.FC = () => {
                 DigiStudent<span className="text-accent">Way</span>
               </span>
               <span className="text-[10px] text-slate-400 block font-mono">
-                Shinchan Hackathon 2026
+                Information Gap Detection
               </span>
             </div>
           </Link>
@@ -161,7 +163,7 @@ export const AuthPage: React.FC = () => {
           <div className="space-y-3 pt-6 border-t border-white/10 text-xs text-slate-300">
             <div className="flex items-center gap-2.5">
               <CheckCircle2 className="w-4 h-4 text-accent shrink-0" />
-              <span>Full Firestore Cloud Sync for your saved analyses</span>
+              <span>Secure Cloud Sync for your saved analyses</span>
             </div>
             <div className="flex items-center gap-2.5">
               <CheckCircle2 className="w-4 h-4 text-accent shrink-0" />
@@ -174,7 +176,7 @@ export const AuthPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Demo Fast Track for Judges */}
+        {/* Demo Fast Track */}
         <div className="relative z-10 mt-8 pt-6 border-t border-white/10 space-y-2">
           <button
             type="button"
@@ -182,7 +184,7 @@ export const AuthPage: React.FC = () => {
             className="w-full py-2.5 px-4 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-accent text-xs font-semibold border border-accent/30 transition-all flex items-center justify-center gap-2 hover:shadow-glow-blue/20"
           >
             <Sparkles className="w-4 h-4 text-accent" />
-            <span>Hackathon Judge? Instant 1-Click Guest Demo</span>
+            <span>Instant 1-Click Guest Demo</span>
           </button>
         </div>
       </div>
@@ -233,8 +235,8 @@ export const AuthPage: React.FC = () => {
             </p>
           </div>
 
-          {/* Social Auth Buttons (Google & Facebook) */}
-          <div className="grid grid-cols-2 gap-3">
+          {/* Social Auth Buttons */}
+          <div className={`grid ${enableFacebook ? 'grid-cols-2' : 'grid-cols-1'} gap-3`}>
             {/* Continue with Google */}
             <button
               type="button"
@@ -260,21 +262,23 @@ export const AuthPage: React.FC = () => {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
                 />
               </svg>
-              <span>Google</span>
+              <span>Continue with Google</span>
             </button>
 
-            {/* Continue with Facebook (App ID: 3418668748341022) */}
-            <button
-              type="button"
-              disabled={isLoading}
-              onClick={() => handleOAuthLogin('Facebook')}
-              className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border border-white/15 bg-white/[0.03] hover:bg-white/[0.08] text-white text-xs font-semibold transition-all shadow-soft-sm hover:border-white/30 disabled:opacity-50"
-            >
-              <svg className="w-4 h-4" fill="#1877F2" viewBox="0 0 24 24">
-                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-              </svg>
-              <span>Facebook</span>
-            </button>
+            {/* Continue with Facebook */}
+            {enableFacebook && (
+              <button
+                type="button"
+                disabled={isLoading}
+                onClick={() => handleOAuthLogin('Facebook')}
+                className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl border border-white/15 bg-white/[0.03] hover:bg-white/[0.08] text-white text-xs font-semibold transition-all shadow-soft-sm hover:border-white/30 disabled:opacity-50"
+              >
+                <svg className="w-4 h-4" fill="#1877F2" viewBox="0 0 24 24">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                </svg>
+                <span>Facebook</span>
+              </button>
+            )}
           </div>
 
           <div className="relative flex items-center justify-center">
@@ -296,7 +300,7 @@ export const AuthPage: React.FC = () => {
                     type="text"
                     value={name}
                     onChange={e => setName(e.target.value)}
-                    placeholder="e.g. Shinchan Nohara"
+                    placeholder="e.g. Alex Morgan"
                     className={`w-full pl-9 pr-3.5 py-2.5 rounded-xl border text-sm bg-white/[0.04] text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent ${
                       errors.name ? 'border-rose-500' : 'border-white/15'
                     }`}
