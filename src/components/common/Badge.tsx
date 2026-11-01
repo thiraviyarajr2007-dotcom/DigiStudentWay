@@ -24,20 +24,20 @@ export const Badge: React.FC<BadgeProps> = ({
 
   const variantStyles = {
     // Green = Sourced fact (#22C55E)
-    fact: 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30',
+    fact: 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30',
     // Red = Conflict (#F43F5E)
-    conflict: 'bg-rose-500/15 text-rose-400 border border-rose-500/30',
+    conflict: 'bg-rose-500/15 text-rose-700 dark:text-rose-400 border border-rose-500/30',
     // Orange = Outdated / undated (#F59E0B)
-    outdated: 'bg-amber-500/15 text-amber-400 border border-amber-500/30',
+    outdated: 'bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30',
     // Purple = Unanswered gap / dark spot (#A78BFA)
-    gap: 'bg-purple-500/15 text-purple-300 border border-purple-500/30',
+    gap: 'bg-purple-500/15 text-purple-700 dark:text-purple-300 border border-purple-500/30',
     // Blue dashed border + "AI suggestion" badge (#3B82F6)
-    ai: 'bg-blue-500/10 text-blue-300 border border-dashed border-blue-400/50 shadow-sm',
+    ai: 'bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-dashed border-blue-400/50 shadow-sm',
     // Gray = Uncertainty / low confidence (#94A3B8)
-    uncertainty: 'bg-slate-500/15 text-slate-300 border border-slate-500/30',
+    uncertainty: 'bg-slate-500/15 text-slate-700 dark:text-slate-300 border border-slate-500/30',
     // General Brand & Neutral
-    neutral: 'bg-white/5 text-slate-300 border border-white/10',
-    brand: 'bg-primary/15 text-primary border border-primary/30',
+    neutral: 'bg-slate-900/5 dark:bg-white/5 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-white/10',
+    brand: 'bg-primary/10 dark:bg-primary/15 text-blue-700 dark:text-blue-300 border border-primary/30',
   };
 
   const renderIcon = () => {

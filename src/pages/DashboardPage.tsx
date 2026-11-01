@@ -142,7 +142,7 @@ export const DashboardPage: React.FC = () => {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center space-y-3">
         <div className="w-8 h-8 rounded-full border-2 border-brand-teal border-t-transparent animate-spin" />
-        <span className="text-xs font-mono text-slate-500 font-semibold">
+        <span className="text-xs font-mono text-slate-400 font-semibold">
           Loading gap detection audit...
         </span>
       </div>
@@ -706,7 +706,7 @@ export const DashboardPage: React.FC = () => {
               <Badge variant="fact">{report.facts.length} Verified Facts</Badge>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {report.facts.map(fact => (
                 <div
                   key={fact.id}

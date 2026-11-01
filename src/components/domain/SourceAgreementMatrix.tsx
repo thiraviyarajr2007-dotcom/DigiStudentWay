@@ -158,7 +158,7 @@ export const SourceAgreementMatrix: React.FC<SourceAgreementMatrixProps> = ({
             <Clock className="w-3.5 h-3.5 text-amber-400" /> Outdated
           </span>
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white/5 text-slate-400 border border-white/10">
-            <Minus className="w-3.5 h-3.5 text-slate-500" /> Omitted
+            <Minus className="w-3.5 h-3.5 text-slate-400" /> Omitted
           </span>
         </div>
       </div>
@@ -243,7 +243,7 @@ export const SourceAgreementMatrix: React.FC<SourceAgreementMatrixProps> = ({
                               ? 'bg-rose-500/15 border-rose-500/40 hover:border-rose-400 text-rose-100 ring-1 ring-rose-500/20'
                               : cell.status === 'outdated'
                               ? 'bg-amber-500/10 border-amber-500/25 hover:border-amber-400 text-amber-100'
-                              : 'bg-white/5 border-white/10 text-slate-500 hover:bg-white/10 hover:border-white/20'
+                              : 'bg-white/5 border-white/10 text-slate-400 hover:bg-white/10 hover:border-white/20'
                           }`}
                           title={cell.quote ? `Quote: "${cell.quote}"` : 'Click to inspect in source drawer'}
                         >
@@ -256,7 +256,7 @@ export const SourceAgreementMatrix: React.FC<SourceAgreementMatrixProps> = ({
                             ) : cell.status === 'outdated' ? (
                               <Clock className="w-3.5 h-3.5 text-amber-400" />
                             ) : (
-                              <Minus className="w-3.5 h-3.5 text-slate-500" />
+                              <Minus className="w-3.5 h-3.5 text-slate-400" />
                             )}
                           </div>
 
@@ -270,7 +270,7 @@ export const SourceAgreementMatrix: React.FC<SourceAgreementMatrixProps> = ({
                                 "{cell.quote}"
                               </p>
                             ) : (
-                              <span className="text-[10px] text-slate-500 font-mono">
+                              <span className="text-[10px] text-slate-400 font-mono">
                                 No mention
                               </span>
                             )}

@@ -194,7 +194,7 @@ export const SourceDrawer: React.FC<SourceDrawerProps> = ({
               href={source.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white text-xs font-semibold shadow-glow-blue transition-all"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 text-white text-xs font-semibold shadow-glow-blue transition-all"
             >
               Open Original Circular <ExternalLink className="w-3.5 h-3.5" />
             </a>
