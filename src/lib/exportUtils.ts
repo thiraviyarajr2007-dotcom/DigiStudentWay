@@ -147,3 +147,4 @@ Explore full breakdown: ${window.location.origin}/dashboard
     return false;
   }
 }
+

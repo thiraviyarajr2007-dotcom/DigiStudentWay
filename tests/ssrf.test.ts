@@ -30,3 +30,4 @@ describe('SSRF Safety & Protocol Validator', () => {
     expect(isSafePublicUrl('https://www.ugc.ac.in/notices').safe).toBe(true);
   });
 });
+

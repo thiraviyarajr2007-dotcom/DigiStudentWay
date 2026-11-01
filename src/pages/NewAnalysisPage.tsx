@@ -717,21 +717,60 @@ export const NewAnalysisPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Multi-stage Progress Feedback */}
-          {isRunning && analysisProgress && (
-            <div className="p-4 rounded-2xl bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800 space-y-2.5 animate-in fade-in">
+          {/* Staged Multi-Step Progress Feedback */}
+          {isRunning && (
+            <div className="p-5 rounded-2xl bg-teal-50/70 dark:bg-brand-navy-900 border border-teal-200 dark:border-teal-800 space-y-4 animate-in fade-in">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-bold text-teal-900 dark:text-teal-200 flex items-center gap-2">
                   <Loader2 className="w-4 h-4 animate-spin text-brand-teal" />
-                  {analysisProgress.message}
+                  {analysisProgress?.message || 'Processing information gap audit...'}
                 </span>
-                <span className="font-mono font-bold text-brand-teal">{analysisProgress.progressPercent}%</span>
+                <span className="font-mono font-bold text-brand-teal">{analysisProgress?.progressPercent || 30}%</span>
               </div>
-              <div className="w-full h-2 bg-teal-200/60 dark:bg-teal-900 rounded-full overflow-hidden">
+
+              {/* Progress bar */}
+              <div className="w-full h-2 bg-teal-200/60 dark:bg-teal-950 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-brand-teal transition-all duration-300"
-                  style={{ width: `${analysisProgress.progressPercent}%` }}
+                  className="h-full bg-gradient-to-r from-brand-teal to-teal-400 transition-all duration-300"
+                  style={{ width: `${analysisProgress?.progressPercent || 30}%` }}
                 />
+              </div>
+
+              {/* Staged Step Checklist */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pt-1">
+                {[
+                  { step: 1, label: 'Fetching & chunking sources', threshold: 20 },
+                  { step: 2, label: 'Extracting facts & quotes', threshold: 45 },
+                  { step: 3, label: 'Detecting gaps & contradictions', threshold: 75 },
+                  { step: 4, label: 'Building verify-next checklist', threshold: 95 },
+                ].map(s => {
+                  const currentPct = analysisProgress?.progressPercent || 0;
+                  const isDone = currentPct >= s.threshold;
+                  const isCurrent = currentPct < s.threshold && currentPct >= s.threshold - 25;
+                  return (
+                    <div
+                      key={s.step}
+                      className={`flex items-center gap-2 p-2 rounded-xl transition-all ${
+                        isDone
+                          ? 'text-emerald-700 dark:text-emerald-300 font-semibold bg-emerald-50/50 dark:bg-emerald-950/30'
+                          : isCurrent
+                          ? 'text-brand-teal font-bold bg-teal-100/60 dark:bg-teal-950/50'
+                          : 'text-slate-400 dark:text-slate-600'
+                      }`}
+                    >
+                      {isDone ? (
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                      ) : isCurrent ? (
+                        <Loader2 className="w-4 h-4 animate-spin text-brand-teal shrink-0" />
+                      ) : (
+                        <span className="w-4 h-4 rounded-full border border-slate-300 dark:border-slate-700 flex items-center justify-center text-[10px] shrink-0 font-mono">
+                          {s.step}
+                        </span>
+                      )}
+                      <span>{s.label}</span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}

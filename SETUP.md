@@ -9,9 +9,29 @@ This document provides step-by-step instructions for configuring Firebase Authen
 
 ## 🔒 Security Notice: Zero Secret Leakage
 
-- **NEVER** place the **Facebook App Secret** or **Gemini API Key** in frontend client code, repository commits, or client-side `.env` files.
+- **NEVER** place the **Facebook App Secret**, **Gemini API Key**, or **OpenRouter API Key** in frontend client code, repository commits, or client-side `.env` files.
 - The Facebook App Secret is entered **exclusively inside the Firebase Console** under the Facebook provider settings.
-- The `GEMINI_API_KEY` is accessed **only on the serverless backend (`/api/`)** via environment variables.
+- The `GEMINI_API_KEY` and `OPENROUTER_API_KEY` are accessed **only on the serverless backend (`/api/`)** via environment variables.
+
+---
+
+## ⚡ 3-Tier AI Provider Fallback Architecture
+
+DigiStudentWay implements an enterprise-grade resilient AI pipeline:
+1. **Tier 1 (Primary):** Google Gemini REST API (`gemini-2.5-flash`, with auto-fallback to `gemini-flash-latest` on 404/429/5xx).
+2. **Tier 2 (Fallback):** OpenRouter REST API (`google/gemini-2.0-flash-001`, with auto-fallback to `meta-llama/llama-3.3-70b-instruct:free`).
+3. **Tier 3 (Offline Guaranteed):** Deterministic verification engine for offline sample scholarship demonstrations (zero network needed).
+
+To configure in Vercel or locally (`.env.local`):
+```bash
+GEMINI_API_KEY=your_gemini_api_key_here
+OPENROUTER_API_KEY=your_openrouter_api_key_here
+```
+
+### Verification & Health Endpoint
+Verify active provider connections at:
+- `GET /api/health` ➔ Returns `{ gemini: boolean, openrouter: boolean, firebase: boolean }` (never returns raw keys).
+- Or visit the hidden monitor page in the app at `/status`.
 
 ---
 
@@ -101,3 +121,4 @@ In Firebase Console under **Authentication > Settings > Authorized domains**, ad
 ## 5. Local Offline Fallback Mode
 
 If no Firebase credentials are configured in `.env`, **DigiStudentWay automatically boots into resilient Local-Storage Fallback Mode**. Judges can click **"Try Sample Demo"** or **"Hackathon Judge Quick Login"** to run full analysis, view dark spots, and test the platform with zero configuration blockers.
+

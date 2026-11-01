@@ -1,11 +1,21 @@
-import { runGeminiGapAnalysis } from './_lib/gemini';
+import { runGapAnalysisWithFallback } from './_lib/ai';
 import { verifyQuoteInSource } from './_lib/quoteVerifier';
 import { calculateDecisionReadiness } from './_lib/readiness';
+import { checkRateLimit } from './_lib/rateLimit';
 import { Source, AnalysisReport, FactItem, ConflictItem, GapItem, ChecklistItem } from '../src/types';
 
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed. Use POST.' });
+  }
+
+  // Rate limiting: 20 analyses per minute per IP
+  const rate = checkRateLimit(req, 20, 60000);
+  if (!rate.allowed) {
+    return res.status(429).json({
+      error: 'Rate limit exceeded. Please wait a minute before starting another gap analysis.',
+      retryAfter: rate.retryAfter,
+    });
   }
 
   try {
@@ -19,7 +29,7 @@ export default async function handler(req: any, res: any) {
       return res.status(400).json({ error: 'At least one source with text chunks is required for analysis.' });
     }
 
-    // Prepare source payload for Gemini
+    // Prepare source payload for AI
     const sourcesPayload = sources.map((s: Source) => ({
       id: s.id,
       title: s.title || s.domain,
@@ -35,16 +45,18 @@ export default async function handler(req: any, res: any) {
     const sourceMap = new Map<string, Source>();
     sources.forEach(s => sourceMap.set(s.id, s));
 
-    let rawOutput;
+    let aiResult;
     try {
-      rawOutput = await runGeminiGapAnalysis(query, sourcesPayload);
+      aiResult = await runGapAnalysisWithFallback(query, sourcesPayload);
     } catch (aiErr: any) {
-      console.warn('Gemini analysis failed or no API key, invoking deterministic fallback:', aiErr?.message);
+      console.warn('AI provider fallback chain error:', aiErr?.message);
       return res.status(503).json({
-        error: `AI Gap Analysis unavailable: ${aiErr?.message || 'Check GEMINI_API_KEY'}`,
-        suggestion: 'Ensure GEMINI_API_KEY is configured in .env or run the Bundled Sample Demo in offline mode.',
+        error: aiErr?.message || 'AI Gap Analysis is temporarily unavailable.',
+        suggestion: 'Please try pasting circular text directly, or explore the Bundled Sample Demo in offline mode.',
       });
     }
+
+    const { rawOutput, providerName, providerTag } = aiResult;
 
     // =========================================================================
     // SERVER-SIDE ANTI-HALLUCINATION VERIFICATION OF QUOTES
@@ -106,44 +118,43 @@ export default async function handler(req: any, res: any) {
           isVerified: verifyB.isVerified,
         },
         resolutionTip: conf.resolutionTip,
-        isAiSuggestion: !verifyA.isVerified || !verifyB.isVerified,
       };
     });
 
-    // 3. Format gaps
+    // 3. Process Gaps
     const verifiedGaps: GapItem[] = rawOutput.unansweredGaps.map((gap, idx) => ({
       id: `gap-${idx + 1}`,
       title: gap.title,
       description: gap.description,
       category: gap.category,
       severity: gap.severity,
-      sourcesConsulted: sources.map(s => s.domain),
-      isAiSuggestion: gap.isAiSuggestion,
-      type: gap.type,
-      confidence: gap.confidence,
+      sourcesConsulted: sources.map(s => s.title || s.domain),
       whyItMatters: gap.whyItMatters,
       suggestedQuestionToAsk: gap.suggestedQuestionToAsk,
       missingAttributeId: gap.missingAttributeId,
+      isAiSuggestion: gap.isAiSuggestion,
+      type: gap.isAiSuggestion ? 'ai_suggestion' : gap.type,
+      confidence: gap.confidence,
     }));
 
-    // 4. Format checklist
-    const verifiedChecklist: ChecklistItem[] = rawOutput.verifyNextChecklist.map((item, idx) => ({
+    // 4. Process Verify Next Checklist
+    const verifiedChecklist: ChecklistItem[] = rawOutput.verifyNextChecklist.map((chk, idx) => ({
       id: `chk-${idx + 1}`,
-      priority: item.priority,
-      title: item.title,
-      reason: item.reason,
-      actionType: item.actionType,
-      suggestedAction: item.suggestedAction,
-      whereToVerify: item.whereToVerify,
-      sourceRef: item.sourceRef,
-      sourceId: item.sourceId,
-      linkedGapOrConflictId: item.linkedGapOrConflictId,
+      priority: chk.priority,
+      title: chk.title,
+      reason: chk.reason,
+      actionType: chk.actionType,
+      suggestedAction: chk.suggestedAction,
+      whereToVerify: chk.whereToVerify,
+      sourceRef: chk.sourceRef,
+      sourceId: chk.sourceId,
+      linkedGapOrConflictId: chk.linkedGapOrConflictId,
+      deadline: chk.deadline,
       completed: false,
-      deadline: item.deadline,
-      type: item.type,
+      type: chk.type,
     }));
 
-    // 5. Outdated warnings
+    // 5. Process Outdated Warnings
     const verifiedOutdated = rawOutput.outdatedWarnings.map((out, idx) => {
       const src = sourceMap.get(out.sourceId) || sources[0];
       return {
@@ -195,6 +206,8 @@ export default async function handler(req: any, res: any) {
       checklist: verifiedChecklist,
       expectedAttributes: rawOutput.expectedChecklist,
       decisionReadiness,
+      provider: providerName,
+      providerTag,
     };
 
     return res.status(200).json({ report });

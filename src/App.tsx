@@ -14,6 +14,7 @@ import { HistoryPage } from './pages/HistoryPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { TransparencyPage } from './pages/TransparencyPage';
 import { PrivacyPage } from './pages/PrivacyPage';
+import { StatusPage } from './pages/StatusPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export const App: React.FC = () => {
@@ -31,6 +32,7 @@ export const App: React.FC = () => {
                   <Route path="/auth" element={<AuthPage />} />
                   <Route path="/how-it-works" element={<TransparencyPage />} />
                   <Route path="/privacy" element={<PrivacyPage />} />
+                  <Route path="/status" element={<StatusPage />} />
 
                   {/* Protected Application Routes */}
                   <Route path="/app" element={<ProtectedRoute />}>

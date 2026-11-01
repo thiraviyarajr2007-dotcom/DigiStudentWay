@@ -160,6 +160,8 @@ export interface AnalysisSummary {
   updatedAt: string;
   status: 'completed' | 'processing' | 'failed';
   readinessScore?: number;
+  provider?: string;
+  providerTag?: 'gemini' | 'openrouter' | 'offline_sample';
 }
 
 export interface AnalysisReport extends AnalysisSummary {

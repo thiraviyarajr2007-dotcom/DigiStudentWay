@@ -57,3 +57,4 @@ describe('Date & Cycle Year Extractor', () => {
     expect(parseDateSafe('invalid-text-string')).toBeUndefined();
   });
 });
+

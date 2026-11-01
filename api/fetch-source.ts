@@ -4,12 +4,22 @@ import { isSafePublicUrl } from './_lib/ssrf';
 import { extractDatesFromHtml } from './_lib/dateExtractor';
 import { chunkDocumentText } from './_lib/chunking';
 import { evaluateSourceCredibility } from './_lib/credibility';
+import { checkRateLimit } from './_lib/rateLimit';
 import { Source } from '../src/types';
 
 export default async function handler(req: any, res: any) {
   // Allow only POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed. Use POST.' });
+  }
+
+  // Rate limiting: 30 URL fetches per minute per IP
+  const rate = checkRateLimit(req, 30, 60000);
+  if (!rate.allowed) {
+    return res.status(429).json({
+      error: 'Rate limit exceeded for URL fetch. Please wait a minute or use "Paste Circular Text".',
+      retryAfter: rate.retryAfter,
+    });
   }
 
   try {

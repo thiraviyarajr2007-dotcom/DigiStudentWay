@@ -427,3 +427,4 @@ export function buildSampleDemoReport(): AnalysisReport {
     decisionReadiness,
   };
 }
+

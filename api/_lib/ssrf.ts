@@ -83,3 +83,4 @@ export function isSafePublicUrl(urlString: string): { safe: boolean; reason?: st
     return { safe: false, reason: `Malformed URL string: ${err?.message || 'Invalid syntax'}` };
   }
 }
+

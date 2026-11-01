@@ -21,6 +21,7 @@ import {
   PlusCircle,
   ShieldCheck,
   CheckSquare,
+  Zap,
 } from 'lucide-react';
 import { buildSampleDemoReport } from '../lib/sampleDemo';
 import { Source, ChecklistItem as ChecklistItemType, AnalysisReport } from '../types';
@@ -249,6 +250,8 @@ export const DashboardPage: React.FC = () => {
   const completedChecklistCount = report.checklist.filter(c => c.completed).length;
   const readiness = report.decisionReadiness;
 
+  const p1PendingCount = report.checklist.filter(c => c.priority === 'P1' && !c.completed).length;
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       {/* Verification Disclaimer Banner */}
@@ -262,6 +265,12 @@ export const DashboardPage: React.FC = () => {
               <Badge variant="brand" size="sm">
                 Active Gap Detection Audit
               </Badge>
+              {report.provider && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-teal-50 dark:bg-teal-950/70 text-brand-teal border border-brand-teal/30">
+                  <Zap className="w-3 h-3 text-brand-teal" />
+                  <span>{report.provider}</span>
+                </span>
+              )}
               <span className="text-xs text-slate-400">
                 Audited {formatDate(report.createdAt)}
               </span>
@@ -340,12 +349,14 @@ export const DashboardPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Deterministic Decision Readiness Meter */}
+        {/* Deterministic Decision Readiness Big Circular Gauge */}
         <ConfidenceMeter
           score={report.confidenceScore}
           sourcesCount={report.sourcesCount}
           gapsCount={report.gapsCount}
           conflictsCount={report.conflictsCount}
+          outdatedCount={report.outdatedCount}
+          p1Count={p1PendingCount}
         />
 
         {/* Readiness Breakdown Badge */}
@@ -371,8 +382,8 @@ export const DashboardPage: React.FC = () => {
           </div>
         )}
 
-        {/* 10-Second Judge KPI Metrics */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+        {/* 10-Second Judge KPI Metrics (5 Stat Cards) */}
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-2">
           {/* Sources */}
           <button
             type="button"
@@ -383,8 +394,8 @@ export const DashboardPage: React.FC = () => {
               Cross-Examined
             </span>
             <div className="flex items-center justify-between mt-1">
-              <span className="text-2xl font-extrabold font-mono text-slate-800 dark:text-slate-100">
-                {report.sourcesCount} Sources
+              <span className="text-xl sm:text-2xl font-extrabold font-mono text-slate-800 dark:text-slate-100">
+                {report.sourcesCount}
               </span>
               <FileSearch className="w-5 h-5 text-slate-400 group-hover:text-brand-teal transition-colors" />
             </div>
@@ -397,11 +408,11 @@ export const DashboardPage: React.FC = () => {
             className="p-3.5 rounded-2xl bg-purple-50/70 hover:bg-purple-100/70 dark:bg-purple-950/40 dark:hover:bg-purple-900/40 border border-purple-200 dark:border-purple-800 text-left transition-all group"
           >
             <span className="text-[11px] font-bold uppercase tracking-wider text-purple-700 dark:text-purple-300 block">
-              Information Gaps
+              Dark Spots
             </span>
             <div className="flex items-center justify-between mt-1">
-              <span className="text-2xl font-extrabold font-mono text-purple-800 dark:text-purple-200">
-                {report.gapsCount} Dark Spots
+              <span className="text-xl sm:text-2xl font-extrabold font-mono text-purple-800 dark:text-purple-200">
+                {report.gapsCount}
               </span>
               <HelpCircle className="w-5 h-5 text-purple-600 group-hover:scale-110 transition-transform" />
             </div>
@@ -417,8 +428,8 @@ export const DashboardPage: React.FC = () => {
               Contradictions
             </span>
             <div className="flex items-center justify-between mt-1">
-              <span className="text-2xl font-extrabold font-mono text-rose-800 dark:text-rose-200">
-                {report.conflictsCount} Clashes
+              <span className="text-xl sm:text-2xl font-extrabold font-mono text-rose-800 dark:text-rose-200">
+                {report.conflictsCount}
               </span>
               <AlertTriangle className="w-5 h-5 text-rose-600 group-hover:scale-110 transition-transform" />
             </div>
@@ -431,13 +442,30 @@ export const DashboardPage: React.FC = () => {
             className="p-3.5 rounded-2xl bg-amber-50/70 hover:bg-amber-100/70 dark:bg-amber-950/40 dark:hover:bg-amber-900/40 border border-amber-200 dark:border-amber-800 text-left transition-all group"
           >
             <span className="text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300 block">
-              Outdated Notices
+              Stale Warnings
             </span>
             <div className="flex items-center justify-between mt-1">
-              <span className="text-2xl font-extrabold font-mono text-amber-800 dark:text-amber-200">
-                {report.outdatedCount} Stale
+              <span className="text-xl sm:text-2xl font-extrabold font-mono text-amber-800 dark:text-amber-200">
+                {report.outdatedCount}
               </span>
               <Clock className="w-5 h-5 text-amber-600 group-hover:scale-110 transition-transform" />
+            </div>
+          </button>
+
+          {/* P1 Action Blockers */}
+          <button
+            type="button"
+            onClick={() => setActiveTab('checklist')}
+            className="p-3.5 rounded-2xl bg-rose-100/70 hover:bg-rose-200/70 dark:bg-rose-950/60 dark:hover:bg-rose-900/60 border border-rose-300 dark:border-rose-800 text-left transition-all group col-span-2 sm:col-span-1"
+          >
+            <span className="text-[11px] font-bold uppercase tracking-wider text-rose-800 dark:text-rose-200 block">
+              P1 Blockers
+            </span>
+            <div className="flex items-center justify-between mt-1">
+              <span className="text-xl sm:text-2xl font-extrabold font-mono text-rose-900 dark:text-rose-100">
+                {p1PendingCount} Pending
+              </span>
+              <CheckSquare className="w-5 h-5 text-rose-700 dark:text-rose-300 group-hover:scale-110 transition-transform" />
             </div>
           </button>
         </div>
@@ -446,8 +474,8 @@ export const DashboardPage: React.FC = () => {
       {/* Persistent Semantic Color System Legend */}
       <SemanticLegend />
 
-      {/* Navigation Tabs */}
-      <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 overflow-x-auto pb-1 gap-2">
+      {/* Sticky Navigation Tabs */}
+      <div className="sticky top-16 z-30 py-3 bg-slate-50/95 dark:bg-brand-navy-950/95 backdrop-blur-md flex items-center justify-between border-b border-slate-200 dark:border-slate-800 overflow-x-auto gap-2 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
         <div className="flex items-center gap-1.5 sm:gap-2">
           {[
             { id: 'overview', label: 'Key Findings', count: undefined },

@@ -8,6 +8,7 @@ const VALID_ROUTE_PATTERNS: RegExp[] = [
   /^\/auth(\?.*)?$/,                     // Auth page with optional query params
   /^\/how-it-works$/,                    // Transparency page
   /^\/privacy$/,                         // Privacy policy
+  /^\/status$/,                          // System status monitor
   /^\/app\/new$/,                        // New Analysis
   /^\/app\/analysis\/[a-zA-Z0-9_\-]+$/,  // Analysis dashboard
   /^\/app\/history$/,                    // History archive
@@ -84,3 +85,4 @@ describe('Link Audit & Routing Integrity', () => {
     expect(brokenLinks).toHaveLength(0);
   });
 });
+
