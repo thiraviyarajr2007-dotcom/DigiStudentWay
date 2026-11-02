@@ -2,6 +2,7 @@ import { Source, AnalysisReport, AnalysisProgress } from '../types';
 import { buildSampleDemoReport, sampleDemoSources } from './sampleDemo';
 import { chunkDocumentText } from '../../api/_lib/chunking';
 import { evaluateSourceCredibility } from '../../api/_lib/credibility';
+import { runDynamicGapEngine } from './dynamicGapEngine';
 
 /**
  * Fetches and parses a single web source via the serverless API.
@@ -139,23 +140,55 @@ export async function runGapAnalysisPipeline(
       return data.report;
     }
   } catch (err) {
-    console.warn('API /api/analyze failed, triggering seamless demo fallback:', err);
+    console.warn('API /api/analyze failed, checking alternative engine:', err);
   }
 
-  // Graceful offline fallback: If API key is missing or serverless is offline, build sample demo
+  // Stage 3: Try Python Serverless Gap Engine
+  try {
+    const pyResp = await fetch('/api/gap-engine', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        query,
+        targetGoal,
+        category,
+        sources,
+      }),
+    });
+
+    if (pyResp.ok) {
+      const pyData = await pyResp.json();
+      if (pyData.report) {
+        onProgress?.({
+          stage: 'synthesizing',
+          message: 'Cross-examination verified via Information Gap Engine...',
+          progressPercent: 100,
+        });
+        return pyData.report;
+      }
+    }
+  } catch (pyErr) {
+    console.warn('API /api/gap-engine unavailable, using local dynamic NLP engine:', pyErr);
+  }
+
+  // Dynamic Client-Side Cross-Examination: Real computation on user's actual sources
   onProgress?.({
     stage: 'verifying',
-    message: 'Running offline deterministic verification engine...',
-    progressPercent: 80,
+    message: `Running real-time cross-examination across ${sources.length} sources...`,
+    progressPercent: 85,
   });
 
-  await new Promise(r => setTimeout(r, 600));
+  await new Promise(r => setTimeout(r, 400));
 
   onProgress?.({
     stage: 'synthesizing',
-    message: 'Generating verifiable action plan...',
+    message: 'Computing real-time Digital Dark Spot Matrix and decision readiness score...',
     progressPercent: 100,
   });
+
+  if (sources.length > 0) {
+    return runDynamicGapEngine(query, targetGoal, category, sources);
+  }
 
   const demoReport = buildSampleDemoReport();
   demoReport.query = query || demoReport.query;

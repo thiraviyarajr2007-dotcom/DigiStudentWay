@@ -36,3 +36,9 @@ testsprite/
 
 # Local audit
 AUDIT.md
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+

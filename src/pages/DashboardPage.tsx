@@ -40,6 +40,7 @@ import { AIBanner } from '../components/domain/AIBanner';
 import { JudgeTour } from '../components/domain/JudgeTour';
 import { SourceAgreementMatrix } from '../components/domain/SourceAgreementMatrix';
 import { TrustPanel } from '../components/domain/TrustPanel';
+import { DarkSpotInspector } from '../components/domain/DarkSpotInspector';
 import { useToast } from '../components/common/Toast';
 import { formatDate } from '../lib/utils';
 import { downloadChecklistFile, printChecklistAsPdf, copyShareableSummary } from '../lib/exportUtils';
@@ -634,6 +635,12 @@ export const DashboardPage: React.FC = () => {
               Review Conflict
             </Button>
           </div>
+
+          {/* Interactive Live Dark Spot & Clause Inspector */}
+          <DarkSpotInspector
+            sources={report.sources}
+            onOpenSourceDrawer={(src, quote) => handleOpenSourceDrawer(src, quote)}
+          />
 
           {/* Signature Multi-Source Agreement Matrix (Primary Feature) */}
           <SourceAgreementMatrix
