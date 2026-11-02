@@ -105,7 +105,7 @@ export async function runGapAnalysisPipeline(
   // Stage 2: Calling AI gap engine
   onProgress?.({
     stage: 'analyzing',
-    message: 'Cross-correlating clauses with Gemini 2.5 Flash to detect dark spots...',
+    message: 'Cross-correlating clauses to detect information gaps...',
     progressPercent: 45,
   });
 

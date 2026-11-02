@@ -17,7 +17,7 @@ export const AIBanner: React.FC<{ className?: string }> = ({ className }) => {
         </div>
         <div className="text-xs text-blue-950 dark:text-blue-100 leading-relaxed">
           <span className="font-bold mr-1">Verification Advisory:</span>
-          AI-generated findings are potential information gaps and discrepancy alerts, not guaranteed final legal facts. Always cross-check with the institutional nodal officer before submission.
+          AI findings indicate potential gaps and possible conflicts, not guaranteed facts. Verify with official authorities before deciding.
         </div>
       </div>
       <div className="shrink-0 hidden md:block">

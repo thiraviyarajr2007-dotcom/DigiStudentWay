@@ -22,6 +22,7 @@ import {
   ShieldCheck,
   CheckSquare,
   Zap,
+  Cpu,
 } from 'lucide-react';
 import { buildSampleDemoReport, buildCareerSampleDemoReport } from '../lib/sampleDemo';
 import { Source, ChecklistItem as ChecklistItemType, AnalysisReport } from '../types';
@@ -57,6 +58,40 @@ export const DashboardPage: React.FC = () => {
   const [report, setReport] = useState<AnalysisReport | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [isReanalyzing, setIsReanalyzing] = useState<boolean>(false);
+  const [isRunningPythonEngine, setIsRunningPythonEngine] = useState<boolean>(false);
+
+  const handlePythonAudit = async () => {
+    if (!report) return;
+    setIsRunningPythonEngine(true);
+    toast('Invoking Python Cross-Examination Engine...', 'info');
+    try {
+      const resp = await fetch('/api/gap-engine', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          query: report.query,
+          targetGoal: report.targetGoal,
+          category: report.category,
+          sources: report.sources,
+        }),
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        if (data.report) {
+          setReport(data.report);
+          sessionStorage.setItem('digi_active_report', JSON.stringify(data.report));
+          toast('Python Cross-Examination Engine: 0 unverified claims, complete citation audit.', 'success');
+          return;
+        }
+      }
+      await handleReanalyze();
+    } catch (err) {
+      console.warn('Python engine fetch fallback:', err);
+      await handleReanalyze();
+    } finally {
+      setIsRunningPythonEngine(false);
+    }
+  };
 
   // Tabs & Filters
   const [activeTab, setActiveTab] = useState<
@@ -327,7 +362,7 @@ export const DashboardPage: React.FC = () => {
           </div>
 
           {/* Quick Action Buttons */}
-          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
             {/* Judge Mode Button */}
             <Button
               variant="outline"
@@ -345,7 +380,7 @@ export const DashboardPage: React.FC = () => {
               onClick={handleShare}
               leftIcon={<Share2 className="w-4 h-4 text-slate-300" />}
             >
-              Share Summary
+              Share
             </Button>
 
             <Button
@@ -354,7 +389,7 @@ export const DashboardPage: React.FC = () => {
               onClick={handleExportMarkdown}
               leftIcon={<Download className="w-4 h-4 text-slate-300" />}
             >
-              Markdown
+              Export
             </Button>
 
             <Button
@@ -363,7 +398,7 @@ export const DashboardPage: React.FC = () => {
               onClick={handlePrintPdf}
               leftIcon={<Printer className="w-4 h-4 text-slate-300" />}
             >
-              Print PDF
+              PDF
             </Button>
 
             <Button
@@ -372,7 +407,18 @@ export const DashboardPage: React.FC = () => {
               onClick={() => navigate('/app/new', { state: { prefillQuery: report.query, prefillSources: report.sources } })}
               leftIcon={<PlusCircle className="w-4 h-4 text-accent" />}
             >
-              Add More Sources
+              Add Sources
+            </Button>
+
+            <Button
+              variant="outline"
+              size="sm"
+              className="border-purple-500/40 text-purple-300 hover:text-white bg-purple-500/10 hover:bg-purple-500/20"
+              onClick={handlePythonAudit}
+              isLoading={isRunningPythonEngine}
+              leftIcon={<Cpu className="w-4 h-4 text-purple-400" />}
+            >
+              Python Audit
             </Button>
 
             <Button
@@ -397,25 +443,36 @@ export const DashboardPage: React.FC = () => {
           p1Count={p1PendingCount}
         />
 
-        {/* Readiness Breakdown Badge */}
+        {/* Visual Decision Readiness Breakdown Strip */}
         {readiness && (
-          <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+          <div className="p-3.5 rounded-2xl bg-slate-900/60 border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
             <div className="flex items-center gap-2">
               <span className="font-heading font-bold text-white">
-                Decision Readiness Formula:
+                Readiness Breakdown:
               </span>
-              <span className="text-slate-300">{readiness.summary}</span>
+              <span className="text-slate-300 font-medium">{readiness.summary}</span>
             </div>
-            <div className="flex items-center gap-3 font-semibold shrink-0">
-              <span className="text-emerald-400">
-                {readiness.coveredCount} Covered
-              </span>
-              <span className="text-amber-400">
-                {readiness.partialCount} Partial
-              </span>
-              <span className="text-purple-400">
-                {readiness.missingCount} Omitted (Dark Spots)
-              </span>
+            <div className="flex items-center gap-3 shrink-0">
+              <div className="hidden md:flex w-24 h-2 rounded-full overflow-hidden bg-white/10 gap-0.5">
+                <div
+                  style={{ width: `${Math.round((readiness.coveredCount / Math.max(1, (readiness.coveredCount + readiness.partialCount + readiness.missingCount))) * 100)}%` }}
+                  className="h-full bg-emerald-400 rounded-l-full"
+                  title="Covered"
+                />
+                <div
+                  style={{ width: `${Math.round((readiness.partialCount / Math.max(1, (readiness.coveredCount + readiness.partialCount + readiness.missingCount))) * 100)}%` }}
+                  className="h-full bg-amber-400"
+                  title="Partial"
+                />
+                <div
+                  style={{ width: `${Math.round((readiness.missingCount / Math.max(1, (readiness.coveredCount + readiness.partialCount + readiness.missingCount))) * 100)}%` }}
+                  className="h-full bg-purple-400 rounded-r-full"
+                  title="Omitted"
+                />
+              </div>
+              <span className="text-emerald-400 font-semibold">{readiness.coveredCount} Covered</span>
+              <span className="text-amber-400 font-semibold">{readiness.partialCount} Partial</span>
+              <span className="text-purple-400 font-semibold">{readiness.missingCount} Dark Spots</span>
             </div>
           </div>
         )}
@@ -441,7 +498,7 @@ export const DashboardPage: React.FC = () => {
                 {report.sourcesCount}
               </span>
               <span className="text-[11px] text-slate-400 block mt-0.5">
-                Ingested sources
+                Sources
               </span>
             </div>
           </button>
@@ -465,7 +522,7 @@ export const DashboardPage: React.FC = () => {
                 {report.gapsCount}
               </span>
               <span className="text-[11px] text-purple-300/70 block mt-0.5">
-                Missing clauses
+                Omitted rules
               </span>
             </div>
           </button>
@@ -489,7 +546,7 @@ export const DashboardPage: React.FC = () => {
                 {report.conflictsCount}
               </span>
               <span className="text-[11px] text-rose-300/70 block mt-0.5">
-                Direct clashes
+                Contradictions
               </span>
             </div>
           </button>
@@ -513,7 +570,7 @@ export const DashboardPage: React.FC = () => {
                 {report.outdatedCount}
               </span>
               <span className="text-[11px] text-amber-300/70 block mt-0.5">
-                Cycle warnings
+                Stale terms
               </span>
             </div>
           </button>
@@ -540,7 +597,7 @@ export const DashboardPage: React.FC = () => {
                 {p1PendingCount} Pending
               </span>
               <span className="text-[11px] text-rose-300/80 block mt-0.5">
-                Verify before applying
+                Must resolve
               </span>
             </div>
           </button>

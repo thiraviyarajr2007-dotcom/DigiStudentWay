@@ -122,10 +122,10 @@ export const DarkSpotInspector: React.FC<DarkSpotInspectorProps> = ({ sources, o
             <span>Interactive Real-World Problem Solver</span>
           </div>
           <h3 className="font-heading font-extrabold text-lg text-white">
-            Digital Dark Spot & Clause Cross-Examiner
+            Dark Spot & Clause Examiner
           </h3>
           <p className="text-xs text-slate-300">
-            Type any condition, eligibility rule, or doubt to test whether all circulars agree, disagree, or omit it completely.
+            Test any rule or condition against all notices for omissions or conflicts.
           </p>
         </div>
         <span className="text-xs font-mono px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-slate-400 self-start sm:self-auto">

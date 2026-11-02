@@ -314,8 +314,14 @@ def run_cross_examination(query: str, target_goal: str, category: str, sources: 
             "id": f"chk_{order}",
             "order": order,
             "title": f"Resolve Contradiction: {c['topic']}",
-            "action": c["resolutionGuidance"],
+            "action": c.get("resolutionGuidance", "Verify with authority"),
+            "suggestedAction": c.get("resolutionGuidance", "Verify with authority"),
+            "reason": c.get("description", ""),
             "urgency": "immediate",
+            "priority": "P1" if c.get("severity") == "critical" else "P2",
+            "completed": False,
+            "actionType": "cross_check_guideline",
+            "whereToVerify": "Designated Nodal Authority",
             "relatedConflictId": c["id"]
         })
         order += 1
@@ -326,11 +332,39 @@ def run_cross_examination(query: str, target_goal: str, category: str, sources: 
                 "id": f"chk_{order}",
                 "order": order,
                 "title": f"Clarify Dark Spot: {g['label']}",
-                "action": g["actionItem"],
+                "action": g.get("actionItem", "Contact authority"),
+                "suggestedAction": g.get("actionItem", "Contact authority"),
+                "reason": g.get("description", ""),
                 "urgency": "before_applying",
+                "priority": "P1",
+                "completed": False,
+                "actionType": "call_helpdesk",
+                "whereToVerify": "Issuing Directorate",
                 "relatedGapId": g["id"]
             })
             order += 1
+
+    # Extract expected attributes for matrix
+    taxonomy = DOMAIN_TAXONOMIES.get(category.lower(), DOMAIN_TAXONOMIES["general"])
+    expected_attrs = []
+    for attr in taxonomy:
+        a_id = attr["id"]
+        st = matrix.get(a_id, {}).get("status", "missing")
+        mapped_status = "covered" if st == "covered" else ("partially_covered" if st == "partial" else "missing")
+        expected_attrs.append({
+            "attributeId": a_id,
+            "label": attr["label"],
+            "status": mapped_status,
+            "importance": "critical" if attr["critical"] else "standard",
+            "sourcesCoveredCount": sum(1 for sc in matrix.get(a_id, {}).get("sourcesCoverage", {}).values() if sc.get("status") == "stated")
+        })
+
+    readiness["coveredCount"] = sum(1 for a in expected_attrs if a["status"] == "covered")
+    readiness["partialCount"] = sum(1 for a in expected_attrs if a["status"] == "partially_covered")
+    readiness["missingCount"] = sum(1 for a in expected_attrs if a["status"] == "missing")
+    readiness["p1PendingCount"] = sum(1 for c in checklist if c.get("priority") == "P1")
+    readiness["label"] = readiness["tier"]
+    readiness["summary"] = f"{readiness['score']}% Ready: {readiness['p1PendingCount']} critical P1 items, {readiness['missingCount']} unstated attributes."
 
     facts = []
     fact_id = 1
@@ -353,16 +387,28 @@ def run_cross_examination(query: str, target_goal: str, category: str, sources: 
 
     return {
         "id": f"py_report_{int(datetime.utcnow().timestamp())}",
+        "title": f"Cross-Examination: {query[:45]}",
         "query": query,
         "targetGoal": target_goal,
         "category": category,
         "createdAt": datetime.utcnow().isoformat() + "Z",
+        "updatedAt": datetime.utcnow().isoformat() + "Z",
+        "status": "completed",
         "provider": "DigiStudentWay Cross-Examination Engine",
         "decisionReadiness": readiness,
+        "confidenceScore": readiness["score"],
+        "sources": sources,
+        "sourcesCount": len(sources),
+        "gapsCount": len(gaps),
+        "conflictsCount": len(conflicts),
+        "outdatedCount": 0,
+        "factsCount": len(facts),
         "conflicts": conflicts,
         "gaps": gaps,
         "facts": facts,
+        "outdated": [],
         "checklist": checklist,
+        "expectedAttributes": expected_attrs,
         "sourceMatrix": matrix,
         "sourcesAnalyzedCount": len(sources),
         "totalGapsCount": len(gaps),

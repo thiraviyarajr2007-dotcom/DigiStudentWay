@@ -102,7 +102,7 @@ export const LandingPage: React.FC = () => {
               onClick={() => navigate('/app/analysis/demo?tour=true', { state: { autoTour: true } })}
               leftIcon={<Sparkles className="w-5 h-5 text-amber-400" />}
             >
-              Watch 60-Second Demo
+              60-Second Demo
             </Button>
             <Link to="/app/new" className="w-full sm:w-auto">
               <Button
@@ -227,7 +227,7 @@ export const LandingPage: React.FC = () => {
       <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-8 space-y-2">
           <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-white tracking-tight">
-            Evidence-Grounded Gap Detection At Scale
+            Evidence-Grounded Gap Detection
           </h2>
           <p className="text-xs sm:text-sm text-slate-300">
             Deterministic mathematical verification scoring across all domains.
@@ -238,25 +238,25 @@ export const LandingPage: React.FC = () => {
           <Card className="p-5 text-center space-y-1 bg-[#101A2E]/70 backdrop-blur-xl border border-[rgba(148,163,184,0.15)] shadow-soft rounded-2xl" hoverEffect>
             <span className="text-3xl sm:text-4xl font-extrabold font-heading text-accent">100%</span>
             <span className="text-xs font-semibold text-slate-200 block font-heading">Quoted Provenance</span>
-            <p className="text-[11px] text-slate-400">Verbatim quotes verified against source text</p>
+            <p className="text-[11px] text-slate-400">Verbatim source quotes</p>
           </Card>
 
           <Card className="p-5 text-center space-y-1 bg-[#101A2E]/70 backdrop-blur-xl border border-[rgba(148,163,184,0.15)] shadow-soft rounded-2xl" hoverEffect>
             <span className="text-3xl sm:text-4xl font-extrabold font-heading text-emerald-400">0%</span>
             <span className="text-xs font-semibold text-slate-200 block font-heading">Hallucination Tolerance</span>
-            <p className="text-[11px] text-slate-400">Server rejects unverified claims</p>
+            <p className="text-[11px] text-slate-400">Zero ungrounded claims</p>
           </Card>
 
           <Card className="p-5 text-center space-y-1 bg-[#101A2E]/70 backdrop-blur-xl border border-[rgba(148,163,184,0.15)] shadow-soft rounded-2xl" hoverEffect>
             <span className="text-3xl sm:text-4xl font-extrabold font-heading text-purple-400">6</span>
             <span className="text-xs font-semibold text-slate-200 block font-heading">Supported Core Domains</span>
-            <p className="text-[11px] text-slate-400">Education, Career, Public Services, Research, Business</p>
+            <p className="text-[11px] text-slate-400">Education, career, policy & research</p>
           </Card>
 
           <Card className="p-5 text-center space-y-1 bg-[#101A2E]/70 backdrop-blur-xl border border-[rgba(148,163,184,0.15)] shadow-soft rounded-2xl" hoverEffect>
             <span className="text-3xl sm:text-4xl font-extrabold font-heading text-amber-400">&lt; 10s</span>
             <span className="text-xs font-semibold text-slate-200 block font-heading">Decision Readiness Score</span>
-            <p className="text-[11px] text-slate-400">Computed via deterministic penalty formula</p>
+            <p className="text-[11px] text-slate-400">Deterministic penalty formula</p>
           </Card>
         </div>
       </section>
@@ -270,7 +270,7 @@ export const LandingPage: React.FC = () => {
             Traditional Search vs Gap Detection
           </h2>
           <p className="text-xs sm:text-sm text-slate-300">
-            Why search engines leave users blind to omitted requirements.
+            Why search engines miss omitted prerequisites.
           </p>
         </div>
 
@@ -283,19 +283,19 @@ export const LandingPage: React.FC = () => {
             <ul className="space-y-2.5 text-xs text-slate-300">
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-rose-400 shrink-0" />
-                <span>Digests only provided text, omitting unstated prerequisites.</span>
+                <span>Reads only provided text; misses unstated terms</span>
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-rose-400 shrink-0" />
-                <span>Blends conflicting guidelines into misleading summaries.</span>
+                <span>Blends conflicting rules into misleading summaries</span>
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-rose-400 shrink-0" />
-                <span>Misses internal desk review deadlines.</span>
+                <span>Misses internal review deadlines</span>
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-rose-400 shrink-0" />
-                <span>Generates plausible claims without verbatim proof.</span>
+                <span>Generates claims without verbatim source proof</span>
               </li>
             </ul>
           </Card>
@@ -308,19 +308,19 @@ export const LandingPage: React.FC = () => {
             <ul className="space-y-2.5 text-xs text-slate-200">
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
-                <span>Evaluates all sources against mandatory decision checklists.</span>
+                <span>Checks all sources against mandatory checklists</span>
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
-                <span>Pinpoints contradictory clauses with side-by-side quotes.</span>
+                <span>Pinpoints contradictions with side-by-side quotes</span>
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
-                <span>Flags outdated guidelines and expired regulatory cycles.</span>
+                <span>Flags stale terms and expired cycles</span>
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
-                <span>Generates prioritized verification steps before submission.</span>
+                <span>Generates prioritized steps before submission</span>
               </li>
             </ul>
           </Card>
@@ -336,7 +336,7 @@ export const LandingPage: React.FC = () => {
             How Gap Detection Works
           </h2>
           <p className="text-xs sm:text-sm text-slate-300">
-            Three simple steps to uncover blind spots and verify critical details.
+            Three simple steps to uncover blind spots.
           </p>
         </div>
 
@@ -347,7 +347,7 @@ export const LandingPage: React.FC = () => {
             </div>
             <h3 className="font-heading font-bold text-base text-white mb-1">Collect Sources</h3>
             <p className="text-xs text-slate-300 leading-relaxed mb-3">
-              Input portal URLs, paste text notices, or review suggested documents.
+              Input portal URLs, paste text notices, or review suggestions.
             </p>
             <div className="p-2 rounded-lg bg-[#080D1B]/80 text-[11px] font-mono text-slate-400 border border-white/5">
               URLs • Pasted Text • Documents
@@ -358,9 +358,9 @@ export const LandingPage: React.FC = () => {
             <div className="w-10 h-10 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-300 font-extrabold text-base mb-3 font-heading">
               2
             </div>
-            <h3 className="font-heading font-bold text-base text-white mb-1">Cross-Examine Corpus</h3>
+            <h3 className="font-heading font-bold text-base text-white mb-1">Cross-Examine Sources</h3>
             <p className="text-xs text-slate-300 leading-relaxed mb-3">
-              Isolate missing attributes, contradictory statements, and stale terms.
+              Isolate missing clauses, contradictions, and stale terms.
             </p>
             <div className="p-2 rounded-lg bg-purple-500/10 text-[11px] font-mono text-purple-300 border border-purple-500/20">
               Gap Matrix • Quote Verifier • Staleness
@@ -373,7 +373,7 @@ export const LandingPage: React.FC = () => {
             </div>
             <h3 className="font-heading font-bold text-base text-white mb-1">Verify Next Steps</h3>
             <p className="text-xs text-slate-300 leading-relaxed mb-3">
-              Get a deterministic readiness score and prioritized P1-P3 action plan.
+              Get a deterministic readiness score and P1-P3 action plan.
             </p>
             <div className="p-2 rounded-lg bg-amber-500/10 text-[11px] font-mono text-amber-300 border border-amber-500/20">
               Readiness Score • Action Plan • Export

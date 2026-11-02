@@ -70,10 +70,15 @@ class TestPythonGapEngine(unittest.TestCase):
             self.sample_sources
         )
         self.assertEqual(report["sourcesAnalyzedCount"], 2)
+        self.assertEqual(report["sourcesCount"], 2)
         self.assertGreater(report["totalConflictsCount"], 0)
         self.assertGreater(report["totalGapsCount"], 0)
         self.assertGreater(len(report["checklist"]), 0)
         self.assertGreater(len(report["facts"]), 0)
+        self.assertIn("expectedAttributes", report)
+        self.assertGreater(len(report["expectedAttributes"]), 0)
+        self.assertIn("p1PendingCount", report["decisionReadiness"])
+        self.assertIn("priority", report["checklist"][0])
 
 if __name__ == "__main__":
     unittest.main()

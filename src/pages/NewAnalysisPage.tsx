@@ -398,7 +398,7 @@ export const NewAnalysisPage: React.FC = () => {
           <div>
             <div className="flex items-center justify-between mb-2.5">
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-400">
-                Choose Topic Template (Pre-seeds Decision Checklist)
+                Choose Topic Template
               </label>
               <span className="text-[11px] text-accent font-semibold">
                 Any Topic Supported
@@ -450,14 +450,14 @@ export const NewAnalysisPage: React.FC = () => {
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-accent" />
-                Template Audit Scope: 8 Expected Information Attributes
+                Expected Decision Attributes
               </span>
               <span className="text-[10px] font-mono font-bold text-accent">
-                {getTemplateByCategory(category).expectedAttributes.length} Domains
+                {getTemplateByCategory(category).expectedAttributes.length} Requirements
               </span>
             </div>
             <p className="text-[11px] text-slate-400 mb-3">
-              DigiStudentWay will cross-examine your sources against these 8 core requirements to discover Digital Dark Spots.
+              Sources are cross-examined against these core requirements to detect omissions.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
               {getTemplateByCategory(category).expectedAttributes.map((attr, idx) => (
@@ -484,7 +484,7 @@ export const NewAnalysisPage: React.FC = () => {
           {/* Inquiry Question */}
           <div>
             <label className="block font-heading font-bold text-sm text-white mb-2">
-              What academic scheme, admission, or notification are you investigating?
+              What topic or notice are you investigating?
             </label>
             <textarea
               rows={3}
@@ -581,7 +581,7 @@ export const NewAnalysisPage: React.FC = () => {
           {sourceTab === 'url' && (
             <div className="space-y-4">
               <p className="text-xs text-slate-400">
-                Input public URL to fetch server-side with SSRF protection and Mozilla Readability parsing:
+                Enter public URL to ingest notices for cross-examination:
               </p>
 
               {urlInputs.map((u, idx) => (
