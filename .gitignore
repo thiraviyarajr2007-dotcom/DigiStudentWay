@@ -33,6 +33,7 @@ yarn-error.log*
 .agents/
 .vexp/
 testsprite/
+.testsprite/
 
 # Local audit
 AUDIT.md

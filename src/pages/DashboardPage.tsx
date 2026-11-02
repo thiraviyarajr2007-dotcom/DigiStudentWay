@@ -73,6 +73,7 @@ export const DashboardPage: React.FC = () => {
   // Judge Mode Tour state
   const [showJudgeTour, setShowJudgeTour] = useState<boolean>(false);
   const [checklistLang, setChecklistLang] = useState<'en' | 'ta'>('en');
+  const [checklistPriorityFilter, setChecklistPriorityFilter] = useState<'ALL' | 'P1' | 'P2' | 'P3'>('ALL');
 
   // Automatically start tour if ?tour=true in URL
   useEffect(() => {
@@ -520,7 +521,10 @@ export const DashboardPage: React.FC = () => {
           {/* P1 Action Blockers */}
           <button
             type="button"
-            onClick={() => setActiveTab('checklist')}
+            onClick={() => {
+              setActiveTab('checklist');
+              setChecklistPriorityFilter('P1');
+            }}
             className="p-4 rounded-2xl bg-rose-500/[0.08] hover:bg-rose-500/[0.16] border border-rose-500/30 hover:border-rose-500/50 text-left transition-all duration-200 group flex flex-col justify-between hover:shadow-glow-rose/20 hover:-translate-y-0.5 col-span-2 sm:col-span-1"
           >
             <div className="flex items-center justify-between w-full mb-2">
@@ -1012,16 +1016,73 @@ export const DashboardPage: React.FC = () => {
             </div>
           </div>
 
+          {/* Priority Filter Bar */}
+          <div className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-2xl bg-white/[0.03] border border-white/10">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="text-xs font-semibold text-slate-400 mr-1">Filter Priority:</span>
+              <button
+                type="button"
+                onClick={() => setChecklistPriorityFilter('ALL')}
+                className={`px-3 py-1 rounded-xl text-xs font-semibold transition-all ${
+                  checklistPriorityFilter === 'ALL'
+                    ? 'bg-primary/20 text-white border border-primary/30 font-bold shadow-soft-sm'
+                    : 'text-slate-400 hover:text-white bg-white/5 border border-white/10'
+                }`}
+              >
+                All Tasks ({report.checklist.length})
+              </button>
+              <button
+                type="button"
+                onClick={() => setChecklistPriorityFilter('P1')}
+                className={`px-3 py-1 rounded-xl text-xs font-semibold transition-all ${
+                  checklistPriorityFilter === 'P1'
+                    ? 'bg-rose-500/20 text-rose-200 border border-rose-500/40 font-bold shadow-glow-rose/20'
+                    : 'text-rose-300/70 hover:text-rose-200 bg-white/5 border border-white/10'
+                }`}
+              >
+                P1 Blockers ({report.checklist.filter(c => c.priority === 'P1').length})
+              </button>
+              <button
+                type="button"
+                onClick={() => setChecklistPriorityFilter('P2')}
+                className={`px-3 py-1 rounded-xl text-xs font-semibold transition-all ${
+                  checklistPriorityFilter === 'P2'
+                    ? 'bg-amber-500/20 text-amber-200 border border-amber-500/40 font-bold'
+                    : 'text-amber-300/70 hover:text-amber-200 bg-white/5 border border-white/10'
+                }`}
+              >
+                P2 Important ({report.checklist.filter(c => c.priority === 'P2').length})
+              </button>
+              <button
+                type="button"
+                onClick={() => setChecklistPriorityFilter('P3')}
+                className={`px-3 py-1 rounded-xl text-xs font-semibold transition-all ${
+                  checklistPriorityFilter === 'P3'
+                    ? 'bg-blue-500/20 text-blue-200 border border-blue-500/40 font-bold'
+                    : 'text-slate-400 hover:text-white bg-white/5 border border-white/10'
+                }`}
+              >
+                P3 Standard ({report.checklist.filter(c => c.priority === 'P3').length})
+              </button>
+            </div>
+
+            <div className="text-xs font-mono text-slate-400">
+              Showing {report.checklist.filter(item => checklistPriorityFilter === 'ALL' || item.priority === checklistPriorityFilter).length} of {report.checklist.length} items
+            </div>
+          </div>
+
           <div className="space-y-3">
-            {report.checklist.map(item => (
-              <ChecklistItem
-                key={item.id}
-                item={item}
-                language={checklistLang}
-                onToggle={handleToggleChecklist}
-                onOpenSource={ref => handleOpenSourceByRef(ref, item.title)}
-              />
-            ))}
+            {report.checklist
+              .filter(item => checklistPriorityFilter === 'ALL' || item.priority === checklistPriorityFilter)
+              .map(item => (
+                <ChecklistItem
+                  key={item.id}
+                  item={item}
+                  language={checklistLang}
+                  onToggle={handleToggleChecklist}
+                  onOpenSource={ref => handleOpenSourceByRef(ref, item.title)}
+                />
+              ))}
           </div>
         </div>
       )}

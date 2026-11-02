@@ -424,6 +424,25 @@ export const NewAnalysisPage: React.FC = () => {
                 );
               })}
             </div>
+
+            {/* Quick Starter Chips */}
+            <div className="mt-3 flex items-center gap-2 flex-wrap">
+              <span className="text-[11px] font-semibold text-slate-400">Quick Starters:</span>
+              <button
+                type="button"
+                onClick={loadScholarshipDemo}
+                className="text-[11px] px-2.5 py-1 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/10 transition-all hover:border-accent/30"
+              >
+                Central Higher Education Scholarship Scheme
+              </button>
+              <button
+                type="button"
+                onClick={loadCareerDemo}
+                className="text-[11px] px-2.5 py-1 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/10 transition-all hover:border-purple-500/30"
+              >
+                Senior Software Engineer Employment & IP Terms
+              </button>
+            </div>
           </div>
 
           {/* Expected Attributes Audit Checklist Preview */}

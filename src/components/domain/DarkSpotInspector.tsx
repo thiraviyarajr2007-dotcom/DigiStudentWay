@@ -255,3 +255,4 @@ export const DarkSpotInspector: React.FC<DarkSpotInspectorProps> = ({ sources, o
     </Card>
   );
 };
+
