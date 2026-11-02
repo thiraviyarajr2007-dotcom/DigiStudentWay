@@ -65,6 +65,30 @@ describe('Local Authentication Resilience', () => {
     localAuth.signOut();
     expect(localAuth.getCurrentUser()).toBeNull();
   });
+
+  it('TestSprite Plan 07: gracefully trims leading and trailing whitespace in emails', () => {
+    const user = localAuth.signInWithEmail('   demo@student.org   ', 'password123');
+    expect(user.email).toBe('demo@student.org');
+    expect(localAuth.getCurrentUser()?.email).toBe('demo@student.org');
+
+    const paddedEmail = `   student_padded_${Date.now()}@college.edu   `;
+    const created = localAuth.signUpWithEmail(paddedEmail, 'secretPass123', 'Padded User');
+    expect(created.email).toBe(paddedEmail.trim().toLowerCase());
+  });
+
+  it('TestSprite Plan 05: validates password reset flow for registered and unregistered accounts', () => {
+    // Registered account succeeds
+    expect(() => localAuth.resetPassword('demo@student.org')).not.toThrow();
+    expect(() => localAuth.resetPassword('  demo@student.org  ')).not.toThrow();
+
+    // Unregistered account throws auth/user-not-found
+    try {
+      localAuth.resetPassword('nonexistent_person_999@domain.org');
+      expect.fail('Should have thrown user-not-found');
+    } catch (err: any) {
+      expect(err.code).toBe('auth/user-not-found');
+    }
+  });
 });
 
 describe('Authentication Logic & Guest Access Rules', () => {
